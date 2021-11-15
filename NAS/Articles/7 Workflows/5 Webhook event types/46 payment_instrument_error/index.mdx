@@ -1,0 +1,32 @@
+---
+title: payment_instrument_error
+account: NAS
+---
+
+## Example: Payment instrument error
+
+```json
+    {
+    "id": "evt_htielsmgcwgejgqaunl4yb2pou",
+    "type": "payment_instrument_error",
+    "version": "1.0.0",
+    "created_on": "2020-08-20T15:24:13.8431084Z",
+    "data": {
+        "sub_entity_id": "ent_wxglze3wwywujg4nna5fb7ldli",
+        "reference": "123456789101112",
+        "legal_name": "The Cake Shop Inc.",
+        "payment_instrument": {
+            "label": "The Cake Shop Barclays"
+            },
+        "reason_codes": [
+            "payment_source_required"
+            ]
+        },
+    "_links": {
+        "self": {
+            "href": "https://api.sandbox.checkout.com/workflows/events/evt_htielsmgcwgejgqaunl4yb2pou"
+            }
+        }
+    }
+```
+

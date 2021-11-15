@@ -1,0 +1,682 @@
+---
+title: How disputes work
+account: NAS
+description: Learn about the disputes flow and what happens at each stage of the process.
+---
+
+The dispute process begins when a transaction is questioned by the cardholder. It then goes through a number of stages before it is resolved. The process differs slightly depending on the card scheme, but all disputes follow a similar pattern.
+
+<img src="/NAS/Risk management/Disputes+flow.png" maxWidth={700}  />
+
+---
+
+## Stage 1: Dispute received
+
+The customer’s bank (the issuer) creates a formal dispute and assigns it a [chargeback code](/resources/codes/chargeback-codes), which describes why they are reversing the payment.
+
+Once the dispute is issued, the disputed amount, and a separate dispute fee, will be immediately deducted from your account.
+
+<TipBox variant="info">
+
+The issuer has 120 days from the date on which the goods or services were, or should have been, provided to raise the dispute. Generally, this can be no more than 540 days from the date of the transaction.
+
+</TipBox>
+
+### Next steps
+
+- If you’ve **already refunded the customer**, we will automatically defend against the dispute by sending the issuer the refund information.
+
+- If you **haven't refunded the customer**, you need to decide how to respond to the dispute (go to stage 2).
+
+- If you've **partially refunded the customer**, you still need to respond to the part of the dispute that covers the unrefunded amount. Once you've accepted or challenged that part of the dispute, we will send the evidence of your partial refund to the issuer.
+
+<TipBox variant="info" title="Dispute canceled">
+
+The issuer can cancel a dispute (for instance, because the reason code given was incorrect) at any time before you submit evidence. The dispute ends and you will be repaid the disputed amount (but not any dispute-related fees). However, the issuer may submit a new dispute for the same transaction with the corrected information, and you will need to respond to this like any other dispute.
+
+</TipBox>
+
+### Statuses and webhooks
+
+These are the statuses and webhooks associated with this stage.
+
+<Table>
+<TableHead headers={['Event', 'API status', 'Webhook', 'Changeback code']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+You've already refunded the customer, so we automatically submitted the relevant evidence and resolved the dispute for you.
+
+</TableCell>
+<TableCell>
+
+`resolved`
+
+</TableCell>
+<TableCell>
+
+[`dispute_resolved`](/workflows/webhook-event-types/dispute_resolved)
+
+</TableCell>
+<TableCell>
+
+`AUTO`
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+You’ve received a dispute and you need to submit evidence if you want to defend against it.
+
+</TableCell>
+<TableCell>
+
+`evidence_required`
+
+</TableCell>
+<TableCell>
+
+[`dispute_evidence_required`](/workflows/webhook-event-types/dispute_evidence_required)
+
+</TableCell>
+<TableCell>
+
+`ADJM`
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+The issuer has canceled the dispute.
+
+</TableCell>
+<TableCell>
+
+`canceled`
+
+</TableCell>
+<TableCell>
+
+[`dispute_canceled`](/workflows/webhook-event-types/dispute_canceled)
+
+</TableCell>
+<TableCell>
+
+`CBRV`
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+---
+
+## Stage 2: Challenge or accept the dispute
+
+You now need to decide how you want to respond to the dispute.
+
+- **Accept.** If you agree with the dispute and the specific reason given, you should accept the dispute.
+
+- **Challenge.** If you want to defend against the dispute, you will need to submit evidence to make your case.
+
+- **Ignore.** If you ignore the dispute, it will expire after a certain amount of time and you will not then be able to respond to it.
+
+### Challenging a dispute
+
+To challenge a dispute, submit all the relevant evidence to us and we will send it on to the issuer. Each scheme has a different [timeframe](#Defense_timeframes) in which you need to respond, but it's best to respond as soon as possible.
+
+The evidence you need to provide depends on the reason for the dispute. See our responding to disputes guide to learn more.
+
+
+You can submit evidence through the [Dashboard](/dashboard/manage-disputes), or with our [API](/risk-management/disputes/disputes-api).
+
+<TipBox variant="info">
+
+You have a maximum of 20 days from receiving the dispute to submit your evidence, but this varies by scheme, and if you use a third-party acquirer. See the [timeframes](#Defense_timeframes) for more information.
+
+</TipBox>
+<TipBox variant="note">
+
+Once you've submitted your evidence, you cannot change the submitted documents or add more. Make sure you've uploaded all the evidence you want to send before submitting.
+
+</TipBox>
+
+### Statuses and webhooks
+
+These are the statuses and webhooks associated with this stage.
+
+<Table>
+<TableHead headers={['Event', 'API status', 'Webhook', 'Chargeback code']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+You’ve submitted your evidence and the issuer is now reviewing it.
+
+</TableCell>
+<TableCell>
+
+`evidence_under_review`
+
+</TableCell>
+<TableCell>
+
+[`dispute_evidence_submitted`](/workflows/webhook-event-types/dispute_evidence_submitted)
+
+</TableCell>
+<TableCell>
+
+`RPDR`
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+You have accepted the dispute.
+
+</TableCell>
+<TableCell>
+
+`accepted`
+
+</TableCell>
+<TableCell>
+
+[`dispute_accepted`](/workflows/webhook-event-types/dispute_accepted)
+
+</TableCell>
+<TableCell>
+
+n/a
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+You’ve ignored the dispute and it has expired. You can no longer accept or defend against it.
+
+</TableCell>
+<TableCell>
+
+`expired`
+
+</TableCell>
+<TableCell>
+
+[`dispute_expired`](/workflows/webhook-event-types/dispute_expired)
+
+</TableCell>
+<TableCell>
+
+`n/a`
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+---
+
+## Stage 3: Await the outcome
+
+Once you've submitted your evidence, the issuer will review it and decide whether to accept or decline liability for the disputed amount.
+
+They may take up to 55 days to get back to you with their decision.
+
+### Outcomes
+
+- **Dispute won**. If the issuer is satisfied with the evidence you've provided, you win the dispute and the disputed amount will be returned to your account.
+
+- **Dispute lost**. If the issuer is not satisfied with your evidence, you lose the dispute. You can take your case to [arbitration](#Arbitration) if you want to argue your case further.
+
+<TipBox variant="info">
+
+Dispute outcomes can be partial, meaning you only recover part of the disputed amount.
+
+</TipBox>
+
+### Statuses and webhooks
+
+These are the statuses and webhooks associated with this stage.
+
+<Table>
+<TableHead headers={['Event', 'API status', 'Webhook', 'Chargeback code']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+The issuer has accepted your evidence, and you have won the dispute.
+
+</TableCell>
+<TableCell>
+
+`won`
+
+</TableCell>
+<TableCell>
+
+[`dispute_won`](/workflows/webhook-event-types/dispute_won)
+
+</TableCell>
+<TableCell>
+
+`RPDW`
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+The issuer is not satisfied with your evidence, and you have lost the dispute.
+
+</TableCell>
+<TableCell>
+
+`lost`
+
+</TableCell>
+<TableCell>
+
+[`dispute_lost`](/workflows/webhook-event-types/dispute_lost)
+
+</TableCell>
+<TableCell>
+
+`RPDL`
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+---
+
+## Arbitration
+
+If you lost the dispute but you want to argue your case further, you can escalate the case to arbitration. But you should note the following points before considering it:
+
+- You can submit additional evidence at this stage (unless it is a Visa [fraud](/resources/codes/chargeback-codes#Fraud) or [authorization](/resources/codes/chargeback-codes#Authorization) dispute). Your evidence should show why the dispute is now resolved, or why the issuer’s argument for rejecting your case is invalid.
+
+- Arbitrations can cost a lot to pursue and take a long time to resolve. The costs of arbitration may well outweigh the disputed amount.
+
+If you do want to take your case to arbitration, contact our Disputes Team at disputes@checkout.com.
+
+<TipBox variant="info">
+
+Arbitration rulings can be partial, meaning you only recover part of the disputed amount.
+
+</TipBox>
+
+### Statuses and webhooks
+
+These are the statuses and webhooks associated with this stage.
+
+<Table>
+<TableHead headers={['Event', 'Status', 'Webhook', 'Chargeback code']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+You have escalated your case to arbitration with the issuer and/or scheme.
+
+</TableCell>
+<TableCell>
+
+`arbitration_under_review`
+
+</TableCell>
+<TableCell>
+
+[`dispute_arbitration_sent_to_scheme`](/workflows/webhook-event-types/dispute_arbitration_sent_to_scheme)
+
+</TableCell>
+<TableCell>
+
+`ARBR`
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+The scheme has decided the case in your favour.
+
+</TableCell>
+<TableCell>
+
+`arbitration_won`
+
+</TableCell>
+<TableCell>
+
+[`dispute_arbitration_won`](/workflows/webhook-event-types/dispute_arbitration_won)
+
+</TableCell>
+<TableCell>
+
+`ARBW`
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+The scheme has decided the case in the issuer’s favour.
+
+</TableCell>
+<TableCell>
+
+`arbitration_lost`
+
+</TableCell>
+<TableCell>
+
+[`dispute_arbitration_lost`](/workflows/webhook-event-types/dispute_arbitration_lost)
+
+</TableCell>
+<TableCell>
+
+`ARBL`
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+---
+
+## Request for information
+
+Sometimes, the issuer will request more information about a transaction (also known as a retrieval request or soft chargeback).
+
+They may do this before raising a formal dispute, or use it instead of a dispute if they can no longer raise one because too much time has passed since the transaction. No money is taken from your account at this stage.
+
+You should provide the requested information to the issuer as quickly as possible. And, if you think the transaction being questioned is not valid, it's best to refund the customer to avoid the potential of a formal dispute being raised.
+
+<TipBox variant="tip">
+
+Regardless of how you choose to respond, it’s a good idea to contact the customer first, to find out why they are requesting more information about the transaction.
+
+</TipBox>
+<TipBox variant="note">
+
+For American Express transactions, failure to respond quickly to a request for information may result in a chargeback.
+
+</TipBox>
+
+### Outcomes
+
+- **Matter resolved**. If the issuer accepts your information, the matter is resolved. You don't need to do anything else.
+
+- **Formal dispute begins**. If you fail to respond to the request in time, or the issuer deems your information insufficient, the issuer may start a formal dispute (if they are within the time limit).
+
+### Statuses and webhooks
+
+These are the statuses and webhooks associated with this stage.
+
+<Table>
+<TableHead headers={['Event', 'API status', 'Webhook', 'Chargeback code']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+You’ve received a request for more information.
+
+</TableCell>
+<TableCell>
+
+Our API does not currently return retrieval requests.
+
+</TableCell>
+<TableCell>
+
+[`request_for_information_received`](/workflows/webhook-event-types/request_for_information_received)
+
+</TableCell>
+<TableCell>
+
+n/a
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+---
+
+## Defense timeframes
+
+This table outlines how much time you have to respond (in days) at each stage of the dispute process. We recommend, however, that you act as quickly as possible at each stage.
+
+<Table>
+<TableHead headers={['Stage', 'Visa', 'Mastercard', 'American Express', 'Diners / Discover', 'JCB', 'Cartes Bancaires']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+Respond to request for information<sup>1</sup>
+
+</TableCell>
+<TableCell>
+
+Optional
+
+</TableCell>
+<TableCell>
+
+Optional
+
+</TableCell>
+<TableCell>
+
+20<sup>2</sup>
+
+</TableCell>
+<TableCell>
+
+–
+
+</TableCell>
+<TableCell>
+
+–
+
+</TableCell>
+<TableCell>
+
+–
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Submit evidence<sup>3</sup>
+
+</TableCell>
+<TableCell>
+
+20
+
+</TableCell>
+<TableCell>
+
+20
+
+</TableCell>
+<TableCell>
+
+7
+
+</TableCell>
+<TableCell>
+
+20
+
+</TableCell>
+<TableCell>
+
+20
+
+</TableCell>
+<TableCell>
+
+20
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Arbitration
+
+</TableCell>
+<TableCell colSpan="5">
+
+For information about dealing with arbitrations, contact our Dispute Team.<sup>4</sup>
+
+</TableCell>
+<TableCell>
+
+Not available
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+<List>
+<ListItem>
+
+<sup>1</sup> From the date you received the request.
+
+</ListItem>
+<ListItem>
+
+<sup>2</sup> Failure to respond to a retrieval request within this time may result in a formal dispute.
+
+</ListItem>
+<ListItem>
+
+<sup>3</sup> From the date you received the dispute.
+
+</ListItem>
+<ListItem>
+
+<sup>4</sup> You have five days to contact our Disputes Team at disputes@checkout.com if want to take your case to arbitration.
+
+</ListItem>
+</List>
+
+### Timeframes for third-party acquirers
+
+If you use a third-party acquirer to process your payments, but manage your disputes with us, the time you have to respond is shorter, because we need to work with your acquirer to submit the evidence.
+
+<Table>
+<TableHead headers={['Acquirer', 'Scheme', 'Days to submit your evidence']} />
+<TableRow>
+<TableCell rowSpan="2">
+
+Mashreq
+
+</TableCell>
+<TableCell>
+
+Visa
+
+</TableCell>
+<TableCell>
+
+10
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Mastercard
+
+</TableCell>
+<TableCell>
+
+10
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell rowSpan="4">
+
+Worldpay
+
+</TableCell>
+<TableCell>
+
+Visa
+
+</TableCell>
+<TableCell>
+
+10
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Mastercard
+
+</TableCell>
+<TableCell>
+
+10
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+American Express
+
+</TableCell>
+<TableCell>
+
+2
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Discover
+
+</TableCell>
+<TableCell>
+
+10
+
+</TableCell>
+</TableRow>
+
+</Table>
+
+---
+
+## Next steps
+
+<CardWrapper cardsInRow={{ desktop: 2, mobile: 1 }}>
+<Card title="Manage disputes from the Dashboard" href="/dashboard/manage-disputes">
+
+Learn how to handle disputes from your Dashboard.
+
+</Card>
+<Card title="Manage disputes with our API" href="/risk-management/disputes/disputes-api">
+
+Learn how to handle disputes using our API.
+
+</Card>
+</CardWrapper>

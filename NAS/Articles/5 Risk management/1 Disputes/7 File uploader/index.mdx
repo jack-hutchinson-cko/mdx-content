@@ -1,0 +1,171 @@
+---
+title: File uploader
+account: NAS
+---
+
+Our file uploader allows you to upload files to Checkout.com. You can then use these to [provide evidence in a dispute](/risk-management/disputes/disputes-api).
+
+## Upload a file
+
+Upload a file to use as evidence in a dispute. Your request must be multipart/form-data and the file must be in either JPEG/JPG, PNG or PDF format, and no larger than 4MB.
+
+### Endpoints
+
+For the full API specification, see the <ExternalLink href="https://api-reference.checkout.com/preview/crusoe/" >API reference</ExternalLink>.
+
+<tabs>
+<tab title="Live">
+<LineCodeWrapper type="post">
+
+`https://api.checkout.com/files`
+
+</LineCodeWrapper>
+</tab>
+<tab title="Sandbox">
+<LineCodeWrapper type="post">
+
+`https://api.sandbox.checkout.com/files`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+### Additional parameters
+
+<Table>
+<TableHead headers={['Parameter', 'Description']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`file`
+
+<StatusTag type="required" />
+<TypeTag type="string (binary)" />
+</TableCell>
+<TableCell>
+
+The path of the file to upload, and its type.
+
+<InfoBox>
+
+This must be a local path.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`purpose`
+
+<StatusTag type="required" />
+<TypeTag type="string" />
+</TableCell>
+<TableCell>
+
+The purpose of the file upload. You must set this to `dispute_evidence`.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+<tabs>
+<tab title="Node.js (Beta)">
+
+```js
+import { Checkout } from "checkout-node-sdk";
+
+const cko = new Checkout("sk_XXXX");
+
+const file = await cko.files.upload({
+  path: fs.createReadStream("./test/files/evidence.jpg"),
+  purpose: "dispute_evidence",
+});
+```
+
+</tab>
+</tabs>
+
+### The POST response
+
+If the response returns a file `id`, your request was successful. Take a look at the example response below.
+
+### Response example
+
+```json
+{
+  "id": "file_6lbss42ezvoufcb2beo76rvwly",
+  "_links": {
+    "self": {
+      "href": "https://api.sandbox.checkout.com/files/file_6lbss42ezvoufcb2beo76rvwly"
+    }
+  }
+}
+```
+
+---
+
+## Get file information
+
+Use the following endpoint to retrieve information about a file that you've uploaded.
+
+### Endpoints
+
+For the full API specification, see the <ExternalLink href="https://api-reference.checkout.com/preview/crusoe/" >API reference</ExternalLink>.
+
+<tabs>
+<tab title="Live">
+<LineCodeWrapper type="get">
+
+`https://api.checkout.com/files/{file_id}`
+
+</LineCodeWrapper>
+</tab>
+<tab title="Sandbox">
+<LineCodeWrapper type="get">
+
+`https://api.sandbox.checkout.com/files/{file_id}`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+### Request example
+
+<tabs>
+<tab title="Node.js (Beta)">
+
+```js
+import { Checkout } from "checkout-node-sdk";
+
+const cko = new Checkout("sk_XXXX");
+
+const getFile = await cko.files.getFile("file_zna32sccqbwevd3ldmejtplbhu");
+```
+
+</tab>
+</tabs>
+
+### Response example
+
+If the response returns a file `id`, your request was successful.
+
+```json
+{
+  "id": "file_6lbss42ezvoufcb2beo76rvwly",
+  "filename": "receipt.png",
+  "purpose": "dispute_evidence",
+  "size": 1024,
+  "uploaded_on": "2016-05-17T16:48:52.000Z",
+  "_links": {
+    "self": {
+      "href": "https://api.sandbox.checkout.com/files/file_6lbss42ezvoufcb2beo76rvwly"
+    },
+    "download": {
+      "href": "https://checkout-file-upload.s3.eu-west-2.amazonaws.com/ucdac/ucdac/6lbss42ezvoufcb2beo76rvwly?X-Amz-Expires=3600&x-amz-security-token=FQoDYXdzENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEa"
+    }
+  }
+}
+```

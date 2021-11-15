@@ -1,0 +1,335 @@
+---
+title: Guatemala
+account: NAS
+---
+
+### Basic information
+
+<tabs withBorder={false}>
+<tab title="Local">
+
+<Table>
+<TableBody>
+<TableRow>
+<TableCell withBackground>
+
+**Country code**
+
+</TableCell>
+<TableCell colSpan={3}>
+
+GT
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell withBackground>
+
+**Supported currency**
+
+</TableCell>
+<TableCell colSpan={3}>
+
+GTQ
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell withBackground>
+
+**Scheme**
+
+</TableCell>
+<TableCell colSpan={3}>
+
+Local:
+
+- **Minimum amount (GTQ):** 8
+- **Maximum amount (GTQ):** 40,000
+- **Cut-off time:** 23:59 CST
+- **Settlement:** T+0 same day
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+### Payment information
+
+<Accordion title="Individual" headerIcon={<IndividualPayment/>}>
+
+### Beneficiary information
+
+<Table>
+<TableBody>
+<TableRow>
+<TableCell withBackground>
+
+**Beneficiary type**
+
+</TableCell>
+<TableCell>
+
+The type of account holder. Set this to `individual`.
+
+</TableCell>
+<TableCell>
+
+`account_holder.type`
+<StatusTag type="optional" />
+enum
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell withBackground rowSpan={2}>
+
+**Beneficiary name**
+
+</TableCell>
+<TableCell rowSpan={2}>
+
+The account holder's first and last name.
+
+</TableCell>
+<TableCell>
+
+`account_holder.first_name`
+<StatusTag type="required" />
+string
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`account_holder.last_name`
+<StatusTag type="required" />
+string
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell withBackground rowSpan={5}>
+
+**Beneficiary address**
+
+</TableCell>
+<TableCell rowSpan={5}>
+
+The account holder's address.
+
+</TableCell>
+<TableCell>
+
+`account_holder.billing_address.address_line1`
+<StatusTag type="required" />
+string
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`account_holder.billing_address.address_line2`
+<StatusTag type="optional" />
+string
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`account_holder.billing_address.city`
+<StatusTag type="required" />
+string
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`account_holder.billing_address.zip`
+<StatusTag type="optional" />
+string
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`account_holder.billing_address.country`
+<StatusTag type="required" />
+enum, 2 characters
+
+<InfoBox>
+
+This must be a **two-letter ISO code**.
+
+</InfoBox>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell withBackground rowSpan={2}>
+
+**Identification**
+
+</TableCell>
+<TableCell rowSpan={2}>
+
+The account holder's ID.
+
+</TableCell>
+<TableCell>
+
+`account_holder.identification.type`
+<StatusTag type="required" />
+enum
+
+<TipBox variant="info">
+
+Can be one of `passport`, `driving_licence`, or `national_id`.
+
+</TipBox>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`account_holder.identification.number`
+<StatusTag type="required" />
+string
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+### Bank details
+
+<Table>
+<TableBody>
+<TableRow>
+<TableCell withBackground>
+
+**Account number**
+
+</TableCell>
+<TableCell colSpan={2}>
+
+The account holder's account number.
+
+</TableCell>
+<TableCell colSpan={2}>
+
+`account_number`
+<StatusTag type="required" />
+string, ^[0-9]{1,16}$
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell withBackground>
+
+**SWIFT BIC**
+
+</TableCell>
+<TableCell colSpan={2}>
+
+The account holder's SWIFT BIC.
+
+</TableCell>
+<TableCell colSpan={2}>
+
+`swift_bic`
+<StatusTag type="required" />
+string, ^[a-z]{6}[a-z0-9]{2}([a-z0-9]{3})?$
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+</Accordion>
+
+### Example
+
+<tabs withBorder={false}>
+<tab title='Payment instrument request (GTQ)'>
+
+```json
+{
+  "type": "bank_account",
+  "account_number": "123456789",
+  "swift_bic": "INDLGTGCXXX",
+  "currency": "GTQ",
+  "country": "GT",
+  "account_holder": {
+    "first_name": "John",
+    "last_name": "Smith",
+	"identification": {
+      "type": "national_id",
+      "number": "1234567891234"
+    }
+    "billing_address": {
+      "address_line1": "2 Calle",
+      "city": "Cabulco",
+      "country": "GT"
+    }
+  }
+}
+```
+
+</tab>
+<tab title='Payout request (GTQ)'>
+
+```json
+{
+  "currency": "GTQ",
+  "source": {
+    "amount": 100,
+    "type": "currency_account",
+    "id": "ca_vrsqwv6tgtyufgi5xahfqxxx1y"
+  },
+  "reference": "CKO Test",
+  "destination": {
+    "type": "id",
+    "id": "src_6gtxe3cxns7uld5ytsemv1xxxy"
+  },
+  "billing_descriptor": {
+    "reference": "CKO Test"
+  },
+  "sender": {
+    "type": "individual",
+    "first_name": "John",
+    "last_name": "Smith",
+    "address": {
+      "address_line1": "2 Calle",
+      "city": "Cabulco",
+      "country": "GT"
+    },
+    "reference": "CKO Test",
+    "identification": {
+      "type": "national_id",
+      "number": "987654321987"
+    }
+  },
+  "instruction": {
+    "purpose": "CKO Test GTQ"
+  },
+  "processing_channel_id": "pc_hpswyyx23geezflc2ocz3xxx1y"
+}
+```
+
+</tab>
+</tabs>
+
+</tab>
+<tab title="International">
+
+Coming soon.
+
+</tab>
+</tabs>

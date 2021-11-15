@@ -1,0 +1,2777 @@
+---
+title: Response codes
+account: NAS
+---
+
+Response codes tell you a lot about what happened during an API request. After sending an API request, you will receive a response containing:
+
+- an [HTTP status code](/resources/codes/http-response-codes)
+- a response object containing a `response_code` that indicates the status of the request, or an error object containing one or several `error_codes`
+
+This page describes the possible response codes you might receive. View [a list of the possible error codes](/resources/codes/error-codes).
+
+---
+
+## Overview
+
+A `response_code` is a five-digit numeric code that indicates the status of the request. Additional information on the request status may be found in the `response_summary` and `status` fields.
+
+<Table>
+<TableHead headers={['Code type', 'Code range', 'Location in response', 'Description']} sizes={['70px', '50px', '120px', '140px']}/>
+<TableBody>
+<TableRow>
+<TableCell>
+
+APPROVED
+
+</TableCell>
+<TableCell>
+
+10000
+
+</TableCell>
+<TableCell>
+
+`response_code`
+`response_summary`
+
+</TableCell>
+<TableCell>
+
+The request was successful
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+SOFT DECLINE
+
+</TableCell>
+<TableCell>
+
+20000
+
+</TableCell>
+<TableCell>
+
+`response_code`
+`response_summary`
+
+</TableCell>
+<TableCell>
+
+The request was declined, though subsequent attempts may be successful
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+HARD DECLINE
+
+</TableCell>
+<TableCell>
+
+30000
+
+</TableCell>
+<TableCell>
+
+`response_code`
+`response_summary`
+
+</TableCell>
+<TableCell>
+
+The request was declined. Most hard declines require the issuer or cardholder to rectify the outstanding issue(s) before a subsequent attempt can be made
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+RISK RESPONSES
+
+</TableCell>
+<TableCell>
+
+40000
+
+</TableCell>
+<TableCell>
+
+`response_code`
+`response_summary`
+
+</TableCell>
+<TableCell>
+
+The request triggered a risk response. The status of the response (`response_code`
+and `status`) will depend on the action specified in your
+risk settings
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+---
+
+## Detailed breakdown
+
+<TipBox variant="info">
+
+Some of the codes can return different messages.
+
+</TipBox>
+
+<Table>
+<TableBody>
+<TableSubhead colspan="3" color="grey">
+
+**Approval response (10\*)**
+
+</TableSubhead>
+<TableRow>
+<TableCell withBackground>
+
+**Code**
+
+</TableCell>
+<TableCell withBackground>
+
+**Text**
+
+</TableCell>
+<TableCell withBackground>
+
+**Additional information**
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+10000
+
+</TableCell>
+<TableCell>
+
+**Approved**
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+10008
+
+</TableCell>
+<TableCell>
+
+Approved - Honor with ID (Debit Cards)
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+10011
+
+</TableCell>
+<TableCell>
+
+Approved - VIP (not used)
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+10076
+
+</TableCell>
+<TableCell>
+
+Approved (Country Club)
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+10077
+
+</TableCell>
+<TableCell>
+
+Approved (Local Banks)
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+10081
+
+</TableCell>
+<TableCell>
+
+Approved (Approved Commercial)
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+10100
+
+</TableCell>
+<TableCell>
+
+Flagged as a potentially risky transaction
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+10200
+
+</TableCell>
+<TableCell>
+
+Deferred capture
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+
+<TableSubhead colspan="3" color="grey">
+
+**Soft decline (20\*)**
+
+</TableSubhead>
+<TableRow>
+<TableCell withBackground>
+
+**Code**
+
+</TableCell>
+<TableCell withBackground>
+
+**Text**
+
+</TableCell>
+<TableCell withBackground>
+
+**Additional information**
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell rowSpan={2}>
+
+20001
+
+</TableCell>
+<TableCell>
+
+Refer to card issuer
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Contact card issuer
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20002
+
+</TableCell>
+<TableCell>
+
+Refer to card issuer - Special conditions
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20003
+
+</TableCell>
+<TableCell>
+
+Invalid merchant or service provider
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20005
+
+</TableCell>
+<TableCell>
+
+**Declined - Do not honour**
+
+</TableCell>
+<TableCell>
+
+[Learn more about this response code](/resources/codes/response-codes/declined-do-not-honour).
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20006
+
+</TableCell>
+<TableCell>
+
+Error / Invalid request parameters
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20009
+
+</TableCell>
+<TableCell>
+
+Request in progress
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20010
+
+</TableCell>
+<TableCell>
+
+Partial value approved
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20012
+
+</TableCell>
+<TableCell>
+
+Invalid transaction
+
+</TableCell>
+<TableCell>
+
+This means the issuer has declined the transaction because it is
+invalid. Possible messages are:
+
+- Blocked, first use
+- Cannot verify pin
+- Surcharge amount not permitted on Visa cards
+- Cash service not available
+- Cashback request exceeds issuer limit
+- Invalid biller information
+- PIN change/unblock request declined
+- Unsafe PIN
+- Stop payment order
+- Unable to go online, declined
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20013
+
+</TableCell>
+<TableCell>
+
+Invalid value/amount
+
+</TableCell>
+<TableCell>
+
+Invalid amount (currency conversion field overflow) or amount exceeds
+maximum for card program.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20014
+
+</TableCell>
+<TableCell>
+
+Invalid account number (no such number)
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20017
+
+</TableCell>
+<TableCell>
+
+Customer cancellation
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20018
+
+</TableCell>
+<TableCell>
+
+Customer dispute
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell rowSpan={2}>
+
+20019
+
+</TableCell>
+<TableCell>
+
+Re-enter transaction
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Transaction has expired
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20020
+
+</TableCell>
+<TableCell>
+
+Invalid response
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20021
+
+</TableCell>
+<TableCell>
+
+No action taken (unable to back out prior transaction)
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20022
+
+</TableCell>
+<TableCell>
+
+Suspected malfunction
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20023
+
+</TableCell>
+<TableCell>
+
+Unacceptable transaction fee
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20024
+
+</TableCell>
+<TableCell>
+
+File update not supported by the receiver
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell rowSpan={2}>
+
+20025
+
+</TableCell>
+<TableCell>
+
+Unable to locate record on file
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Account number is missing from the inquiry
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20026
+
+</TableCell>
+<TableCell>
+
+Duplicate file update record
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20027
+
+</TableCell>
+<TableCell>
+
+File update field edit error
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20028
+
+</TableCell>
+<TableCell>
+
+File is temporarily unavailable
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20029
+
+</TableCell>
+<TableCell>
+
+File update not successful
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20030
+
+</TableCell>
+<TableCell>
+
+Format error
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20031
+
+</TableCell>
+<TableCell>
+
+Bank not supported by Switch
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20032
+
+</TableCell>
+<TableCell>
+
+Completed partially
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20038
+
+</TableCell>
+<TableCell>
+
+Allowable PIN tries exceeded
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20039
+
+</TableCell>
+<TableCell>
+
+No credit account
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20040
+
+</TableCell>
+<TableCell>
+
+Requested function not supported
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20042
+
+</TableCell>
+<TableCell>
+
+No universal value/amount
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20044
+
+</TableCell>
+<TableCell>
+
+No investment account
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20046
+
+</TableCell>
+<TableCell>
+
+Bank decline
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20051
+
+</TableCell>
+<TableCell>
+
+Insufficient funds
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20052
+
+</TableCell>
+<TableCell>
+
+No current (checking) account
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20053
+
+</TableCell>
+<TableCell>
+
+No savings account
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20054
+
+</TableCell>
+<TableCell>
+
+Expired card
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell rowSpan={2}>
+
+20055
+
+</TableCell>
+<TableCell>
+
+Incorrect PIN
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+PIN validation not possible
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20056
+
+</TableCell>
+<TableCell>
+
+No card record
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell rowSpan={2}>
+
+20057
+
+</TableCell>
+<TableCell>
+
+Transaction not permitted to cardholder
+
+</TableCell>
+<TableCell rowSpan={2}>
+
+Issuer has declined the transaction because the card cannot be used for this sort of transaction.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Domestic debit transaction not allowed (Regional use only)
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20058
+
+</TableCell>
+<TableCell>
+
+Transaction not permitted to terminal
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20059
+
+</TableCell>
+<TableCell>
+
+Suspected fraud
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20060
+
+</TableCell>
+<TableCell>
+
+Card acceptor contact acquirer
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20061
+
+</TableCell>
+<TableCell>
+
+Activity amount limit exceeded
+
+</TableCell>
+<TableCell>
+
+Occurs if the defined amount is exceeded for the account or card.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20062
+
+</TableCell>
+<TableCell>
+
+Restricted card
+
+</TableCell>
+<TableCell>
+
+A restriction is placed on the card at the cardholder (account) level
+and not at the BIN (product) level. For example, due to the card's
+country.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20063
+
+</TableCell>
+<TableCell>
+
+Security violation
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20064
+
+</TableCell>
+<TableCell>
+
+Transaction does not fulfil AML requirement
+
+</TableCell>
+<TableCell>
+
+Occurs if any (and similar) of the following are missing:
+
+- Sender Reference Number
+- Sender Account Number
+- Sender Name
+- Sender Address
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20065
+
+</TableCell>
+<TableCell>
+
+Exceeds Withdrawal Frequency Limit
+
+</TableCell>
+<TableCell>
+
+Occurs if the defined withdrawal frequency limit has been exceeded.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20066
+
+</TableCell>
+<TableCell>
+
+Card acceptor call acquirer security
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20067
+
+</TableCell>
+<TableCell>
+
+Hard capture - Pick up card at ATM
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell rowSpan={3}>
+
+20068
+
+</TableCell>
+<TableCell>
+
+Response received too late / Timeout
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Transaction rejected
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Internal error
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20075
+
+</TableCell>
+<TableCell>
+
+Allowable PIN-entry tries exceeded
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20078
+
+</TableCell>
+<TableCell>
+
+Blocked card. First-time card usage.
+
+</TableCell>
+<TableCell>
+
+Occurs if the transaction was from a new cardholder and the card is blocked. The cardholder needs
+to unblock their card before retrying the payment.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell rowSpan={3}>
+
+20082
+
+</TableCell>
+<TableCell>
+
+No security model
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+PIN cryptographic error found (error found by VIC security module during PIN decryption)
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Negative CAM, dCVV, iCVV, or CVV results
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20083
+
+</TableCell>
+<TableCell>
+
+No accounts
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20084
+
+</TableCell>
+<TableCell>
+
+No PBF
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20085
+
+</TableCell>
+<TableCell>
+
+PBF update error
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell rowSpan={2}>
+
+20086
+
+</TableCell>
+<TableCell>
+
+ATM malfunction
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Invalid authorization type
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20087
+
+</TableCell>
+<TableCell>
+
+Bad track data (invalid CVV and/or expiry date)
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20088
+
+</TableCell>
+<TableCell>
+
+Unable to dispense/process
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20089
+
+</TableCell>
+<TableCell>
+
+Administration error
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20090
+
+</TableCell>
+<TableCell>
+
+Cut-off in progress
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20091
+
+</TableCell>
+<TableCell>
+
+Issuer unavailable or switch is inoperative
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20092
+
+</TableCell>
+<TableCell>
+
+Destination cannot be found for routing
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20093
+
+</TableCell>
+<TableCell>
+
+Transaction cannot be completed; violation of law
+
+</TableCell>
+<TableCell>
+
+Due to government, central bank to financial institution agreement, laws or regulations, these
+types of transactions cannot be authorized.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20094
+
+</TableCell>
+<TableCell>
+
+Duplicate transmission / invoice
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20095
+
+</TableCell>
+<TableCell>
+
+Reconcile error
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20096
+
+</TableCell>
+<TableCell>
+
+System malfunction
+
+</TableCell>
+<TableCell>
+
+Transaction does not pass issuer system checks on certain fields.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20097
+
+</TableCell>
+<TableCell>
+
+Reconciliation totals reset
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20098
+
+</TableCell>
+<TableCell>
+
+MAC error
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20099
+
+</TableCell>
+<TableCell>
+
+Other / Unidentified responses
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+2006P
+
+</TableCell>
+<TableCell>
+
+Cardholder ID verification failed
+
+</TableCell>
+<TableCell>
+
+Cardholder could not be identified from their ID documentation as part of Know Your Customer (KYC)
+checks. The cardholder should contact their issuing bank to resolve.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+200N0
+
+</TableCell>
+<TableCell>
+
+Force STIP
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+200N7
+
+</TableCell>
+<TableCell>
+
+Decline for CVV2 failure
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+200O5
+
+</TableCell>
+<TableCell>
+
+PIN required
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+200P1
+
+</TableCell>
+<TableCell>
+
+Over daily limit
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+200P9
+
+</TableCell>
+<TableCell>
+
+Limit exceeded. Enter a lesser value.
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+200R1
+
+</TableCell>
+<TableCell>
+
+Issuer initiated a stop payment (revocation order) for this
+authorization
+
+</TableCell>
+<TableCell>
+
+The cardholder has cancelled this subscription
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+200R3
+
+</TableCell>
+<TableCell>
+
+Issuer initiated a stop payment (revocation order) for all
+authorizations
+
+</TableCell>
+<TableCell>
+
+The cardholder has cancelled all subscriptions
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+200S4
+
+</TableCell>
+<TableCell>
+
+PTLF full
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+200T2
+
+</TableCell>
+<TableCell>
+
+Invalid transaction date
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+200T3
+
+</TableCell>
+<TableCell>
+
+Card not supported
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+200T5
+
+</TableCell>
+<TableCell>
+
+CAF status = 0 or 9
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20100
+
+</TableCell>
+<TableCell>
+
+Invalid expiry date format
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20101
+
+</TableCell>
+<TableCell>
+
+No account / No customer (token incorrect or invalid)
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20102
+
+</TableCell>
+<TableCell>
+
+Invalid merchant / wallet ID
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20103
+
+</TableCell>
+<TableCell>
+
+Card type / payment method not supported
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20104
+
+</TableCell>
+<TableCell>
+
+Gateway reject - Invalid transaction
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20105
+
+</TableCell>
+<TableCell>
+
+Gateway reject - Violation
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20106
+
+</TableCell>
+<TableCell>
+
+Unsupported currency
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20107
+
+</TableCell>
+<TableCell>
+
+Billing address is missing
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20108
+
+</TableCell>
+<TableCell>
+
+Declined - Updated cardholder available
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell rowSpan={3}>
+
+20109
+
+</TableCell>
+<TableCell>
+
+Transaction already reversed (voided)
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Previous message located for a repeat or reversal, but repeat or
+reversal data is inconsistent with the original message
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Capture is larger than initial authorized value
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20110
+
+</TableCell>
+<TableCell>
+
+Authorization completed
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20111
+
+</TableCell>
+<TableCell>
+
+Transaction already reversed
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20112
+
+</TableCell>
+<TableCell>
+
+Merchant not Mastercard SecureCode enabled
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20113
+
+</TableCell>
+<TableCell>
+
+Invalid property
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell rowSpan={2}>
+
+20114
+
+</TableCell>
+<TableCell>
+
+Invalid channel
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Token is incorrect
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20115
+
+</TableCell>
+<TableCell>
+
+Missing / Invalid lifetime
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20116
+
+</TableCell>
+<TableCell>
+
+Invalid encoding
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20117
+
+</TableCell>
+<TableCell>
+
+Invalid API version
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20118
+
+</TableCell>
+<TableCell>
+
+Transaction pending
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20119
+
+</TableCell>
+<TableCell>
+
+Invalid batch data and/or batch data is missing
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20120
+
+</TableCell>
+<TableCell>
+
+Invalid customer/user
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20121
+
+</TableCell>
+<TableCell>
+
+Transaction limit for merchant/terminal exceeded
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20123
+
+</TableCell>
+<TableCell>
+
+Missing basic data: zip, addr, member
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20124
+
+</TableCell>
+<TableCell>
+
+Missing CVV value, required for ecommerce transaction
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20150
+
+</TableCell>
+<TableCell>
+
+Card not 3D Secure (3DS) enabled
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20151
+
+</TableCell>
+<TableCell>
+
+Cardholder failed 3DS authentication
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20152
+
+</TableCell>
+<TableCell>
+
+Initial 3DS transaction not completed within 15 minutes
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20153
+
+</TableCell>
+<TableCell>
+
+3DS system malfunction
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20154
+
+</TableCell>
+<TableCell>
+
+3DS authentication required
+
+</TableCell>
+<TableCell>
+
+Issuer requests a non-3DS payment be resubmitted with 3DS
+authentication.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20155
+
+</TableCell>
+<TableCell>
+
+3DS authentication service provided invalid authentication result
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20156
+
+</TableCell>
+<TableCell>
+
+Requested function not supported by the acquirer
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+20157
+
+</TableCell>
+<TableCell>
+
+Invalid merchant configurations - Contact Support
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+
+<TableCell>
+
+20179
+
+</TableCell>
+<TableCell>
+
+Lifecycle
+
+</TableCell>
+<TableCell>
+</TableCell>
+</TableRow>
+<TableRow>
+
+<TableCell>
+
+20182
+
+</TableCell>
+<TableCell>
+
+Policy
+
+</TableCell>
+<TableCell>
+</TableCell>
+</TableRow>
+<TableRow>
+
+<TableCell>
+
+20183
+
+</TableCell>
+<TableCell>
+
+Security
+
+</TableCell>
+<TableCell>
+</TableCell>
+</TableRow>
+
+
+
+<TableSubhead colspan="3" color="grey">
+
+**Hard decline (30\*)**
+
+</TableSubhead>
+
+<TableRow>
+<TableCell withBackground>
+
+**Code**
+
+</TableCell>
+<TableCell withBackground>
+
+**Text**
+
+</TableCell>
+<TableCell withBackground>
+
+**Additional information**
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+30004
+
+</TableCell>
+<TableCell>
+
+Pick up card (No fraud)
+
+</TableCell>
+<TableCell>
+
+The cardholder’s bank has declined the payment. The customer should call their issuing bank and
+ask why the transaction was declined. Once the issuing bank confirms that they will approve future
+attempts, try the transaction again.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+30007
+
+</TableCell>
+<TableCell>
+
+Pick up card - Special conditions
+
+</TableCell>
+<TableCell>
+
+The cardholder’s bank has declined the payment because they have detected fraudulent activity on
+the account.
+
+- For a one-off transaction, do not attempt the transaction again, and, if possible, do not
+  provide goods or services to the person attempting the transaction.
+- For a recurring or scheduled transaction, it is possible that the card was flagged after the
+  last successfully processed payment (or after the authorization for the scheduled payment). In
+  that case, contact your customer for a new credit card number, or ask for a different form of
+  payment. Replace the old account number on the schedule with the new account number.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+30015
+
+</TableCell>
+<TableCell>
+
+No such issuer
+
+</TableCell>
+<TableCell>
+
+The card number entered is invalid because it does not start with a `3`
+(Amex), `4` (Visa), `5` (Mastercard) or `6` (Discover). Double-check the credit card number and try the transaction again with the correct number.
+
+<InfoBox>
+
+We will usually flag this type of error before an authorization is attempted, but, in some rare
+cases (typically when there is an error with a payment import), this type of failure may occur.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+30016
+
+</TableCell>
+<TableCell>
+
+Issuer does not allow online gambling payout
+
+</TableCell>
+<TableCell>
+
+Issuer does not allow online gambling payout.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+30017
+
+</TableCell>
+<TableCell>
+
+Issuer does not allow original credit transaction
+
+</TableCell>
+<TableCell>
+
+Issuer does not allow original credit transactions (OCTs) over Visa SMS.
+
+<InfoBox>
+
+Only applies to OCTs.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+30018
+
+</TableCell>
+<TableCell>
+
+Issuer does not allow money transfer payout
+
+</TableCell>
+<TableCell>
+
+Issuer does not allow money transfer original credit transactions (OCTs).
+
+<InfoBox>
+
+Only applies to OCTs.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+30019
+
+</TableCell>
+<TableCell>
+
+Issuer does not allow non-money transfer payout
+
+</TableCell>
+<TableCell>
+
+Issuer does not allow non-money transfer original credit transactions (OCTs).
+
+<InfoBox>
+
+Only applies to OCTs.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+30020
+
+</TableCell>
+<TableCell>
+
+Invalid amount
+
+</TableCell>
+<TableCell>
+
+Invalid amount.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+30021
+
+</TableCell>
+<TableCell>
+
+Total amount limit reached
+
+</TableCell>
+<TableCell>
+
+Volume limit reached on the account.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+30022
+
+</TableCell>
+<TableCell>
+
+Total transaction count limit reached
+
+</TableCell>
+<TableCell>
+
+Transaction count limit reached on the account.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+30033
+
+</TableCell>
+<TableCell>
+
+Expired card - Pick up
+
+</TableCell>
+<TableCell>
+
+The cardholder's bank has declined the payment because the card has expired.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+30034
+
+</TableCell>
+<TableCell>
+
+Suspected fraud - Pick up
+
+</TableCell>
+<TableCell>
+
+The cardholder's bank has declined the payment because it suspects fraudulent activity on the
+account.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+30035
+
+</TableCell>
+<TableCell>
+
+Contact acquirer - Pick up
+
+</TableCell>
+<TableCell>
+
+The cardholder’s bank has declined the payment.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+30036
+
+</TableCell>
+<TableCell>
+
+Restricted card - Pick up
+
+</TableCell>
+<TableCell>
+
+The cardholder's bank has declined the payment because the card is restricted.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+30037
+
+</TableCell>
+<TableCell>
+
+Call acquirer security - Pick up
+
+</TableCell>
+<TableCell>
+
+The cardholder’s bank has declined the payment.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+30038
+
+</TableCell>
+<TableCell>
+
+Allowable PIN tries exceeded - Pick up
+
+</TableCell>
+<TableCell>
+
+The cardholder has exceeded the number of PIN entry attempts allowed by their bank.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+30041
+
+</TableCell>
+<TableCell>
+
+Lost card - Pick up
+
+</TableCell>
+<TableCell>
+
+The cardholder’s bank has declined the payment because the card has been reported lost.
+
+- For a one-off transaction, do not attempt the transaction again, and if possible do not provide
+  goods or services to the person attempting the transaction.
+- For a recurring or scheduled transaction, it is possible that the card was lost after the last
+  successfully processed payment (or after the authorization for the scheduled payment). In that
+  case, contact your customer for a new credit card number, or ask for a different form of
+  payment. Replace the lost account number on the schedule with the new account number
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+30043
+
+</TableCell>
+<TableCell>
+
+Stolen card - Pick up
+
+</TableCell>
+<TableCell>
+
+The cardholder’s bank has declined the payment because the card has been reported stolen.
+
+- For a one-off transaction, do not attempt the transaction again, and if possible do not provide
+  goods or services to the person attempting the transaction.
+- For a recurring or scheduled transaction, it is possible that the card was lost after the last
+  successfully processed payment (or after the authorization for the scheduled payment). In that
+  case, contact your customer for a new credit card number, or ask for a different form of
+  payment. Replace the lost account number on the schedule with the new account number.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+30044
+
+</TableCell>
+<TableCell>
+
+Transaction rejected - AMLD5
+
+</TableCell>
+<TableCell>
+
+Transaction was initiated from an anonymous, non-reloadable prepaid card and for an amount greater
+than 50 EUR. Due to the AMLD5 directive, it cannot be fulfilled.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+30045
+
+</TableCell>
+<TableCell>
+
+Invalid payout fund transfer type
+
+</TableCell>
+<TableCell>
+
+If the fund transfer type is not among the list that was configured for allowed funds transfer
+types, the transaction would fail.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+30046
+
+</TableCell>
+<TableCell>
+
+Closed account
+
+</TableCell>
+<TableCell>
+
+The destination account is closed, and the transaction will never be approved, so do not reattempt
+the transaction. The cardholder must contact their issuing bank to resolve.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+### Risk responses (40\*)
+
+Risk responses are triggered by our risk engine and will appear in the `response_code` of a payment response.
+
+<TipBox variant="info" title="Configuring your risk settings">
+
+If you want to change your risk settings, please get in touch with our Risk team at <ExternalLink href="mailto:risk@checkout.com">risk@checkout.com</ExternalLink>.
+
+</TipBox>
+
+<Table>
+<TableHead headers={['Code', 'Text', 'Additional information']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+40101
+
+</TableCell>
+<TableCell>
+
+Risk blocked transaction
+
+</TableCell>
+<TableCell>
+
+The request was blocked by your risk settings.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+40201
+
+</TableCell>
+<TableCell>
+
+Gateway reject - card number blacklist
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+40202
+
+</TableCell>
+<TableCell>
+
+Gateway reject - IP address blacklist
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+40203
+
+</TableCell>
+<TableCell>
+
+Gateway reject - email blacklist
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+40204
+
+</TableCell>
+<TableCell>
+
+Gateway reject - phone number blacklist
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+40205
+
+</TableCell>
+<TableCell>
+
+Gateway Reject - BIN number blacklist
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>

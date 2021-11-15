@@ -1,0 +1,591 @@
+---
+title: Team Permissions
+account: NAS
+---
+
+<TipBox variant="info">
+
+We’ve updated our user management and roles to Team Permissions to reflect the extra functionality of custom roles.
+
+</TipBox>
+
+Not all users on the Dashboard have the same permissions. Control what your users can access with Team Permissions, a set of roles that can be applied to a group of users. If you have multiple entities, you can also decide which of these each user has access to.
+
+This page explains: 
+* [Pre-defined roles](#Pre-defined_roles)
+* [Custom roles](#Custom_roles)
+* [How to manage your users](#Manage_your_users)
+
+---
+
+## Pre-defined roles
+
+The Dashboard comes with several pre-defined roles, so you can ensure your users have the appropriate permissions across the platform. 
+
+The Dashboard has eight pre-defined user roles:
+
+- Administrator Owner
+- Administrator
+- Developer
+- Disputes Manager
+- Disputes Operator
+- Support Manager
+- Read Only
+
+The Administrator Owner is the overall owner for the account. 
+
+Each role comes with its own set of permissions, as described in the table below:
+
+<Table>
+<TableHead headers={['Permission','Admini strator owner','Admini strator','Deve loper','Disputes Manager','Disputes Operator','Support Manager','Read only']} sizes={['auto', '12%', '12%', '10%', '12%', '12%', '12%', '10%']}/>
+<TableBody>
+<TableRow>
+<TableCell>
+
+Transfer ownership
+
+</TableCell>
+<TableCell>
+<TableTicCell type="check" />
+</TableCell>
+<TableCell>
+<TableTicCell type="error" />
+</TableCell>
+<TableCell>
+<TableTicCell type="error" />
+</TableCell>
+<TableCell>
+<TableTicCell type="error" />
+</TableCell>
+<TableCell>
+<TableTicCell type="error" />
+</TableCell>
+<TableCell>
+<TableTicCell type="error" />
+</TableCell>
+<TableCell>
+<TableTicCell type="error" />
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+View and manage users
+
+<InfoBox>
+
+Add, edit, and delete users.
+
+</InfoBox>
+
+</TableCell>
+<TableCell>
+<TableTicCell type="check" />
+</TableCell>
+<TableCell>
+<TableTicCell type="check" />
+</TableCell>
+<TableCell>
+<TableTicCell type="error" />
+</TableCell>
+<TableCell>
+<TableTicCell type="error" />
+</TableCell>
+<TableCell>
+<TableTicCell type="error" />
+</TableCell>
+<TableCell>
+<TableTicCell type="error" />
+</TableCell>
+<TableCell>
+<TableTicCell type="error" />
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+View homepage and analytics
+
+</TableCell>
+<TableCell>
+<TableTicCell type="check" />
+</TableCell>
+<TableCell>
+<TableTicCell type="check" />
+</TableCell>
+<TableCell>
+<TableTicCell type="check" />
+</TableCell>
+<TableCell>
+<TableTicCell type="check" />
+</TableCell>
+<TableCell>
+<TableTicCell type="error" />
+</TableCell>
+<TableCell>
+<TableTicCell type="check" />
+</TableCell>
+<TableCell>
+<TableTicCell type="check" />
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+View homepage and analytics
+
+</TableCell>
+<TableCell>
+<TableTicCell type="check" />
+</TableCell>
+<TableCell>
+<TableTicCell type="check" />
+</TableCell>
+<TableCell>
+<TableTicCell type="check" />
+</TableCell>
+<TableCell>
+<TableTicCell type="check" />
+</TableCell>
+<TableCell>
+<TableTicCell type="error" />
+</TableCell>
+<TableCell>
+<TableTicCell type="check" />
+</TableCell>
+<TableCell>
+<TableTicCell type="check" />
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+View payments
+
+<InfoBox>
+
+View payments list and search for payments.
+
+</InfoBox>
+
+</TableCell>
+<TableCell>
+<TableTicCell type="check" />
+</TableCell>
+<TableCell>
+<TableTicCell type="check" />
+</TableCell>
+<TableCell>
+<TableTicCell type="check" />
+</TableCell>
+<TableCell>
+<TableTicCell type="check" />
+</TableCell>
+<TableCell>
+<TableTicCell type="error" />
+</TableCell>
+<TableCell>
+<TableTicCell type="check" />
+</TableCell>
+<TableCell>
+<TableTicCell type="check" />
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Manage payments
+
+<InfoBox>
+
+Capture, void, or refund payments.
+
+</InfoBox>
+
+</TableCell>
+<TableCell>
+<TableTicCell type="check" />
+</TableCell>
+<TableCell>
+<TableTicCell type="check" />
+</TableCell>
+<TableCell>
+<TableTicCell type="error" />
+</TableCell>
+<TableCell>
+<TableTicCell type="error" />
+</TableCell>
+<TableCell>
+<TableTicCell type="error" />
+</TableCell>
+<TableCell>
+<TableTicCell type="check" />
+</TableCell>
+<TableCell>
+<TableTicCell type="check" />
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+View disputes
+
+<InfoBox>
+
+View the *Unanswered disputes* and *All disputes* lists.
+
+</InfoBox>
+
+</TableCell>
+<TableCell>
+<TableTicCell type="check" />
+</TableCell>
+<TableCell>
+<TableTicCell type="check" />
+</TableCell>
+<TableCell>
+<TableTicCell type="error" />
+</TableCell>
+<TableCell>
+<TableTicCell type="check" />
+</TableCell>
+<TableCell>
+<TableTicCell type="check" />
+</TableCell>
+<TableCell>
+<TableTicCell type="check" />
+</TableCell>
+<TableCell>
+<TableTicCell type="check" />
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Manage disputes
+
+<InfoBox>
+
+Accept disputes and submit evidence.
+
+</InfoBox>
+
+</TableCell>
+<TableCell>
+<TableTicCell type="check" />
+</TableCell>
+<TableCell>
+<TableTicCell type="check" />
+</TableCell>
+<TableCell>
+<TableTicCell type="error" />
+</TableCell>
+<TableCell>
+<TableTicCell type="check" />
+</TableCell>
+<TableCell>
+<TableTicCell type="check" />
+</TableCell>
+<TableCell>
+<TableTicCell type="check" />
+</TableCell>
+<TableCell>
+<TableTicCell type="error" />
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+View and generate payment reports
+
+</TableCell>
+<TableCell>
+<TableTicCell type="check" />
+</TableCell>
+<TableCell>
+<TableTicCell type="check" />
+</TableCell>
+<TableCell>
+<TableTicCell type="check" />
+</TableCell>
+<TableCell>
+<TableTicCell type="check" />
+</TableCell>
+<TableCell>
+<TableTicCell type="error" />
+</TableCell>
+<TableCell>
+<TableTicCell type="check" />
+</TableCell>
+<TableCell>
+<TableTicCell type="check" />
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+View access keys
+
+</TableCell>
+<TableCell>
+<TableTicCell type="check" />
+</TableCell>
+<TableCell>
+<TableTicCell type="check" />
+</TableCell>
+<TableCell>
+<TableTicCell type="check" />
+</TableCell>
+<TableCell>
+<TableTicCell type="error" />
+</TableCell>
+<TableCell>
+<TableTicCell type="error" />
+</TableCell>
+<TableCell>
+<TableTicCell type="error" />
+</TableCell>
+<TableCell>
+<TableTicCell type="error" />
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Manage access keys
+
+<InfoBox>
+
+Regenerate an access key secret.
+
+</InfoBox>
+
+</TableCell>
+<TableCell>
+<TableTicCell type="check" />
+</TableCell>
+<TableCell>
+<TableTicCell type="error" />
+</TableCell>
+<TableCell>
+<TableTicCell type="error" />
+</TableCell>
+<TableCell>
+<TableTicCell type="error" />
+</TableCell>
+<TableCell>
+<TableTicCell type="error" />
+</TableCell>
+<TableCell>
+<TableTicCell type="error" />
+</TableCell>
+<TableCell>
+<TableTicCell type="error" />
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+View settlements
+
+</TableCell>
+<TableCell>
+<TableTicCell type="check" />
+</TableCell>
+<TableCell>
+<TableTicCell type="check" />
+</TableCell>
+<TableCell>
+<TableTicCell type="error" />
+</TableCell>
+<TableCell>
+<TableTicCell type="error" />
+</TableCell>
+<TableCell>
+<TableTicCell type="error" />
+</TableCell>
+<TableCell>
+<TableTicCell type="check" />
+</TableCell>
+<TableCell>
+<TableTicCell type="error" />
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+View sub-entities
+
+</TableCell>
+<TableCell>
+<TableTicCell type="check" />
+</TableCell>
+<TableCell>
+<TableTicCell type="check" />
+</TableCell>
+<TableCell>
+<TableTicCell type="error" />
+</TableCell>
+<TableCell>
+<TableTicCell type="check" />
+</TableCell>
+<TableCell>
+<TableTicCell type="error" />
+</TableCell>
+<TableCell>
+<TableTicCell type="check" />
+</TableCell>
+<TableCell>
+<TableTicCell type="check" />
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+## Custom roles
+
+---
+
+### Create a role
+
+To create a custom role, navigate to _Settings > Team Permissions_ and find the _Users_ section. When you select _+ New role_, you will be taken to the roles section where you'll be able to select various permissions and provide a name. 
+
+<TipBox>
+
+When you name roles, remember to make them unique and add a description that summarizes the permissions the role will cover.
+
+</TipBox>
+
+Review the available permissions by navigating through the sidebar menu. You can pick and choose the permissions you need to create a custom role. Select a minimum of one permission. 
+
+<TipBox variant="note">
+
+There are three permissions that can't be granted to a custom role: 
+
+* Roles management – only admins and owners have this permission.
+* Access keys refresh – only the owner of the account can have this permission.
+* Transfer ownership of the account – only the owner of the account can have this permission.
+
+</TipBox>
+
+<img src="/NAS/Dashboard/Team_Permissions/TeamPermissions.png"  alt="Team permissions"/>
+
+Once you are happy with the permissions you have selected, save this custom role by selecting _Create role_.
+
+---
+
+### View all roles
+
+Selecting _View all roles_ shows all roles set up and currently active for your organization for both custom and pre-defined roles.
+
+---
+
+### Edit a role
+
+You can edit permissions assigned to a role at any point. Note that editing a role will affect permissions for all users who are assigned to that role.
+
+---
+
+### Delete a role
+
+When a role is no longer needed, you can delete it from the details page for that role. Note that any user assigned to a role that is deleted will be transferred to the Read Only role by default.
+
+## Manage your users
+
+Anyone with 'View users' permission have access to the _Team Permissions_ screen (under _Settings_), which provides a record of all users on an account. Depending on your entity access and business needs, the list on view will filter to reflect the users whose details you can edit. The Administrator Owner can view and manage all users for **all** entities on the account. 
+
+---
+
+### View users
+
+The _Team Permissions_ screen provides a view of all users at a glance, including their roles and user status.
+
+The _Last login_ column reflects the three possible user statuses:
+
+- `PENDING`: the user has recently been invited to your platform and is yet to accept the invitation and set up their login details. Users have seven days to accept an invitation before it expires.
+- `[Timestamp]`: the user has accepted the invitation. The date and timestamp on view show the last time the user accessed the platform. 
+- `EXPIRED`: the user has accepted the invitation. The date and timestamp on view show the last time the user accessed the platform. 
+
+To view more information or edit a user's details, click on a row. You will be taken to the user's profile.
+
+<img src="/NAS/Dashboard/Team_Permissions/user-profile.png"  alt="Dashboard user profile"/>
+
+---
+
+### Add a user
+
+You can add as many users to your Dashboard as you require. A user’s email, name, and role are all mandatory, as well as the entities you want them to have access to.
+
+1. In _Settings > Team Permissions_, select _+New user_ under the _Users_ header. A new screen will load.
+
+<img src="/NAS/Dashboard/Team_Permissions/new-user.png"  alt="Dashboard new user"/>
+
+2. Enter the user's _First name_, _Last name_, and _Email_. 
+3. Tick the _Legal entities_ you want the user to have access to.
+4. Select the _Role_ you want the user to have. By default, this is set to _Read Only_.
+
+<TipBox variant='note'>
+
+You can only assign a user to the entities that you have access to. Once added, another Administrator can amend the user’s access if required.
+
+</TipBox>
+
+5. Select _Save new user_.
+
+A confirmation message pops up and your will be taken to the new user's profile.
+
+<img src="/NAS/Dashboard/Team_Permissions/pending_user.png"  alt="Dashboard pending user"/>
+
+<TipBox>
+
+The new user has a `PENDING` status. When they activate their account, this will be replaced with a timestamp.
+
+</TipBox>
+
+---
+
+### Edit a user
+
+Edit an existing user's role and entity access.
+
+1. In _Settings > Team Permissions_, select a user. This will open the details pane on the right side of your screen.
+2. Use the _Role_ drop-down to update a user's role.
+3. Tick or untick the _Legal entities_ you want the user to have access to.
+4. Select _Save_ to confirm.
+
+The user's details are updated.
+
+---
+
+### Delete a user
+
+Delete a user to revoke all their access rights and completely remove them from the platform.
+
+1. In _Settings > Team Permissions_, select a user. This will open the user's profile page.
+2. In the top right of the page, select _Delete user_.
+3. To confirm, select _Delete user_ again.
+
+<img src="/NAS/Dashboard/Team_Permissions/delete_user.png"  alt="Dashboard delete a user" />
+
+A confirmation message pops up and the user is removed from the _Team Permissions_ screen.
+
+<!-- ### Transfer ownership to another user
+
+If you are the Administrator Owner, you can transfer the ownership of the entire account over to another user—as long as they are an Administrator.
+
+<TipBox variant='note'>
+
+Transferring ownership to another user grants them access to all the entities on the account.
+
+</TipBox>
+
+1. In _Settings > Team Permissions_, select a user. This will open the user's profile.
+2. In the top right of the page, select _Transfer ownership_. Note that this button is only visible to the Administrator Owner. 
+3. Enter your password.
+4. To confirm, select _Transfer ownership_ again. A confirmation messages pops up. The chosen user's role is updated to Administrator Owner (`Owner`). Your role is updated to Administrator (`Admin`). 
+ -->
+
+
+
+
+

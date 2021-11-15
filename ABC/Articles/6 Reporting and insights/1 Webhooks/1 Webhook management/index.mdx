@@ -1,0 +1,573 @@
+---
+title: Webhook management
+account: ABC
+---
+
+You can manage webhooks in the business channel settings section of the <ExternalLink href="https://hub.checkout.com" >Hub</ExternalLink> or by using our API.
+
+Use this page to learn how to manage webhooks using our API.
+
+Find out how to:
+
+- [Return all webhooks](#Return_all_webhooks)
+- [Add a new webhook](#Add_a_new_webhook)
+- [Return a single webhook](#Return_a_single_webhook)
+- [Update a webhook](#Update_a_webhook)
+- [Partially update a webhook](#Partially_update_a_webhook)
+- [Delete a webhook](#Delete_a_webhook)
+- [Test a webhook](#Test_a_webhook)
+
+---
+
+## Return all webhooks
+
+Use this API request to view all your previously configured webhooks.
+
+### Endpoints
+
+You can find the full list, as well as complete request and response examples, in our <ExternalLink href="https://api-reference.checkout.com" >API reference</ExternalLink>.
+
+<tabs>
+<tab title="Live">
+<LineCodeWrapper type="get">
+
+`https://api.checkout.com/webhooks`
+
+</LineCodeWrapper>
+</tab>
+<tab title="Sandbox">
+<LineCodeWrapper type="get">
+
+`https://api.sandbox.checkout.com/webhooks`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+### Response example
+
+```json
+[
+  {
+    "id": "wh_387ac7a83a054e37ae140105429d76b5",
+    "url": "https://example.com/webhooks",
+    "active": true,
+    "headers": {
+      "authorization": "1234"
+    },
+    "content_type": "json",
+    "event_types": [
+      "payment_approved",
+      "payment_pending",
+      "payment_declined",
+      "payment_expired",
+      "payment_canceled",
+      "payment_voided",
+      "payment_void_declined",
+      "payment_captured",
+      "payment_capture_declined",
+      "payment_capture_pending",
+      "payment_refunded",
+      "payment_refund_declined",
+      "payment_refund_pending",
+      "payment_chargeback",
+      "payment_retrieval",
+      "payment_paid"
+    ],
+    "_links": {
+      "self": {
+        "href": "https://api.checkout.com/webhooks/wh_387ac7a83a054e37ae140105429d76b5"
+      }
+    }
+  }
+]
+```
+
+Other possible responses:
+
+- 204 - No webhooks have been configured
+- 500 - Unexpected server error
+
+---
+
+## Add a new webhook
+
+Use this API request to add a new webhook.
+
+### Endpoints
+
+You can find the full list, as well as complete request and response examples, in our <ExternalLink href="https://api-reference.checkout.com" >API reference</ExternalLink>.
+
+<tabs>
+<tab title="Live">
+<LineCodeWrapper type="post">
+
+`https://api.checkout.com/webhooks`
+
+</LineCodeWrapper>
+</tab>
+<tab title="Sandbox">
+<LineCodeWrapper type="post">
+
+`https://api.sandbox.checkout.com/webhooks`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+### Request example
+
+```json
+{
+  "url": "https://example.com/webhooks",
+  "active": true,
+  "headers": {
+    "authorization": "1234"
+  },
+  "content_type": "json",
+  "event_types": [
+    "payment_approved",
+    "payment_pending",
+    "payment_declined",
+    "payment_expired",
+    "payment_canceled",
+    "payment_voided",
+    "payment_void_declined",
+    "payment_captured",
+    "payment_capture_declined",
+    "payment_capture_pending",
+    "payment_refunded",
+    "payment_refund_declined",
+    "payment_refund_pending",
+    "payment_chargeback",
+    "payment_retrieval"
+  ]
+}
+```
+
+### Response example
+
+Below is an example successful response with the details of the additional webhook.
+
+```json
+{
+  "id": "wh_387ac7a83a054e37ae140105429d76b5",
+  "url": "https://example.com/webhooks",
+  "active": true,
+  "headers": {
+    "authorization": "1234"
+  },
+  "content_type": "json",
+  "event_types": [
+    "payment_approved",
+    "payment_pending",
+    "payment_declined",
+    "payment_expired",
+    "payment_canceled",
+    "payment_voided",
+    "payment_void_declined",
+    "payment_captured",
+    "payment_capture_declined",
+    "payment_capture_pending",
+    "payment_refunded",
+    "payment_refund_declined",
+    "payment_refund_pending",
+    "payment_chargeback",
+    "payment_retrieval"
+  ],
+  "_links": {
+    "self": {
+      "href": "https://api.checkout.com/webhooks/wh_387ac7a83a054e37ae140105429d76b5"
+    }
+  }
+}
+```
+
+Other possible responses:
+
+- 400 - Invalid request
+- 409 - Conflict. A webhook with the same URL is already configured
+- 500 - Unexpected server error
+
+---
+
+## Return a single webhook
+
+Use this API request to view a single webhook using its webhook ID.
+
+### Endpoints
+
+You can find the full list, as well as complete request and response examples, in our <ExternalLink href="https://api-reference.checkout.com" >API reference</ExternalLink>.
+
+<tabs>
+<tab title="Live">
+<LineCodeWrapper type="get">
+
+`https://api.checkout.com/webhooks/{webhook_id}`
+
+</LineCodeWrapper>
+</tab>
+<tab title="Sandbox">
+<LineCodeWrapper type="get">
+
+`https://api.sandbox.checkout.com/webhooks/{webhook_id}`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+### Response example
+
+Below is an example successful response where the details of the configured webhook are visible.
+
+```json
+{
+  "url": "https://example.com/webhooks",
+  "active": true,
+  "headers": {
+    "authorization": "1234"
+  },
+  "content_type": "json",
+  "event_types": [
+    "payment_approved",
+    "payment_pending",
+    "payment_declined",
+    "payment_expired",
+    "payment_canceled",
+    "payment_voided",
+    "payment_void_declined",
+    "payment_captured",
+    "payment_capture_declined",
+    "payment_capture_pending",
+    "payment_refunded",
+    "payment_refund_declined",
+    "payment_refund_pending",
+    "payment_chargeback",
+    "payment_retrieval"
+  ]
+}
+```
+
+Other possible responses:
+
+- 404 - A webhook with the requested webhook_id was not found
+- 500 - Unexpected server error
+
+---
+
+## Update a webhook
+
+Use this API request to update a single webhook using its webhook ID.
+
+### Endpoints
+
+You can find the full list, as well as complete request and response examples, in our <ExternalLink href="https://api-reference.checkout.com" >API reference</ExternalLink>.
+
+<tabs>
+<tab title="Live">
+<LineCodeWrapper type="put">
+
+`https://api.checkout.com/webhooks/{webhook_id}`
+
+</LineCodeWrapper>
+</tab>
+<tab title="Sandbox">
+<LineCodeWrapper type="put">
+
+`https://api.sandbox.checkout.com/webhooks/{webhook_id}`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+### Request example
+
+```json
+{
+  "url": "https://example.com/webhooks",
+  "active": true,
+  "headers": {
+    "authorization": "1234"
+  },
+  "content_type": "json",
+  "event_types": [
+    "payment_approved",
+    "payment_pending",
+    "payment_declined",
+    "payment_expired",
+    "payment_canceled",
+    "payment_voided",
+    "payment_void_declined",
+    "payment_captured",
+    "payment_capture_declined",
+    "payment_capture_pending",
+    "payment_refunded",
+    "payment_refund_declined",
+    "payment_refund_pending",
+    "payment_chargeback",
+    "payment_retrieval"
+  ]
+}
+```
+
+### Response example
+
+Below is an example of a successful response where the details of the configured webhook are visible.
+
+```json
+{
+  "id": "wh_387ac7a83a054e37ae140105429d76b5",
+  "url": "https://example.com/webhooks",
+  "active": true,
+  "headers": {
+    "authorization": "1234"
+  },
+  "content_type": "json",
+  "event_types": [
+    "payment_approved",
+    "payment_pending",
+    "payment_declined",
+    "payment_expired",
+    "payment_canceled",
+    "payment_voided",
+    "payment_void_declined",
+    "payment_captured",
+    "payment_capture_declined",
+    "payment_capture_pending",
+    "payment_refunded",
+    "payment_refund_declined",
+    "payment_refund_pending",
+    "payment_chargeback",
+    "payment_retrieval"
+  ],
+  "_links": {
+    "self": {
+      "href": "https://api.checkout.com/webhooks/wh_387ac7a83a054e37ae140105429d76b5"
+    }
+  }
+}
+```
+
+Other possible responses:
+
+- 400 - Invalid request
+- 404 - A webhook with the requested webhook_id was not found
+- 409 - Conflict. A webhook with the same URL is already configured
+- 500 - Unexpected server error
+
+## Partially update a webhook
+
+Use this API request to partially update a single webhook using its webhook ID.
+
+You can update the following attributes:
+
+- webhook URL
+- webhook status (enabled or disabled)
+- content type
+- event type
+- headers
+
+### The PATCH request
+
+Use the details below to set up your request.
+
+### Endpoints
+
+You can find the full list, as well as complete request and response examples, in our <ExternalLink href="https://api-reference.checkout.com" >API reference</ExternalLink>.
+
+<tabs>
+<tab title="Live">
+<LineCodeWrapper type="patch">
+
+`https://api.checkout.com/webhooks/{webhook_id}`
+
+</LineCodeWrapper>
+</tab>
+<tab title="Sandbox">
+<LineCodeWrapper type="patch">
+
+`https://api.sandbox.checkout.com/webhooks/{webhook_id}`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+### Request examples
+
+<tabs>
+<tab title="Update all details">
+
+```json
+{
+  "url": "https://example.com/webhooks",
+  "active": true,
+  "headers": {
+    "authorization": "1234"
+  },
+  "content_type": "json",
+  "event_types": [
+    "payment_approved",
+    "payment_pending",
+    "payment_declined",
+    "payment_expired",
+    "payment_canceled",
+    "payment_voided",
+    "payment_void_declined",
+    "payment_captured",
+    "payment_capture_declined",
+    "payment_capture_pending",
+    "payment_refunded",
+    "payment_refund_declined",
+    "payment_refund_pending",
+    "payment_chargeback",
+    "payment_retrieval"
+  ]
+}
+```
+
+</tab>
+<tab title="Re-enable a webhook">
+
+```json
+{
+  "url": "https://example.com/webhooks",
+  "active": true
+}
+```
+
+</tab>
+<tab title="Disable a webhook">
+
+```json
+{
+  "url": "https://example.com/webhooks",
+  "active": false
+}
+```
+
+</tab>
+</tabs>
+
+### Response example
+
+Below is an example of a successful response where the details of the configured webhook are visible.
+
+```json
+{
+  "id": "wh_387ac7a83a054e37ae140105429d76b5",
+  "url": "https://example.com/webhooks",
+  "active": true,
+  "headers": {
+    "authorization": "1234"
+  },
+  "content_type": "json",
+  "event_types": [
+    "payment_approved",
+    "payment_pending",
+    "payment_declined",
+    "payment_expired",
+    "payment_canceled",
+    "payment_voided",
+    "payment_void_declined",
+    "payment_captured",
+    "payment_capture_declined",
+    "payment_capture_pending",
+    "payment_refunded",
+    "payment_refund_declined",
+    "payment_refund_pending",
+    "payment_chargeback",
+    "payment_retrieval"
+  ],
+  "_links": {
+    "self": {
+      "href": "https://api.checkout.com/webhooks/wh_387ac7a83a054e37ae140105429d76b5"
+    }
+  }
+}
+```
+
+Other possible responses:
+
+- 404 - A webhook with the requested webhook_id was not found
+- 409 - Conflict. A webhook with the same URL is already configured
+
+## Delete a webhook
+
+Use this API request to delete a single webhook using its webhook ID.
+
+### Endpoints
+
+You can find the full list, as well as complete request and response examples, in our <ExternalLink href="https://api-reference.checkout.com" >API reference</ExternalLink>.
+
+<tabs>
+<tab title="Live">
+<LineCodeWrapper type="delete">
+
+`https://api.checkout.com/webhooks/{webhook_id}`
+
+</LineCodeWrapper>
+</tab>
+<tab title="Sandbox">
+<LineCodeWrapper type="delete">
+
+`https://api.sandbox.checkout.com/webhooks/{webhook_id}`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+### Response
+
+A 200 response signals that the webhook was successfully deleted.
+
+Other possible response: 404 - No webhook was found that matched the webhook ID.
+
+## Test a webhook
+
+Use this API request to test your webhook's integration without having to create any charges.
+
+<TipBox variant="info">
+
+In order to use this API, you will need to [add a webhook](#Add_a_new_webhook), if you haven't already. You do not need to be subscribed to any events.
+
+</TipBox>
+
+Use the details below to set up your request.
+
+### Endpoints
+
+You can find the full list, as well as complete request and response examples, in our <ExternalLink href="https://api-reference.checkout.com" >API reference</ExternalLink>.
+
+<tabs>
+<tab title="Live">
+<LineCodeWrapper type="post">
+
+`https://api.checkout.com/webhooks/{webhook_id}/test`
+
+</LineCodeWrapper>
+</tab>
+<tab title="Sandbox">
+<LineCodeWrapper type="post">
+
+`https://api.sandbox.checkout.com/webhooks/{webhook_id}/test`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+### Request example
+
+```json
+{
+  "event_types": [
+    "payment_approved", 
+    "payment_captured"
+  ]
+}
+```
+
+### Response
+
+If you receive a 204 response, then your request was successful.
+
+Other possible response: 404 - Webhook doesn't exist.

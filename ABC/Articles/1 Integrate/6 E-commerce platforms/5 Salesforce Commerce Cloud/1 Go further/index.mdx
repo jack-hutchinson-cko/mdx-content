@@ -1,0 +1,179 @@
+--- 
+title: Go further
+account: ABC
+---
+
+You can extend your Salesforce Commerce Cloud integration in multiple ways to suits all your business needs.
+
+In this guide, you'll find how to:
+
+- [Add more payment methods](#Add_more_payment_methods)
+- [Enable 3D Secure payments](#Enable_3D_Secure_payments)
+- [Enable Mada card payments](#Enable_Mada_card_payments)
+- [Set a billing descriptor](#Set_a_billing_descriptor)
+- [Manually capture, void and refund payments](#Manually_capture,_void_and_refund_payments)
+
+---
+
+## Add more payment methods
+
+<TipBox variant="note" title="Before you start">
+
+In order to start accepting an alternative payment method, we first need to enable it on your account. Please contact your Customer Success manager or our <ExternalLink href="https://checkout.com/contact-sales" >Sales team</ExternalLink> to get started.
+
+</TipBox>
+<TipBox variant="info">
+
+Check the individual payment method pages to see which ones you can support. It will depend on your location, as well the currency and billing address of your customer.
+
+</TipBox>
+
+We support the following payment methods on SFCC:
+
+<Accordion title="International">
+
+- [Apple Pay](/payments/payment-methods/wallets/apple-pay)
+- [Google Pay](/payments/payment-methods/wallets/google-pay)
+- [PayPal](/payments/payment-methods/wallets/paypal)
+
+</Accordion>
+<Accordion title="Europe">
+
+- [Bancontact](/payments/payment-methods/cards/bancontact)
+- [EPS](/payments/payment-methods/bank-transfers/eps)
+- [Giropay](/payments/payment-methods/bank-transfers/giropay)
+- [iDEAL](/payments/payment-methods/bank-transfers/ideal)
+- [Klarna](/payments/payment-methods/invoice-and-pay-later/klarna)
+- [Multibanco](/payments/payment-methods/cash-and-atm-payment/multibanco)
+- [Przelewy24](/payments/payment-methods/bank-transfers/przelewy24)
+- [SEPA Direct Debit](/payments/payment-methods/direct-debit/sepa-direct-debit)
+- [Sofort](/payments/payment-methods/bank-transfers/sofort)
+
+</Accordion>
+<Accordion title="Middle East and North Africa">
+
+- [BenefitPay](/payments/payment-methods/wallets/benefitpay)
+- [Fawry](/payments/payment-methods/cash-and-atm-payment/fawry)
+- [KNET](/payments/payment-methods/cards/knet)
+- [Mada](/payments/payment-methods/cards/mada)
+- [QPay](/payments/payment-methods/cards/qpay)
+
+</Accordion>
+<Accordion title="Latin America">
+
+- [Boleto Bancário](/payments/payment-methods/cash-and-atm-payment/boleto-bancario)
+- [OXXO](/payments/payment-methods/cash-and-atm-payment/oxxo)
+
+</Accordion>
+<Accordion title="Asia-Pacific">
+
+- [Alipay](/payments/payment-methods/wallets/alipay)
+- [Poli](/payments/payment-methods/bank-transfers/poli)
+
+</Accordion>
+
+### Enable alternative payments
+
+1.  Log in to Business Manager.
+2.  Go to _Merchant Tools > Site Preferences > Custom Preferences > Checkout.com APM Settings_.
+3.  Set the payment methods you want to support to _Yes_.
+4.  Select _Save_.
+
+### Apple Pay
+
+<TipBox variant="info">
+
+Before going through these steps, you need to [set up and configure Apple Pay](/payments/payment-methods/wallets/apple-pay/set-up-apple-pay).
+
+</TipBox>
+
+1. Sign in to Business Manager.
+2. Go to _Merchant Tools > Ordering > Payment Methods_.
+3. Set _Enable_ to _Yes for CHECKOUTCOM_APPLE_PAY_ and save the changes.
+4. Go to _Merchant Tools > Site Preferences > Apple Pay_.
+5. Choose in which environment you want to run Apple Pay: Test or Production.
+6. Check the _Apple Pay Enabled?_ option.
+7. Enter your Apple Merchant ID and Apple Merchant Name. You'll find these in your Apple Developer account.
+8. Enter the country code_ (the [two-letter ISO 3166 country code](/resources/codes/country-codes)) for your site's locale.
+9. Check the _3DS_ option in _Merchant Capabilities_, leaving the other options unchecked.
+10. Select _Supported Networks_.
+11. Select the _Required Shipping Address_ fields.
+12. Select _Name_ and _Postal Address_ for the Required Billing Address fields.
+13. Select whether to place the Apple Pay button on the cart and/or mini-cart pages.
+14. Select whether to enable the automatic redirect of product detail pages to HTTPS.
+
+<TipBox variant="info">
+
+Pages where the Apple Pay button appears must be served via HTTPS, so you might need to redirect certain pages on your site.
+
+</TipBox>
+
+15. Select _Submit_. A domain name should appear in the Registration section. If you don't have an alias registered for your site, you'll see a domain similar like `staging-merchant.demandware.net` or `production-merchant.demandware.net`. If you do have an alias registered, the domain will be something like `mystore.com`.
+16. Register your site with the Apple sandbox or production server. You only need one merchant ID to register with both servers. If your domain is registered with Apple sandbox, only devices signed in to an <ExternalLink href="https://developer.apple.com/support/app-store-connect/" >iCloud Sandbox Tester Account</ExternalLink> can make payments on that site. If your domain is registered with the Apple production server, any regular iCloud account can pay on that site.
+
+### Google Pay
+
+<TipBox variant="info"> 
+
+See our [Google Pay documentation](/payments/payment-methods/wallets/google-pay) for more information.
+
+</TipBox>
+
+1.  Log in to Business Manager.
+2.  Go to _Merchant Tools > Site Preferences > Custom Preferences > Checkout.com Google Pay_.
+3.  Set _Enable Google Pay_ to _Yes_.
+4.  Choose in which environment you want to run Google Pay: _Test_ or _Production_.
+5.  Enter your Google Pay merchant ID. You can find this in your Google payments profile.
+6.  Select the appearance of the Google Pay button with the _Button Style_ option. See the <ExternalLink href="https://developers.google.com/pay/api/web/guides/brand-guidelines" >Google Pay docs</ExternalLink> for more detail.
+
+---
+
+## Enable 3D Secure payments
+
+Activate this feature if you want your transactions to be [3D Secure (3DS) authenticated](/risk-management/3d-secure). (Our SFCC plugin supports 3DS2, the new authentication standard.)
+
+<TipBox variant="note">
+
+If you enable this feature, **every** transaction will trigger a 3DS check. If you only want to trigger it for certain transactions, contact your Customer Success manager.
+
+</TipBox>
+
+1.  Log in to Business Manager.
+2.  Go to _Merchant Tools > Site Preferences > Custom Preferences > Checkout.com Global Settings_.
+3.  Set _3D Secure_ to _Yes_.
+4.  Select whether or not you want to _Attempt Non 3D Secure transactions_. If you select _Yes_, any cards that do not support 3DS will go through without a 3DS check. If you select _No_, cards that do no support 3DS will be blocked.
+5.  Select _Save_.
+
+---
+
+## Enable Mada card payments
+
+Mada is a local card scheme in Saudi Arabia. If you are going to be processing Mada cards, you should enable this setting.
+
+1.  Log in to Business Manager.
+2.  Go to _Merchant Tools > Site Preferences > Custom Preferences > Checkout.com Global Settings_.
+3.  Set _Enable MADA Payment Cards_ to _Yes_.
+4.  Select _Save_.
+
+---
+
+## Set a billing descriptor
+
+The billing descriptor is an extra field you can send to the issuer, appearing on the customer's bank statement as an additional description of the payment.
+
+1.  Log in to Business Manager.
+2.  Go to _Merchant Tools > Site Preferences > Custom Preferences > Checkout.com Global Settings_.
+3.  Enter _Billing Descriptor Line1_. This is usually the name of your shop.
+4.  Enter _Billing Descriptor Line2_. This is usually the city of your merchant address.
+5.  Select _Save_.
+
+---
+
+## Manually capture, void and refund payments
+
+As well as doing so through the Hub, you can also manually capture, void and refund payments from Business Manager. These actions will show in both Business Manager and the Hub.
+
+1.  Log in to Business Manager, and go to _Merchant Tools > Checkout.com Manager > Checkout.com Transactions_.
+2.  To capture a payment, find the payment you want to capture (must be type `AUTH`), select _Capture_ in the _Actions_ column and then select _Submit_.
+3.  To void a payment, find the payment you want to void (must be type `AUTH`), select _Void_ in the _Actions_ column and then select _Submit_.
+4.  To refund a payment, find the payment you want to refund (must be type `CAPTURE`), select _Refund_ in the _Actions_ column and then select _Submit_.

@@ -1,0 +1,356 @@
+---
+title: Manage sub-entity bank accounts
+account: NAS
+---
+
+Find out more about how to manage payouts when using our Marketplaces solution for `full` account types.
+
+## Connect a bank account to a sub-entity
+
+Before making on-demand payouts to a sub-entity, you need to connect bank details to their account, so we know where to send the funds. These details are saved securely in our vault, and you are given a unique reference to use in payout requests instead of typing out the bank details every time. We call this a payment instrument.
+
+---
+
+### Requirements
+
+There are different requirements for the request depending on the currency of the bank account. At the moment, you can just send money from the UK, but you can make a payout to UK bank accounts and European bank accounts.
+
+The table below outlines the **minimum required** fields when creating a payment instrument. You can see the full explanation of the optional fields in our <ExternalLink href="https://api-reference.checkout.com/preview/crusoe/#tag/Instruments" >API reference</ExternalLink>.
+
+<Table>
+<TableHead headers={['Field name', 'Description']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`label`
+
+</TableCell>
+<TableCell>
+
+A short description of what the instrument is for.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`type`
+
+</TableCell>
+<TableCell>
+
+This refers to the type of instrument. Set this to `bank_account`.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`currency`
+
+</TableCell>
+<TableCell>
+
+This is the three-letter ISO currency code of the account's currency. At the moment, this would be GBP or EUR.
+
+See [currency codes](/resources/codes/currency-codes).
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`country`
+
+</TableCell>
+<TableCell>
+
+The two-letter ISO country code of where the account is based.
+
+See [country codes](/resources/codes/country-codes).
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`document`
+
+</TableCell>
+<TableCell>
+
+A legal document used to verify the bank account.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`document.type`
+
+</TableCell>
+<TableCell>
+
+The type of document.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`document.file_id`
+
+</TableCell>
+<TableCell>
+
+The ID of the file representing the uploaded document.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+Use the following table to review **additional required** fields, depending on the currency.
+
+Where are you sending the money to?
+
+<tabs>
+<tab title="Faster payments (GBP)">
+<Table>
+<TableHead headers={['Field name', 'Description']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`account_number`
+
+</TableCell>
+<TableCell>
+
+The account holder's account number.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`bank_code`
+
+</TableCell>
+<TableCell>
+
+The account holder's sort code.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+</tab>
+<tab title="SEPA (EUR)">
+
+<Table>
+<TableHead headers={['Field name', 'Description']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`iban`
+
+</TableCell>
+<TableCell>
+
+Internationally agreed standard for identifying bank account.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`switft_bic`
+
+</TableCell>
+<TableCell>
+
+8- or 11-character code that identified the bank or bank branch.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+</tab>
+</tabs>
+
+### Verify bank account details
+
+We need to verify any bank details you provide us. To verify bank details, include a document object with a `file_id` in your request. You receive a `file_id` when you upload a bank statement using our [Files API](/marketplaces/manage-accounts/upload-a-file).
+
+### Create a payment instrument
+
+To create a payment instrument, make a call to the following endpoints. To get a detailed view of all required and optional fields, see our <ExternalLink href="https://api-reference.checkout.com/preview/crusoe/#tag/Marketplace/" >API reference</ExternalLink>.
+
+
+<tabs>
+<tab title="Live">
+<LineCodeWrapper type="post">
+
+`https://api.checkout.com/marketplace/entities/{id}/instruments`
+
+</LineCodeWrapper>
+</tab>
+<tab title="Sandbox">
+<LineCodeWrapper type="post">
+
+`https://api.sandbox.checkout.com/marketplace/entities/{id}/instruments`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+### Request example
+
+```json
+{
+  "label":"Daniel's Donuts Barclays",
+  "type":"bank_account",
+  "account_number":"12345678",
+  "bank_code":"050389",
+  "currency":"GBP",
+  "country":"GB",
+  "account_holder":{
+    "company_name":"Daniel's Donuts",
+    "billing_address":{
+      "address_line1":"90 Tottenham Court Road",
+      "city":"London",
+      "state":"London",
+      "zip":"W1T 4TJ",
+      "country":"GB"
+    }
+  }
+  "document": {
+    "type": "bank_statement",
+    "file_id": "file_wxglze3wwywujg4nna5fb7ldli"
+  }
+}
+```
+
+### Response examples
+
+<tabs>
+<tab title="202 – Instrument creation request accepted">
+
+If your request is accepted, we will attempt to create a payment instrument asynchronously (behind the scenes) and inform you of the outcome via webhook notification. The webhook will include the unique reference to the bank details, and looks like `src_h5qk7lfsp3ludfjxba256lduju`.
+
+</tab>
+<tab title="422 – Invalid data was sent">
+
+```json
+{
+  "request_id": "71ccac67-5018-4917-9446-f2f6f2b8270e",
+  "error_type": "request_invalid",
+  "error_codes": [
+    "bank_code_invalid"
+  ]
+}
+```
+
+</tab>
+</tabs>
+
+If successful, we will automatically make the association between this payment instrument and its sub-entity. You can see this association and alternatively retrieve the payment instrument ID by using <RequestTag type="get" />`/marketplace/entities/{id}`.
+
+```json
+{
+  "id": "ent_wxglze3wwywujg4nna5fb7ldli",
+  ...,
+  "instruments": [
+    {
+      "id": "src_33z5qxrwp2bulj4volyqvarhyq",
+      "label": "Daniel's Donuts Barclays"
+    }
+  ],
+  ...
+}
+ ```
+
+## Notifications
+
+<tabs>
+<tab title="Created">
+
+```json
+{
+  "id": "evt_htielsmgcwgejgqaunl4yb2pou",
+  "type": "payment_instrument_created",
+  "version": "1.0.0",
+  "created_on": "2020-08-20T15:24:13.8431084Z",
+  "data": {
+    "sub_entity_id": "ent_wxglze3wwywujg4nna5fb7ldli",
+    "reference": "123456789101112",
+    "legal_name": "The Cake Shop Inc.",
+    "payment_instrument": {
+      "id": "src_h5qk7lfsp3ludfjxba256lduju",
+      "label": "The Cake Shop Barclays"
+    }
+  },
+  "_links": {
+    "self": {
+      "href": "https://api.sandbox.checkout.com/workflows/events/evt_htielsmgcwgejgqaunl4yb2pou"
+    }
+  }
+}
+```
+
+</tab>
+<tab title="Error">
+
+```json
+{
+  "id": "evt_htielsmgcwgejgqaunl4yb2pou",
+  "type": "payment_instrument_error",
+  "version": "1.0.0",
+  "created_on": "2020-08-20T15:24:13.8431084Z",
+  "data": {
+    "sub_entity_id": "ent_wxglze3wwywujg4nna5fb7ldli",
+    "reference": "123456789101112",
+    "legal_name": "The Cake Shop Inc.",
+    "payment_instrument": {
+      "label": "The Cake Shop Barclays"
+    },
+    "reason_codes": [
+      "payment_source_required"
+    ]
+  },
+  "_links": {
+    "self": {
+      "href": "https://api.sandbox.checkout.com/workflows/events/evt_htielsmgcwgejgqaunl4yb2pou"
+    }
+  }
+}
+```
+
+</tab>
+</tabs>
+
+
+## Where to next?
+
+---
+
+<ContentPanel variant="heading" title="Make a payout" imgSrc="/NAS/Marketplaces/about-making-payouts.svg">
+
+Full accounts on our Marketplace solution have payout capability. If you’re unsure, take a look at our [account structure page](/marketplaces/account-structure).
+
+[Learn more](/marketplaces/payouts)
+
+</ContentPanel>
+
+<ContentPanel variant="heading" title="Upload a file" imgSrc="/NAS/Marketplaces/about-making-payouts.svg" withBorder={false}>
+
+We'll explain how to upload a file to the Marketplace API.
+
+[Learn more](/marketplaces/onboarding/api/full/upload-a-file)
+
+</ContentPanel>

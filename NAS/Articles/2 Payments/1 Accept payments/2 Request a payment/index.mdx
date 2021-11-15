@@ -1,0 +1,578 @@
+---
+title: Request a payment
+account: NAS
+description: Request a payment using a token, a network token, or full card details.
+---
+
+There are three possible ways for you to request a payment:
+
+- [using a token](/payments/accept-payments/request-a-payment#Using_a_token)
+- [using a network token](/payments/accept-payments/request-a-payment#Using_a_network_token)
+- [using full card details ](/payments/accept-payments/request-a-payment#Using_full_card_details)(requires SAQ D PCI compliance)
+
+---
+
+## Using a token
+
+Use the details below to set up your request.
+
+### Endpoints
+
+For the full API specification, see the <ExternalLink href="https://api-reference.checkout.com/preview/crusoe/#tag/Payments" >API reference</ExternalLink>.
+
+<tabs>
+<tab title="Live">
+<LineCodeWrapper type="post">
+
+`https://api.checkout.com/payments`
+
+</LineCodeWrapper>
+</tab>
+<tab title="Sandbox">
+<LineCodeWrapper type="post">
+
+`https://api.sandbox.checkout.com/payments`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+<TipBox variant="info" title="IPv4 or IPv6 addresses?">
+
+The optional `payment_ip` field, which is used by our risk engine to check the customer's IP address, _only accepts IPv4 addresses_.
+
+</TipBox>
+
+### Request example
+
+```json
+{
+  "source": {
+    "type": "token",
+    "token": "tok_4gzeau5o2uqubbk6fufs3m7p54"
+  },
+  "amount": 6500,
+  "currency": "USD",
+  "processing_channel_id": "pc_ovo75iz4hdyudnx6tu74mum3fq",
+  "reference": "ORD-5023-4E89",
+  "metadata": {
+    "udf1": "TEST123",
+    "coupon_code": "NY2018",
+    "partner_id": 123989
+  }
+}
+```
+
+### Response example
+
+Use the `approved` field to check whether or not the authorization was successful (`"approved": true`). If your authorization was not successful, it's possible the payment used an invalid/expired card, or a valid card with an insufficient available balance.
+
+If you received a `202` response, the payment requires a redirect. For example, if the payment is 3D Secure.
+
+<TipBox variant="success">
+
+The following pages can help you understand the response message:
+
+- [CVV codes and descriptions](/resources/codes/cvv-response-codes)
+- [AVS codes](/resources/codes/avs-codes)
+- [Response codes](/resources/codes/response-codes) (if the authorization was unsuccessful)
+
+</TipBox>
+
+The possible values for the `status` field include `Authorized`, `Pending`, `Card` `Verified`, `Captured`, `Declined`, or `Paid`. Note that `Pending` only applies to 3D Secure payments.
+
+<tabs>
+<tab title="201 Success">
+
+```json
+{
+  "id": "pay_mbabizu24mvu3mela5njyhpit4",
+  "action_id": "act_mbabizu24mvu3mela5njyhpit4",
+  "amount": 6540,
+  "currency": "USD",
+  "approved": true,
+  "status": "Authorized",
+  "auth_code": "770687",
+  "response_code": "10000",
+  "response_summary": "Approved",
+  "3ds": {
+    "downgraded": true,
+    "enrolled": "N"
+  },
+  "risk": {
+    "flagged": true
+  },
+  "source": {
+    "type": "card",
+    "id": "src_nwd3m4in3hkuddfpjsaevunhdy",
+    "billing_address": {
+      "address_line1": "Checkout.com",
+      "address_line2": "90 Tottenham Court Road",
+      "city": "London",
+      "state": "London",
+      "zip": "W1T 4TJ",
+      "country": "GB"
+    },
+    "phone": {
+      "country_code": "+1",
+      "number": "415 555 2671"
+    },
+    "last4": "4242",
+    "fingerprint": "F31828E2BDABAE63EB694903825CDD36041CC6ED461440B81415895855502832",
+    "bin": "424242"
+  },
+  "customer": {
+    "id": "cus_udst2tfldj6upmye2reztkmm4i",
+    "email": "brucewayne@gmail.com",
+    "name": "Bruce Wayne"
+  },
+  "processed_on": "2019-09-10T10:11:12Z",
+  "reference": "ORD-5023-4E89",
+  "processing": {
+    "retrieval_reference_number": "909913440644",
+    "acquirer_transaction_id": "440644309099499894406"
+  },
+  "eci": "06",
+  "scheme_id": "489341065491658",
+  "links": {
+    "self": {
+      "href": "https://api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4"
+    },
+    "action": {
+      "href": "https://api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/actions"
+    },
+    "void": {
+      "href": "https://api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/captures"
+    },
+    "capture": {
+      "href": "https://api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/voids"
+    }
+  }
+}
+```
+</tab>
+<tab title="202 Payment asynchronous / further action required">
+
+```json
+{
+  "id": "pay_mbabizu24mvu3mela5njyhpit4",
+  "status": "Pending",
+  "reference": "ORD-5023-4E89",
+  "customer": {
+    "id": "cus_y3oqhf46pyzuxjbcn2giaqnb44",
+    "email": "brucewayne@gmail.com",
+    "name": "Bruce Wayne"
+  },
+  "3ds": {
+    "downgraded": false,
+    "enrolled": "Y"
+  },
+  "instruction": {
+    "value_date": "2020-08-25"
+  },
+  "_links": {
+    "self": {
+      "href": "https://api.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4"
+    },
+    "redirect": {
+      "href": "https://api.checkout.com/3ds/pay_mbabizu24mvu3mela5njyhpit4"
+    }
+  }
+}
+```
+
+</tab>
+<tab title="422 Invalid data was sent">
+
+```json
+{
+  "request_id": "0HL80RJLS76I7",
+  "error_type": "request_invalid",
+  "error_codes": [
+    "payment_source_required"
+  ]
+}
+```
+
+</tab>
+</tabs>
+
+---
+
+## Using a network token
+
+Use the details below to set up your request.
+
+
+### Endpoints
+
+For the full API specification, see the <ExternalLink href="https://api-reference.checkout.com/preview/crusoe/#tag/Payments" >API reference</ExternalLink>.
+
+<tabs>
+<tab title="Live">
+<LineCodeWrapper type="post">
+
+`https://api.checkout.com/payments`
+
+</LineCodeWrapper>
+</tab>
+<tab title="Sandbox">
+<LineCodeWrapper type="post">
+
+`https://api.sandbox.checkout.com/payments`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+<TipBox variant="info" title="IPv4 or IPv6 addresses?">
+
+The optional `payment_ip` field, which is used by our risk engine to check the customer's IP address, _only accepts IPv4 addresses_.
+
+</TipBox>
+
+### Request example
+
+```json
+{
+  "source": {
+    "type": "network_token",
+    "token": "tok_4gzeau5o2uqubbk6fufs3m7p54"
+  },
+  "amount": 6500,
+  "currency": "USD",
+  "processing_channel_id": "pc_ovo75iz4hdyudnx6tu74mum3fq",
+  "reference": "ORD-5023-4E89",
+  "metadata": {
+    "udf1": "TEST123",
+    "coupon_code": "NY2018",
+    "partner_id": 123989
+  }
+}
+```
+
+### Response example
+
+Use the `approved` field to check whether or not the authorization was successful (`"approved": true`). If your authorization was not successful, it's possible the payment used an invalid/expired card, or a valid card with an insufficient available balance.
+
+If you received a `202` response, the payment requires a redirect. For example, if the payment is 3D Secure.
+
+<TipBox variant="success">
+
+The following pages can help you understand the response message:
+
+- [CVV codes and descriptions](/resources/codes/cvv-response-codes)
+- [AVS codes](/resources/codes/avs-codes)
+- [Response codes](/resources/codes/response-codes) (if the authorization was unsuccessful)
+
+</TipBox>
+
+The possible values for the `status` field include `Authorized`, `Pending`, `Card` `Verified`, `Captured`, `Declined`, or `Paid`. Note that `Pending` only applies to 3D Secure payments.
+
+<tabs>
+<tab title="201 Success">
+
+```json
+{
+  "id": "pay_mbabizu24mvu3mela5njyhpit4",
+  "action_id": "act_mbabizu24mvu3mela5njyhpit4",
+  "amount": 6540,
+  "currency": "USD",
+  "approved": true,
+  "status": "Authorized",
+  "auth_code": "770687",
+  "response_code": "10000",
+  "response_summary": "Approved",
+  "3ds": {
+    "downgraded": true,
+    "enrolled": "N"
+  },
+  "risk": {
+    "flagged": true
+  },
+  "source": {
+    "type": "card",
+    "id": "src_nwd3m4in3hkuddfpjsaevunhdy",
+    "billing_address": {
+      "address_line1": "Checkout.com",
+      "address_line2": "90 Tottenham Court Road",
+      "city": "London",
+      "state": "London",
+      "zip": "W1T 4TJ",
+      "country": "GB"
+    },
+    "phone": {
+      "country_code": "+1",
+      "number": "415 555 2671"
+    },
+    "last4": "4242",
+    "fingerprint": "F31828E2BDABAE63EB694903825CDD36041CC6ED461440B81415895855502832",
+    "bin": "424242"
+  },
+  "customer": {
+    "id": "cus_udst2tfldj6upmye2reztkmm4i",
+    "email": "brucewayne@gmail.com",
+    "name": "Bruce Wayne"
+  },
+  "processed_on": "2019-09-10T10:11:12Z",
+  "reference": "ORD-5023-4E89",
+  "processing": {
+    "retrieval_reference_number": "909913440644",
+    "acquirer_transaction_id": "440644309099499894406"
+  },
+  "eci": "06",
+  "scheme_id": "489341065491658",
+  "links": {
+    "self": {
+      "href": "https://api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4"
+    },
+    "action": {
+      "href": "https://api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/actions"
+    },
+    "void": {
+      "href": "https://api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/captures"
+    },
+    "capture": {
+      "href": "https://api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/voids"
+    }
+  }
+}
+```
+</tab>
+<tab title="202 Payment asynchronous / further action required">
+
+```json
+{
+  "id": "pay_mbabizu24mvu3mela5njyhpit4",
+  "status": "Pending",
+  "reference": "ORD-5023-4E89",
+  "customer": {
+    "id": "cus_y3oqhf46pyzuxjbcn2giaqnb44",
+    "email": "brucewayne@gmail.com",
+    "name": "Bruce Wayne"
+  },
+  "3ds": {
+    "downgraded": false,
+    "enrolled": "Y"
+  },
+  "instruction": {
+    "value_date": "2020-08-25"
+  },
+  "_links": {
+    "self": {
+      "href": "https://api.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4"
+    },
+    "redirect": {
+      "href": "https://api.checkout.com/3ds/pay_mbabizu24mvu3mela5njyhpit4"
+    }
+  }
+}
+```
+
+</tab>
+<tab title="422 Invalid data was sent">
+
+```json
+{
+  "request_id": "0HL80RJLS76I7",
+  "error_type": "request_invalid",
+  "error_codes": [
+    "payment_source_required"
+  ]
+}
+```
+
+</tab>
+</tabs>
+
+---
+
+## Using full card details
+
+If you are [SAQ D PCI compliant](/payments/regulation-support/pci-compliance), you can use our Full Card API to request a payment using the full card details.
+
+Use the details below to set up your request.
+
+### Endpoints
+
+For the full API specification, see the <ExternalLink href="https://api-reference.checkout.com/preview/crusoe/#tag/Payments" >API reference</ExternalLink>.
+
+<tabs>
+<tab title="Live">
+<LineCodeWrapper type="post">
+
+`https://api.checkout.com/payments`
+
+</LineCodeWrapper>
+</tab>
+<tab title="Sandbox">
+<LineCodeWrapper type="post">
+
+`https://api.sandbox.checkout.com/payments`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+
+<TipBox variant="info" title="IPv4 or IPv6 addresses?">
+
+The optional `payment_ip` field, which is used by our risk engine to check the customer's IP address, _only accepts IPv4 addresses_.
+
+</TipBox>
+
+### Request example
+
+```json
+{
+  "source": {
+    "type": "card",
+	"number": "4242424242424242",
+	"expiry_month": 12,
+	"expiry_year": 2022
+  },
+  "amount": 6500,
+  "currency": "USD",
+  "processing_channel_id": "processing_channel_id",
+  "reference": "ORD-5023-4E89",
+  "metadata": {
+    "udf1": "TEST123",
+    "coupon_code": "NY2018",
+    "partner_id": 123989
+  }
+}
+```
+
+### Response example
+
+Use the `approved` field to check whether or not the authorization was successful (`"approved": true`). If your authorization was not successful, it's possible the payment used an invalid/expired card, or a valid card with an insufficient available balance.
+
+If you received a `202` response, the payment requires a redirect. For example, if the payment is 3D Secure.
+
+<TipBox variant="success">
+
+The following pages can help you understand the response message:
+
+- [CVV codes and descriptions](/resources/codes/cvv-response-codes)
+- [AVS codes](/resources/codes/avs-codes)
+- [Response codes](/resources/codes/response-codes) (if the authorization was unsuccessful)
+
+</TipBox>
+
+The possible values for the `status` field include `Authorized`, `Pending`, `Card` `Verified`, `Captured`, `Declined`, or `Paid`. Note that `Pending` only applies to 3D Secure payments.
+
+<tabs>
+<tab title="201 Success">
+
+```json
+{
+  "id": "pay_mbabizu24mvu3mela5njyhpit4",
+  "action_id": "act_mbabizu24mvu3mela5njyhpit4",
+  "amount": 6540,
+  "currency": "USD",
+  "approved": true,
+  "status": "Authorized",
+  "auth_code": "770687",
+  "response_code": "10000",
+  "response_summary": "Approved",
+  "3ds": {
+    "downgraded": true,
+    "enrolled": "N"
+  },
+  "risk": {
+    "flagged": true
+  },
+  "source": {
+    "type": "card",
+    "id": "src_nwd3m4in3hkuddfpjsaevunhdy",
+    "billing_address": {
+      "address_line1": "Checkout.com",
+      "address_line2": "90 Tottenham Court Road",
+      "city": "London",
+      "state": "London",
+      "zip": "W1T 4TJ",
+      "country": "GB"
+    },
+    "phone": {
+      "country_code": "+1",
+      "number": "415 555 2671"
+    },
+    "last4": "4242",
+    "fingerprint": "F31828E2BDABAE63EB694903825CDD36041CC6ED461440B81415895855502832",
+    "bin": "424242"
+  },
+  "customer": {
+    "id": "cus_udst2tfldj6upmye2reztkmm4i",
+    "email": "brucewayne@gmail.com",
+    "name": "Bruce Wayne"
+  },
+  "processed_on": "2019-09-10T10:11:12Z",
+  "reference": "ORD-5023-4E89",
+  "processing": {
+    "retrieval_reference_number": "909913440644",
+    "acquirer_transaction_id": "440644309099499894406"
+  },
+  "eci": "06",
+  "scheme_id": "489341065491658",
+  "links": {
+    "self": {
+      "href": "https://api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4"
+    },
+    "action": {
+      "href": "https://api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/actions"
+    },
+    "void": {
+      "href": "https://api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/captures"
+    },
+    "capture": {
+      "href": "https://api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/voids"
+    }
+  }
+}
+```
+</tab>
+<tab title="202 Payment asynchronous / further action required">
+
+```json
+{
+  "id": "pay_mbabizu24mvu3mela5njyhpit4",
+  "status": "Pending",
+  "reference": "ORD-5023-4E89",
+  "customer": {
+    "id": "cus_y3oqhf46pyzuxjbcn2giaqnb44",
+    "email": "brucewayne@gmail.com",
+    "name": "Bruce Wayne"
+  },
+  "3ds": {
+    "downgraded": false,
+    "enrolled": "Y"
+  },
+  "instruction": {
+    "value_date": "2020-08-25"
+  },
+  "_links": {
+    "self": {
+      "href": "https://api.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4"
+    },
+    "redirect": {
+      "href": "https://api.checkout.com/3ds/pay_mbabizu24mvu3mela5njyhpit4"
+    }
+  }
+}
+```
+
+</tab>
+<tab title="422 Invalid data was sent">
+
+```json
+{
+  "request_id": "0HL80RJLS76I7",
+  "error_type": "request_invalid",
+  "error_codes": [
+    "payment_source_required"
+  ]
+}
+```
+
+</tab>
+</tabs>

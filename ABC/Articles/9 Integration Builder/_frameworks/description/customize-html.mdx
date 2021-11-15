@@ -1,0 +1,107 @@
+<IBuilderDescriptionCard>
+
+Frames is highly customizable, so you can tailor the iframes to suit your brand right down to the language, placeholders on input fields and how the iframes our styled through CSS. 
+
+We will walk through popular customization options, but you [can read more about Frames customization](/integrate/frames/frames-customization-guide).
+
+</IBuilderDescriptionCard>
+
+<IBuilderDescriptionCard title="Choose a theme" lines={[25, 44]} tab="html/style.css">
+
+Pick a color scheme that suits your style or define your own specific colour.
+
+<IBuilderCodeControl
+  controlType="select"
+  optionType="frameColorSelector"
+  withCustomValue
+  options={[
+    { option: '#00122C', codeVariables: ['#00122C'] },
+    { option: '#EE6D5F', codeVariables: ['#EE6D5F'] },
+    { option: '#009E7E', codeVariables: ['#009E7E'] },
+    { option: '#F3C25D', codeVariables: ['#F3C25D'] },
+    { option: '#3AB9F4', codeVariables: ['#3AB9F4'] },
+    { option: '#6964B3', codeVariables: ['#6964B3'] }
+  ]}
+>
+
+```
+label {
+  display: block;
+  /* Inserted color */
+  color: $1;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  margin: 8px 0;
+}
+
+#pay-button {
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  height: 48px;
+  width: 100%;
+  /* Inserted color */
+  background-color: $1;
+}
+```
+
+</IBuilderCodeControl>
+
+</IBuilderDescriptionCard>
+
+<IBuilderDescriptionCard title="Choose a font size" lines={[13, 13]} tab="html/app.js" >
+
+Choose the size of the text displayed in your Frame.
+
+<IBuilderCodeControl
+  controlType="select"
+  optionType="frameFontSizeSelector"
+  options={[
+    { option: '12', codeVariables: ['12'] },
+    { option: '14', codeVariables: ['14'] },
+    { option: '16', codeVariables: ['16'] }
+  ]}
+>
+
+```
+      /* Inserted fontSize data */
+      fontSize: "$1px",
+```
+
+</IBuilderCodeControl>
+
+</IBuilderDescriptionCard>
+
+<IBuilderDescriptionCard title="Select a language" lines={[9, 9]} tab="html/app.js" >
+
+Choose the size of the text displayed in your Frame.
+
+<IBuilderCodeControl
+  controlType="select"
+  optionType="frameLanguageSelector"
+  options={[
+    { option: 'EN-GB', codeVariables: ['EN-GB'] },
+    { option: 'NL-NL', codeVariables: ['NL-NL'] },
+    { option: 'FR-FR', codeVariables: ['FR-FR'] },
+    { option: 'DE-DE', codeVariables: ['DE-DE'] },
+    { option: 'IT-IT', codeVariables: ['IT-IT'] },
+    { option: 'KO-KR', codeVariables: ['KO-KR'] },
+    { option: 'ES-ES', codeVariables: ['ES-ES'] }
+  ]}
+>
+
+```
+    /* Inserted localization */
+    localization: "$1",
+```
+
+</IBuilderCodeControl>
+
+</IBuilderDescriptionCard>
+
+
+

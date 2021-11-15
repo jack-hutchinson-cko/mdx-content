@@ -1,0 +1,180 @@
+---
+title: Use the Marketplace API 
+account: NAS
+---
+
+## Select your account type 
+
+Your account type will be determined during onboarding and depends on whether you require payment capabilities (`lite`), or payment and payout capabilities (`full`).
+
+<CardWrapper cardsInRow={{ desktop: 2, mobile: 1 }}>
+<Card variant="media" title="Lite" imgSrc="/NAS/Marketplaces/onboard-sub-entities.svg" href="/marketplaces/onboarding/api/lite">
+
+`Lite` account types process payments **only**. All funds are settled to your platform as per the frequency agreed during onboarding.
+
+</Card>
+
+<Card variant="media" title="Full" imgSrc="/NAS/Marketplaces/onboard-sub-entities.svg" href="/marketplaces/onboarding/api/full">
+
+`Full` account types can processs payments and payouts capabilities on behalf of their sub-entities. Funds are paid out on demand by your platform directly to the bank accounts of your sub-entities.
+
+</Card>
+</CardWrapper>
+
+## Sub-entity status
+
+To provide you with visibility to what's going on with your sub-entities, our API responses include a `status` field.
+
+You can also subscribe to the status [webhook notification](/workflows) to keep up to date with any asynchronous changes.
+
+<tabs>
+<tab title='Requirements due' active>
+
+If we're expecting you to provide us with more information, your sub-entity will have a status of `requirements_due`. With this status, the `requirements_due` array will also be populated to inform you of the information that is missing.
+
+<TipBox variant="tip">
+
+Use the [information required table](/marketplaces/onboarding) to find out what information is required to trigger due diligence checks.
+
+</TipBox>
+
+### Example response
+
+In this example, we have created a company sub-entity without any representatives or a registered address.
+
+
+```json withBorder=false
+{
+   "id": "ent_vjmdzvijizs7o26kiuiakywvyi",
+   "reference": "tmvhWvvZfFSkJy4",
+   "status": "requirements_due",
+   "capabilities": {
+       "payments": {
+           "enabled": false
+       },
+       "payouts": {
+           "enabled": false
+       }
+   },
+   "requirements_due": [
+       {
+           "field": "company.representatives",
+           "reason": "required"
+       },
+       {
+           "field": "company.registered_address",
+           "reason": "required"
+       }
+   ],
+   "_links": {
+       "self": {
+           "href": "https://api.checkout.com/marketplace/entities/ent_vjmdzvijizs7o26kiuiakywvyi"
+       }
+   }
+}
+```
+
+</tab>
+<tab title='Pending'>
+
+We will only trigger due diligence checks when we have all the [information required](#Aboutonboarding-information). Once the checks are triggered, the sub-entity's status will be `pending`.
+
+We may make changes to this sub-entity's capabilities based on the outcome of these checks.
+
+```json withBorder=false
+{
+   "id": "ent_vjmdzvijizs7o26kiuiakywvyi",
+   "reference": "tmvhWvvZfFSkJy4",
+   "status": "pending",
+   "capabilities": {
+       "payments": {
+           "enabled": false
+       },
+       "payouts": {
+           "enabled": false
+       }
+   },
+   "requirements_due": [],
+   "_links": {
+       "self": {
+           "href": "https://api.checkout.com/marketplace/entities/ent_vjmdzvijizs7o26kiuiakywvyi"
+       }
+   }
+}
+```
+
+</tab>
+<tab title='Active'>
+
+If the due diligence checks have passed, we will enable the sub-entity's payments or payouts capabilities, which will give that sub-entity a status of `active`. This means there are no outstanding requirements at this time.
+
+<TipBox variant="info">
+
+- This status change is asynchronous (happening behind the scenes), so you can optionally subscribe to the `status_changed` [webhook notification](/workflows/webhook-event-types) to keep up to date or see the status by retrieving the sub-entity.
+- If you update information after this point, new checks will be triggered and the status of this sub-entity will go back to `pending`.
+
+</TipBox>
+
+---
+
+### Example webhook notification
+
+```json withBorder=false
+{
+   "id": "evt_htielsmgcwgejgqaunl4yb2pou",
+   "type": "status_changed",
+   "version": "1.0.0",
+   "created_on": "2020-08-20T15:24:13.8431084Z",
+   "data": {
+     "sub_entity_id": "ent_vjmdzvijizs7o26kiuiakywvyi",
+     "status": "active"
+     "reference": "tmvhWvvZfFSkJy4",
+     "legal_name": "Super Hero Masks Inc."
+   },
+   "_links": {
+       "self": {
+          "href": "https://api.checkout.com/workflows/events/evt_htielsmgcwgejgqaunl4yb2pou"
+        }
+    }
+}
+```
+</tab>
+<tab title='Rejected'>
+
+If due diligence checks do not pass, we will disable the sub-entity's payment and payouts capabilities. This status will change from `pending` to `rejected`. A sub-entity is rejected if we have identified reasons during our due diligence checks – this decision is final and you will not be able to resume onboarding.
+
+To challenge the direction, please contact us directly.
+
+<TipBox variant="info">
+
+- This status change is asynchronous (happening behind the scenes), so you can optionally subscribe to the `status_changed` [webhook notification](/workflows/webhook-event-types) to keep up to date or see the status by retrieving the sub-entity.
+- An attempt to update a rejected sub-entity will return a 442 response with the error code `status_invalid`.
+
+</TipBox>
+
+---
+
+### Example webhook notification
+
+```json withBorder=false
+{
+   "id": "evt_htielsmgcwgejgqaunl4yb2pou",
+   "type": "status_changed",
+   "version": "1.0.0",
+   "created_on": "2020-08-20T15:24:13.8431084Z",
+   "data": {
+     "sub_entity_id": "ent_vjmdzvijizs7o26kiuiakywvyi",
+     "status": "rejected"
+     "reference": "tmvhWvvZfFSkJy4",
+     "legal_name": "Super Hero Masks Inc."
+   },
+   "_links": {
+       "self": {
+          "href": "https://api.checkout.com/workflows/events/evt_htielsmgcwgejgqaunl4yb2pou"
+        }
+    }
+}
+```
+
+</tab>
+</tabs>

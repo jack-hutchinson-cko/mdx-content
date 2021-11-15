@@ -1,0 +1,268 @@
+---
+title: Integration
+account: ABC
+previewIcon: /faq/category-integration.svg
+previewIconDark: /faq/category-integration-light.svg
+description: Payment methods, testing, and implementation.
+---
+
+
+<FAQItem title="How do I create a sandbox account?" popularity={20}>
+
+You can create a sandbox account by clicking <ExternalLink href="https://www.checkout.com/get-test-account" >here</ExternalLink>.
+
+With your sandbox account you can test card payments straight away. If you want to test alternative payment methods, or test payments that use raw card details (assuming you have SAQ-D PCI compliance), please contact our Integration team at <ExternalLink href="https://mail.google.com/mail/?view=cm&fs=1&tf=1&to=integration@checkout.com" >integration@checkout.com</ExternalLink>.
+
+</FAQItem>
+
+<FAQItem title="I've created a test account. How do I start integrating to my website, and go live?" popularity={44}>
+
+First, you'll want to select your preferred [integration method](/integrate), decide on the [payment methods](/payments/payment-methods) you want to support, and pick any other APIs or capabilities you think you'll find useful.
+
+By default, you can test all your card payment flows. However, if you require any alternative payment methods (e.g., PayPal, Sofort, iDEAL) you can contact our Integration team at <ExternalLink href="mailto:integration@checkout.com">integration@checkout.com</ExternalLink> to enable them on your test account.
+
+Once you've [run some initial tests](/testing) to make sure everything's running smoothly, you can then apply for a live account to start processing payments with us. Please contact our Sales team at <ExternalLink href="mailto:sales@checkout.com">sales@checkout.com</ExternalLink>. We'll need you to complete an online application form, which will then be reviewed by our in-house Onboarding team.
+
+We may ask you to provide further documentation, including corporate structure documentation, legal entity details, bank account information, and principal owners.
+
+Once approved, you’ll execute a contract and we'll provide you with your production credentials.
+
+We then recommend that you perform a test transaction, or run a pilot in production, before processing real customer transactions. This gives you the opportunity to ensure that everything is set up correctly and will work as expected.
+
+After that, you're ready to start accepting live payments from your customers!
+
+</FAQItem>
+
+<FAQItem title="Which integration method is right for me?" popularity={23}>
+
+**Payment Links** are our simplest method for accepting payments, through any device or channel. Send a payment link to your customer via their preferred channel (email, live chat, text message...) and they'll be taken to a Checkout.com-hosted payment page to complete their purchase.
+
+**Hosted Payments Pages** allow you to accept payments through a Checkout.com-hosted page. The customer enters their payment details on the page, and in the background we generate a token and complete the payment request.
+
+**Frames** is a highly customizable payment form which allows your customers to enter their sensitive card information in a safe environment right on your own checkout page. This information will be exchanged with a secure token that you can use to perform payments. By using Frames your platform will never touch the card details.
+
+**SDKs** (software development kits) give you the freedom to build your own custom payment form on your website or mobile app, or use our own pre-built form. We'll take care of the processing side of things, and return the tokenized payment information to you.
+
+**E-commerce platforms** are great if you want to get up and running quickly. Use one of our plugins to start accepting payments through your favourite e-commerce platform.
+
+**Full card details API** may be the option for you if you're looking for total control over the checkout experience. Unlike our other integration methods, the full card details API does not use card tokens. Instead, you process your customers' card details directly. As a result, you must have the correct level of PCI DSS compliance (Self-Assessment Questionnaire D – SAQ D) to use this method.
+
+You can [learn more about each integration method](/integrate) on our documentation site.
+
+</FAQItem>
+
+<FAQItem title="Which e-commerce platforms do you support?" popularity={24}>
+
+You can find out more about the e-commerce platforms we support, as well as the relevant plugins and installations guides, [here](/integrate/e-commerce-platforms).
+
+</FAQItem>
+
+<FAQItem title="Which alternative payment methods do you support?" popularity={25}>
+
+You can find all of the alternative payment methods we support, as well as integration and testing information, in the [payment methods section](/payments/payment-methods) of our documentation site.
+
+</FAQItem>
+
+<FAQItem title="How do I add a new payment method to my account?" popularity={0}>
+
+For the test (sandbox) environment, please email <ExternalLink href="mailto:integration@checkout.com">integration@checkout.com</ExternalLink> to add new payment methods to your account.
+
+For the **live environment**, please get in touch with your customer success manager to add new payment methods to your account.
+
+You can find out more about the payment methods we support on our [documentation site](/payments/payment-methods).
+
+</FAQItem>
+
+<FAQItem title="How do I integrate Apple Pay into my account?" popularity={27}>
+
+Before you can start accepting Apple Pay payments, you'll need a few things:
+
+- An Apple Developer account
+- A valid SSL certificate on your website (not required for mobile apps)
+- A <ExternalLink href="https://developer.apple.com/apple-pay/sandbox-testing/) and a compatible device (an iPhone, iPad or Mac" >sandbox Apple Pay Wallet</ExternalLink>, for testing.
+
+Once you've sorted the above, you can:
+
+- [Link Checkout.com to your Apple Developer account](/payments/payment-methods/wallets). (The certificates, .pem/.key are only needed for web integrations.)
+- Follow <ExternalLink href="https://developer.apple.com/apple-pay/implementation/">Apple's documentation</ExternalLink> to integrate the Apple Pay button, and then follow [our documentation](/payments/payment-methods/wallets) to learn how to process payments after you complete the Apple Pay flow.
+
+Read our [Apple Pay guide](/payments/payment-methods/wallets/apple-pay) for more information on Apple Pay integration and payments.
+
+</FAQItem>
+
+<FAQItem title="How do I test alternative payment methods?" popularity={28}>
+
+If you are an administrator for your account, you’ll find both your public and secret key in the **Channels** section of the settings in the <ExternalLink href="https://hub.checkout.com" >Hub</ExternalLink>.
+
+To get your private shared key (used for e-commerce platform integrations), first create a webhook and then view/edit its details.
+
+</FAQItem>
+
+<FAQItem title="Where can I find my API keys?" popularity={29}>
+
+You can find your test keys in your sandbox Hub account under **Settings > Channels**. Test keys use the prefix sk_test and pk_test.
+
+Always use your test keys when testing your integration; this is how we know to link all test payments to your sandbox account.
+
+</FAQItem>
+
+<FAQItem title="Where can I find my test API keys?" popularity={30}>
+
+You can find your test keys in your sandbox Hub account under **Settings > Channels**. Test keys use the prefix sk_test and pk_test.
+
+Always use your test keys when testing your integration; this is how we know to link all test payments to your sandbox account.
+
+</FAQItem>
+
+<FAQItem title="How do I get new API keys?" popularity={31}>
+
+In your Hub account, head to **Settings > Channels** and click **Regenerate** next to the key (either secret or public) you want to update. Enter your password when prompted to confirm the update.
+
+Please note that when you update your secret key, all API requests using the old key will be denied. To continue using the API successfully, update your code with the new key.
+
+</FAQItem>
+
+<FAQItem title="Where can I find test card numbers?" popularity={32}>
+
+You'll find various test card numbers (including those for 3D Secure transactions), and all the information you need to run tests in your sandbox environment, in the [testing section of our docs](/testing).
+
+</FAQItem>
+
+<FAQItem title="Can I have multiple users on one sandbox account?" popularity={33}>
+
+Yes, multiple people can use one sandbox account. If you are an administrator, you can add a new user by going to **Settings > User** management and clicking **New user**.
+
+</FAQItem>
+
+<FAQItem title="Can I set up multiple businesses and channels in my sandbox account?" popularity={34}>
+
+Yes. To add multiple channels, go to **Settings > Channels** and click **New channel**.
+
+If you want to set up multiple businesses on one account, please contact our Integration team at <ExternalLink href="mailto:integration@checkout.com">integration@checkout.com</ExternalLink>.
+
+</FAQItem>
+
+<FAQItem title="Can I test alternative payment methods in my sandbox account?" popularity={35}>
+
+Yes, you can test most of the alternative payment methods (APMs) we support in the sandbox environment.
+
+To start testing, please contact your customer success manager or integration engineer to activate the APMs you want to test in your sandbox account.
+
+Follow the links on our [APM testing](/testing/apm-testing) page to find out how to test each payment method.
+
+</FAQItem>
+
+<FAQItem title="Can I test Card Payouts in my sandbox account?" popularity={36}>
+
+Yes. Please contact our Integration team at <ExternalLink href="mailto:integration@checkout.com">integration@checkout.com</ExternalLink> to activate this feature.
+
+Also note that you need to let your account manager know you require this functionality, so the feature is ready for you when you go live.
+
+</FAQItem>
+
+<FAQItem title="Can I test webhooks in my sandbox account?" popularity={37}>
+
+Yes. To add a webhook in the Hub, go to **Settings > Channels** and click **New webhook**.
+
+Once added, you can choose what event you want to receive webhooks for. To trigger the webhooks, just perform a transaction and take one of the actions you enabled. For example, if you chose the `payment_refunded` event, just perform a refund and you will get a webhook.
+
+Find out more about the [events for which you can create webhooks](/reporting-and-insights/events-api/event-types).
+
+</FAQItem>
+
+<FAQItem title="Can I test the Reconciliation API in my sandbox account?" popularity={9}>
+
+No, the Reconciliation API is not available in the sandbox environment. You must have a live account to use the Reconciliation API.
+
+</FAQItem>
+
+<FAQItem title="Can I generate a dispute in my sandbox account?" popularity={38}>
+
+Yes. You can simulate a dispute by using specific combinations of payment methods and amounts, as described in our [disputes testing guide](/testing/disputes-testing).
+
+</FAQItem>
+
+<FAQItem title="Does the sandbox account expire?" popularity={12}>
+
+Data is held in sandbox for seven days before being deleted. Unused accounts are deleted after one month of inactivity.
+
+</FAQItem>
+
+<FAQItem title="Can I send my own unique identifier in a payment?" popularity={20}>
+
+Yes. When sending a payment request you can pass a parameter called reference, allowing you to send a unique identifier (for instance, a customer or transaction ID) with the transaction.
+
+You can see all the parameters that can be sent in a payment request <ExternalLink href="https://api-reference.checkout.com/#tag/Payments" >here</ExternalLink>.
+
+</FAQItem>
+
+<FAQItem title="Can I process alternative payments through the Checkout.js solution?" popularity={29}>
+
+No. Alternative payment methods (APMs) have been deprecated within the Checkout.js solution.
+
+</FAQItem>
+
+<FAQItem title="Can I use a charge ID for recurring payments in the Unified Payments API?" popularity={20}>
+
+Yes. The previous_payment_id field passed in recurring payment requests supports payment IDs, charge IDs and scheme IDs.
+
+</FAQItem>
+
+<FAQItem title="How do I upgrade from the Classic API to the new one?" popularity={23}>
+
+To upgrade to our Unified Payments API please follow our [migration guide](/resources/migration-guide). Our Unified Payments solution gives you a streamlined integration experience, consolidated payment flows, simpler API responses, and a single /payments endpoint for all supported payment methods.
+
+</FAQItem>
+
+<FAQItem title="Can I use the Classic API and Unified Payments API at the same time?" popularity={14}>
+
+Yes. However, you will only receive webhook notifications specific to the API used. So if, for instance, you request a payment using the Unified Payments API, you will only receive webhooks for event types associated with the Unified Payments API.
+
+</FAQItem>
+
+<FAQItem title="Can I use my Classic API keys in the Unified Payments API?" popularity={19}>
+
+Yes, you can use your existing Classic API public and secret keys with the Unified Payments API.
+
+</FAQItem>
+
+<FAQItem title="Can I use the Classic API and Unified Payments API webhook event types be used simultaneously?" popularity={20}>
+
+Yes, this can be configured in particular situations. Please contact our Support team at <ExternalLink href="mailto:support@checkout.com">support@checkout.com</ExternalLink> for information.
+
+</FAQItem>
+
+<FAQItem title="I'm getting an error saying server_api_not_allowed in my sandbox account. What does this mean?
+" popularity={18}>
+
+This error occurs when the full API isn't enabled on your sandbox account. To enable it, contact our Integration team at <ExternalLink href="mailto:integration@checkout.com">integration@checkout.com</ExternalLink>.
+
+</FAQItem>
+
+<FAQItem title="I'm getting an error saying 'Checkout Server Api is not allowed'. What does this mean?" popularity={17}>
+
+If your website is built on Shopify or Salesforce Cloud Commerce, or you use Spreedly, please contact our <ExternalLink href="mailto:support@checkout.com">Support team</ExternalLink>.
+
+If you are building a custom integration on your website and collecting the card information in your own payment form to send payment requests to Checkout.com, you will notice this error.
+
+Making requests with raw card details is risky, and we reject it by default. You can still send payment requests with full card details, but this requires you to have the correct level of PCI DSS compliance (Self-Assessment Questionnaire D – SAQ D). If you have this level of certification, please tell your customer success manager and we'll enable this flow for you.
+
+If you don't have the right level of PCI compliance for your platform, you can use [Frames](/integrate/frames), [Hosted Payment Pages](/integrate/hosted-payments-page), or another of our [integration methods](/integrate) to collect the sensitive card data, and then [perform payments](/payments/accept-payments/request-a-card-payment) with the secure token these integrations generate.
+
+</FAQItem>
+
+<FAQItem title="I'm getting an error saying 'business_not_onboarded'. What does this mean?" popularity={14}>
+
+This error occurs when an alternative payment method has been configured for your account but the specific credentials you need to create payments for that method have not been set up.
+
+Please contact your customer success manager or implementation engineer to resolve this.
+
+</FAQItem>
+
+<FAQItem title="How do I get a Checkout.com account?" popularity={22}>
+
+To start with, you should <ExternalLink href="https://www.checkout.com/get-test-account" >sign up for a test account</ExternalLink> so you can try out your integration before going live. This will give you access to the sandbox version of the Hub.
+
+Once your integration has been completed and you wish to get a live account, please contact our Sales team at <ExternalLink href="mailto:sales@checkout.com">sales@checkout.com</ExternalLink>..
+
+</FAQItem>

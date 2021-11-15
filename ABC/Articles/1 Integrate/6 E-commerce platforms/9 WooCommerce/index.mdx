@@ -1,0 +1,151 @@
+--- 
+title: WooCommerce
+account: ABC
+---
+
+From downloading the plugin to requesting your first test payment, learn how to get started with the Checkout.com for WooCommerce plugin.
+
+<TipBox variant="info">
+
+This guide assumes that you have already <ExternalLink href="https://docs.woocommerce.com/document/installing-uninstalling-woocommerce/" >set up WooCommerce on your WordPress instance</ExternalLink>.
+
+</TipBox>
+
+---
+
+## Before you start
+
+### Create a test account
+
+If you haven't already, <ExternalLink href="https://www.checkout.com/get-test-account" >create a test Checkout.com account</ExternalLink>.
+
+### Get your API keys
+
+In order to set up WooCommerce, you'll need three API keys: a secret one, a public one, and a private shared one. The first two are generated automatically upon account creation. The last one is generated when you configure a webhook for your business.
+
+<TipBox variant="info">
+
+You do not need your private shared key if using v4.2.0+ of our WooCommerce plugin.
+
+</TipBox>
+
+1.  Log in to your test account on the <ExternalLink href="https://sandbox.checkout.com/" >Hub sandbox</ExternalLink>.
+2.  In the left menu, go to _Settings > Channels_, and make a note of your secret and public API keys.
+
+<img maxWidth={800} src="/docs/Integrate/channel_settings.png"  />
+
+3.  Scroll down to the _Webhooks_ section of the page and select _New webhook_.
+4.  Enter the following endpoint URL, replacing `example.com` with the URL of your shop: `example.com/?wc-api=wc_checkoutcom_webhook`. **Note**: Correctly configuring your webhooks is important; if they're incorrectly formatted, the plugin will not work.
+5.  Select  _API - v2.0_.
+6.  Tick  _Select all_, then select _Create webhook_.
+
+<img maxWidth={300} src="/docs/Integrate/WooCommerce/Screenshot+2021-03-01+at+16.07.05.png"  />
+
+7.  Select the webhook you just created, and make a note of the private shared API key.
+
+<img maxWidth={400} src="/docs/Integrate/WooCommerce/webhook_woocommerce.png"  />
+
+<TipBox variant="info">
+
+Webhooks are notifications that we send when an event occurs on your account. For example, when a payment is captured. These are used by the WooCommerce plugin to update the status of an order. [Read more about webhooks](/reporting-and-insights/webhooks).
+
+</TipBox>
+
+### Check you have no previous version of the plugin
+
+1.  Log in to WordPress as an administrator.
+2.  In the left menu, select _Plugins_.
+3.  Look for any plugins that have Checkout.com in the name. If you find one, select _Delete_, or select _Deactivate_ and then _Delete_.
+
+<img maxWidth={700} src="/docs/Integrate/WooCommerce/woocommerce_deactivate_plugin.png"  />
+
+---
+
+## Install the plugin
+
+There are two ways to install the plugin:
+
+- [using the WordPress Plugin Directory](##Using_the_WordPress_Plugin_Directory)
+- [using a .zip file](#Using_a_.zip_file)
+
+### Using the WordPress Plugin Directory
+
+1.  Log in to WordPress as an administrator.
+2.  In the left menu, select _Plugins > Add New_.
+3.  In the search bar in the top right, type `Checkout.com` then press the _Enter_ key.
+4.  Select _Install Now_.
+5.  Select _Activate_.
+
+After the plugin is activated, you are taken to the Installed Plugins screen. You can now configure WooCommerce.
+
+### Using a .zip file
+
+1.  <ExternalLink href="https://github.com/CKOTech/checkout-woocommerce-plugin" >Download the plugin from Github</ExternalLink>.
+2.  Unzip the file.
+3.  Zip the `woocommerce-gateway-checkout-com` folder.
+4.  Log in to WordPress as an administrator.
+5.  In the left menu, select _Plugins > Add New_.
+6.  Select _Upload Plugin_.
+7.  Select _Choose File_, select the `.zip` then Select _Install Now_. A success message is displayed when the plugin installation has finished.
+8.  Select _Activate Plugin_.
+
+After the plugin is activated, you are taken to the Installed Plugins screen. You can now configure WooCommerce.
+
+---
+
+## Configure the plugin
+
+1.  Log in to WordPress as an administrator.
+2.  In the left menu, select _Plugins_.
+3.  Find the Checkout.com plugin and select _Settings_ below it.
+
+<img maxWidth={700} src="/docs/Integrate/WooCommerce/woocommerce_plugin_settings.png"  />
+
+4.  Tick _Enable Checkout.com card payments_.
+5.  Set the environment to _Sandbox_.
+6.  Choose a payment option title. This will be displayed to customers on your checkout page.
+7.  Enter your secret key, public key, and private shared key.
+8.  Select _Save changes_.
+9.  Select the _Card Settings_ tab, then select _Save changes_. Do the same for the _Order Settings_. This will activate our default configuration.
+
+That's it! You're ready to start testing.
+
+---
+
+## Test your integration
+
+1.  Go to your shop's public URL and add a product to your cart.
+2.  Go to your cart then proceed to the checkout.
+3.  Enter the required billing details. You can put anything here, though we recommend using a real email address so that you can receive the order confirmation.
+4.  Select the _Checkout.com payment method_.
+5.  Enter the following card details:
+    - Number: `4242 4242 4242 4242`
+    - Expiry date: `12/25`
+    - CVV: `100`
+6.  Tick the terms and conditions box.
+7.  Select _Place order_. You will be redirected to the order confirmation page. If you entered a real email address in the billing details, you'll also receive an order confirmation email.
+8.  Log in to your Wordpress account as an administrator.
+9.  Select _WooCommerce_ in the left menu. Your test order is displayed and has a status of `Processing`. This indicates that the payment has been successfully captured and that your webhooks are set up correctly.
+
+<TipBox variant="tip">
+
+You can now either [go live](#Go_live) as-is or [extend your configuration](/integrate/e-commerce-platforms/woo-commerce/go-further-with-woo-commerce).
+
+</TipBox>
+<TipBox variant="info" title="Further testing">
+
+You'll find more test cards and a range of scenarios to trigger in our [testing guide](/testing).
+
+</TipBox>
+
+---
+
+## Go live
+
+If you're happy with the outcome of your testing and want to start taking payments right away, please <ExternalLink href="https://checkout.com/contact-sales" >contact our Sales team</ExternalLink> in order to move to a live account.
+
+---
+
+## Extend your configuration
+
+You can extend your configuration to [add more payment methods](/payments/payment-methods) or [use 3DS](/risk-management/3d-secure).

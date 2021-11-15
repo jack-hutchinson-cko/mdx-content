@@ -1,0 +1,472 @@
+---
+title: Manage workflows
+account: NAS
+---
+
+Learn how to manage your workflows using our API.
+
+Find out how to:
+
+- [Return all workflows](/workflows/manage-workflows#Return_all_workflows)
+- [Return a single workflow](/workflows/manage-workflows#Return_a_single_workflow)
+- [Add a new workflow](/workflows/manage-workflows#Add_a_new_workflow)
+- [Update the name of a workflow](/workflows/manage-workflows#Update_name_of_a_workflow)
+- [Update the actions of a workflow](/workflows/manage-workflows#Update_actions_of_a_workflow)
+- [Update the conditions of a workflow](/workflows/manage-workflows#Update_the_conditions_of_a_workflow)
+- [Delete a workflow](/workflows/manage-workflows#Delete_workflow)
+
+---
+
+## Return all workflows
+
+Use this API request to view all your previously configured workflows.
+
+### Endpoints
+
+For the full API specification, see the <ExternalLink href="https://api-reference.checkout.com/preview/crusoe/" >API reference</ExternalLink>.
+
+<tabs>
+<tab title='Live'>
+<LineCodeWrapper type="get">
+
+`https://api.checkout.com/workflows`
+
+</LineCodeWrapper>
+</tab>
+<tab title='Sandbox'>
+<LineCodeWrapper type="get">
+
+`https://api.sandbox.checkout.com/workflows`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+### [Response example](#response_example_1)
+
+```json withBorder
+{
+  "data": [
+    {
+      "id": "wf_wlu3wxc26jounofs5iez75qaqa",
+      "name": "Webhooks workflow",
+      "_links": {
+        "self": {
+          "href": "https://api.checkout.com/workflows/wf_wlu3wxc26jounofs5iez75qaqa"
+        }
+      }
+    }
+  ]
+}
+```
+
+Other possible responses:
+
+- 401 - Unauthorized
+- 500 - Internal error
+
+---
+
+## Return a single workflow
+
+Use this API request to view the details of a single workflow using its workflow ID.
+
+Use the details below to set up your request.
+
+### Endpoints
+
+For the full API specification, see the <ExternalLink href="https://api-reference.checkout.com/preview/crusoe/" >API reference</ExternalLink>.
+
+<tabs>
+<tab title='Live'>
+<LineCodeWrapper type="get">
+
+`https://api.checkout.com/workflows/{workflowId}`
+
+</LineCodeWrapper>
+</tab>
+<tab title='Sandbox'>
+<LineCodeWrapper type="get">
+
+`https://api.sandbox.checkout.com/workflows/{workflowId}`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+### [Response example](#response_example_2)
+
+Below is an example successful response where the details of the configured workflow are visible.
+
+
+```json withBorder
+{
+    "id": "<WORKFLOW_ID>>",
+    "name": "Single workflow example",
+    "conditions": [
+        {
+            "id": "<WORKFLOW_CONDITION_ID>",
+            "type": "event",
+            "events": {
+                "gwc_notifier1": [
+                    "payment_approved"
+                ]
+            }
+        },
+        {
+            "id": "<WORKFLOW_CONDITION_ID>",
+            "type": "entity",
+            "entities": [
+                "<ENTITY_ID>>"
+            ]
+        },
+        {
+            "id": "<WORKFLOW_CONDITION_ID>",
+            "type": "processing_channel",
+            "processing_channels": [
+                "<PROCESSING_CHANNEL_ID>"
+            ]
+        }
+    ],
+    "actions": [
+        {
+            "id": "<WORKFLOW_ACTION_ID>>",
+            "type": "webhook",
+            "url": "https://devapi.ckotech.co/webhooktester/webhooks/testPC_good_test2",
+            "headers": {
+                "Authorization": "secr******"
+            },
+            "signature": {
+                "method": "HMACSHA256",
+                "key": "signa********"
+            }
+        }
+    ],
+    "_links": {
+        "self": {
+            "href": "https://flow.cko-qa.ckotech.co/workflows/<WORKFLOW_ID>"
+        }
+    }
+}
+```
+
+Other possible responses:
+
+- 401 - Unauthorized
+- 404 - Workflow not Found
+- 500 - Internal error
+
+---
+
+## Add a new workflow
+
+Use this API request to add a new workflow.
+
+### Endpoints
+
+For the full API specification, see the <ExternalLink href="https://api-reference.checkout.com/preview/crusoe/" >API reference</ExternalLink>.
+
+<tabs>
+<tab title='Live'>
+<LineCodeWrapper type="post">
+
+`https://api.checkout.com/workflows`
+
+</LineCodeWrapper>
+</tab>
+<tab title='Sandbox'>
+<LineCodeWrapper type="post">
+
+`https://api.sandbox.checkout.com/workflows`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+### [Request example](#request_example_1)
+
+```json withBorder
+{
+  "name": "My Webhook Workflow",
+  "conditions": [
+    {
+      "type": "event",
+      "events": {
+        "gateway": [
+          "payment_approved",
+          "payment_declined",
+          "card_verification_declined",
+          "card_verified",
+          "payment_authorization_incremented",
+          "payment_authorization_increment_declined",
+          "payment_capture_declined",
+          "payment_captured",
+          "payment_refund_declined",
+          "payment_refunded",
+          "payment_void_declined",
+          "payment_voided"
+        ],
+        "dispute": [
+          "dispute_canceled",
+          "dispute_evidence_required",
+          "dispute_expired",
+          "dispute_lost",
+          "dispute_resolved",
+          "dispute_won"
+        ]
+      }
+    },
+    {
+      "type": "entity",
+      "entities": [
+        "ent_xyfdshfudosfdshfdiosfds",
+        "ent_fidjosfjdisofdjsifdosfu"
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "type": "webhook",
+      "url": "https://example.com/webhook-receiver",
+      "headers": {
+        "Authorization": "secret-key"
+      },
+      "signature": {
+        "key": "signature-key"
+      }
+    }
+  ]
+```
+
+### [Response example](#response_example_3)
+
+Below is an example successful response with the details of the additional workflow.
+
+```json withBorder
+{
+  "id": "wf_wlu3wxc26jounofs5iez75qaqa",
+  "_links": {
+    "self": {
+      "href": "https://api.checkout.com/workflows/wf_wlu3wxc26jounofs5iez75qaqa"
+    }
+  }
+}
+```
+
+Other possible responses:
+
+- 401 - Unauthorized
+- 404 - Invalid data was sent
+- 500 - Internal error
+
+---
+
+## Update the name of a workflow
+
+Use the following endpoint to update the name of a previously created workflow, passing the existing workflow's ID in the path and the new name for the workflow in the request body.
+
+You can find the full specification in our <ExternalLink href="https://api-reference.checkout.com/preview/crusoe/" >API reference</ExternalLink>.
+
+### Endpoints
+
+For the full API specification, see the <ExternalLink href="https://api-reference.checkout.com/preview/crusoe/" >API reference</ExternalLink>.
+
+<tabs>
+<tab title='Live'>
+<LineCodeWrapper type="patch">
+
+`https://api.checkout.com/workflows/{workflowId}`
+
+</LineCodeWrapper>
+</tab>
+<tab title='Sandbox'>
+<LineCodeWrapper type="patch">
+
+`https://api.sandbox.checkout.com/workflows/{workflowId}`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+### [Request example](#request_example_2)
+
+```json withBorder
+{
+  "name": "Webhooks workflow"
+}
+```
+
+### [Response example](#response_example_4)
+
+Below is an example successful response with the details of the additional workflow.
+
+```json withBorder
+{
+  "name": "Webhooks workflow"
+}
+```
+
+- 401 - Unauthorized
+- 404 - Workflow not found
+- 500 - Internal error
+
+---
+
+## Update the actions of a workflow
+
+To update the actions of a workflow, use the following endpoint, passing the workflow's ID and action ID in the path, and the details you want to update in the request body.
+
+You can find the full specification in our <ExternalLink href="https://api-reference.checkout.com/preview/crusoe/" >API reference</ExternalLink>.
+
+### Endpoints
+
+For the full API specification, see the <ExternalLink href="https://api-reference.checkout.com/preview/crusoe/" >API reference</ExternalLink>.
+
+<tabs>
+<tab title='Live'>
+<LineCodeWrapper type="put">
+
+`https://api.checkout.com/workflows/{workflowId}/actions/{workflowActionId}`
+
+</LineCodeWrapper>
+</tab>
+<tab title='Sandbox'>
+<LineCodeWrapper type="put">
+
+`https://api.sandbox.checkout.com/workflows/{workflowId}/actions/{workflowActionId}`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+### [Request example](#request_example_3)
+
+```json withBorder
+{
+  "type": "webhook",
+  "url": "https://example.com/webhooks/checkout",
+  "headers": {
+    "Authorization": "70ed20ff-ba31-4ea3-b3ef-772f2be1cbdf"
+  },
+  "signature": {
+    "method": "HMACSHA256",
+    "key": "public-signing-key"
+  }
+}
+```
+
+### Response
+
+If you receive a 200 success response, the workflow action was successfully updated.
+
+Other possible responses:
+
+- 401 - Unauthorized
+- 404 - Workflow or workflow action not found
+- 422 - Invalid data was sent
+- 500 - Internal error
+
+---
+
+## Update the conditions of a workflow
+
+To update the conditions of a workflow, use the following endpoint, passing the workflow's ID and condition ID in the path, and the details you want to update in the request body.
+
+You can find the full specification in our <ExternalLink href="https://api-reference.checkout.com/preview/crusoe/" >API reference</ExternalLink>.
+
+### Endpoints
+
+For the full API specification, see the <ExternalLink href="https://api-reference.checkout.com/preview/crusoe/" >API reference</ExternalLink>.
+
+<tabs>
+<tab title='Live'>
+<LineCodeWrapper type="put">
+
+`https://api.checkout.com/workflows/{workflowId}/conditions/{workflowConditionId}`
+
+</LineCodeWrapper>
+</tab>
+<tab title='Sandbox'>
+<LineCodeWrapper type="put">
+
+`https://api.sandbox.checkout.com/workflows/{workflowId}/conditions/{workflowConditionId}`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+### [Request example](#request_example_4)
+
+```json withBorder
+{
+  "type": "event",
+  "events": {
+    "gateway": [
+      "card_verified",
+      "card_verification_declined",
+      "payment_approved",
+      "payment_pending",
+      "payment_declined",
+      "payment_voided",
+      "payment_captured",
+      "payment_refunded"
+    ],
+    "disputes": [
+      "dispute_canceled",
+      "dispute_evidence_required",
+      "dispute_expired",
+      "dispute_lost",
+      "dispute_resolved",
+      "dispute_won"
+    ]
+  }
+}
+```
+
+### Response
+
+If you receive a 200 success response, the workflow condition was successfully updated.
+
+Other possible responses:
+
+- 401 - Unauthorized
+- 404 - Workflow or workflow condition not found
+- 422 - Invalid data was sent
+- 500 - Internal error
+
+---
+
+## Delete a workflow
+
+Use this API request to delete an existing workflow. The actions of already executed workflows will be still processed.
+
+### Endpoints
+
+For the full API specification, see the <ExternalLink href="https://api-reference.checkout.com/preview/crusoe/" >API reference</ExternalLink>.
+
+<tabs>
+<tab title='Live'>
+<LineCodeWrapper type="delete">
+
+`https://api.checkout.com/workflows/{workflowId}`
+
+</LineCodeWrapper>
+</tab>
+<tab title='Sandbox'>
+<LineCodeWrapper type="delete">
+
+`https://api.sandbox.checkout.com/workflows/{workflowId}`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+### Response
+
+A 204 response signals that the workflow was successfully deleted.
+
+Other possible responses:
+
+- 401 - Unauthorized
+- 404 - Workflow not found
+- 500 - Internal error

@@ -1,0 +1,307 @@
+---
+title: Make a payout with our Marketplaces solution
+account: NAS
+---
+
+`Full` account types can make on-demand payouts directly to the sub-entity's local bank account.
+
+Once you've successfully processed a payment on behalf of the sub-entity, you will have funds that need to be paid out to them. You will also want to collect your platform fees.
+
+On this page, we will walk through the how to pay out to a sub-entity:
+
+- Retrieve currency account balance
+- Make a payout
+- Collect platform fees
+
+## Before you begin 
+
+Make sure you have [connected bank account details to your sub-entity](/marketplaces/onboarding/api/full/manage-bank-accounts).
+
+## Retrieve currency account balance
+
+We are currently working on exposing real-time currency account balances through an API, and hope to offer this functionality soon.
+
+In the meantime, you can [process balance](/reporting/reconciliation-reports/balance-reports) reports to retrieve the closing available balance of your currency account(s) on a daily basis. If you’d like to reconcile transactions for each sub-entity, you can process daily [financial actions](/reporting/reconciliation-reports/financial-actions-reports) reports to retrieve this breakdown. 
+
+## Make sub-entity payouts
+
+Our Unified Payments API already enables you to make payouts to a sub-entity using the payments endpoint.
+
+Making a payout is very similar to a payment, but there are a few more <StatusTag type="required" display="inline" /> fields. For a list of all possible fields you can include in a payout, see our <ExternalLink href="https://api-reference.checkout.com/preview/crusoe/#operation/requestAPaymentOrPayout" >API reference</ExternalLink>. Make sure you select _PayoutRequest_ to see the correct fields.
+
+For a full walkthough, follow the instructions for our [payments endpoint](/payments/accept-payments/request-a-payment), and make sure you include the following fields.
+
+<Table>
+<TableHead headers={['Field name', 'Description']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`source`
+
+<TypeTag type="object" />
+</TableCell>
+<TableCell>
+
+Inside of this object include:
+
+- `type:` Enter `currency_account`.
+- `id:` Enter the ID representing your currency account.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`destination`
+
+<TypeTag type="object" />
+</TableCell>
+<TableCell>
+
+Inside of this object include:
+
+- `type:` Enter `id`.
+- `id:` Enter the instrument ID representing your sub-entity's bank account. This is returned when you retrieve the sub-entity.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`amount`
+
+<TypeTag type="integer" />
+</TableCell>
+<TableCell>
+
+The amount you want to pay out to the destination account. The exact format [depends on the currency](/resources/calculating-the-amount).
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`currency`
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+The three-letter [ISO code](/resources/codes/currency-codes) of the destination currency.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`billing_descriptor`
+
+<TypeTag type="object" />
+</TableCell>
+<TableCell>
+
+In this object, include `reference`, which will be displayed on the recipient's bank account statement
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`processing_channel_id`
+
+<TypeTag type="string" />
+</TableCell>
+<TableCell>
+
+The processing channel identifier.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+### Request example
+
+```json
+{
+  "amount":100,
+  "currency":"GBP",
+  "source":{
+    "type":"currency_account",
+    "id":"ca_a4kf6by2guqelofnaa4uqozosu"
+  },
+  "destination":{
+    "type":"id",
+    "id":"src_sivtx4g4mt2u7h5eltcqm7d4fa"
+  },
+  "billing_descriptor":{
+    "reference":"Desserts Delivered Payout"
+  },
+  "instruction":{
+    "purpose":"Payout"
+  },
+  "processing_channel_id":"pc_v6oaskquunqufj2t7e7wf3e6am"
+}
+
+```
+
+---
+
+### Response examples
+
+The payout will be attempted asynchronously (behind the scenes). You will be informed of updates to its status through webhook notifications.
+
+<tabs>
+<tab title="202 - Payment asynchronous">
+
+```json withBorder=false
+{
+  "id":"pay_xvyvcgxx7hmu3iw2kdfunegh3m",
+  "status":"Pending",
+  "instruction":{
+    "value_date":"2021-03-31T01:39:57.0909438Z"
+  },
+  "_links":{
+    "self":{
+      "href":"https://api.sandbox.checkout.com/payments/pay_xvyvcgxx7hmu3iw2kdfunegh3m"
+    },
+    "actions":{
+      "href":"https://api.sandbox.checkout.com/payments/pay_xvyvcgxx7hmu3iw2kdfunegh3m/actions"
+    }
+  }
+}
+```
+
+</tab>
+<tab title="422 - Invalid data was sent">
+
+If your payout request is unsuccessful, you will receive an error object in the response containing one or several error codes. Use the drop-down to see a list of possible error codes.
+
+```json withBorder=false
+{
+  "request_id": "71ccac67-5018-4917-9446-f2f6f2b8270e",
+  "error_type": "processing_error",
+  "error_codes": [
+    "insufficient_currency_account_balance"
+  ]
+}
+```
+
+<Accordion title="Possible error codes">
+<Table>
+<TableHead headers={['Error code', 'Description']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`source_amount_invalid`
+
+</TableCell>
+<TableCell>
+
+The source amount is invalid.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`{field}_required`
+
+</TableCell>
+<TableCell>
+
+The specified field is required, but has not been provided.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`insufficient_currency_account_balance`
+
+</TableCell>
+<TableCell>
+
+There were not enough funds to make the payout.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+</Accordion>
+<Accordion title="Why is there a 'pay to bank not configured' error when attempting a payout?">
+
+This means the processing channel you are using is not configured for pay to bank. Please use another one or get in touch to have it enabled on the one you’re using.
+
+</Accordion>
+
+</tab>
+</tabs>
+
+
+## Collect platform fees
+
+You collect your platform fees through the same method as making payouts to your sub-entities. The only difference is the `destination.id` field should be your platform's payment instrument ID. This will have been provided to you during your onboarding with <ExternalLink href="https://www.checkout.com/" >Checkout.com</ExternalLink>.
+
+---
+
+### Request example
+
+```json
+{
+  "amount": 100,
+  "currency": "GBP",
+  "source": {
+    "type": "currency_account",
+    "id": "ca_e6myfp3ubs3ulk5tve6xx6x2oy"
+  },
+  "destination": {
+    "type": "id",
+    "id": "src_otruwzxbhvhutpoheg4q5jmkgq"
+  },
+  "billing_descriptor": {
+    "reference": "Desserts Checkout Fees"
+  },
+  "processing_channel_id": "pc_q4dbxom5jbgudnjzjpz7j2z6uq",
+}
+
+```
+
+## Find out more
+
+---
+
+<ContentPanel title="Understand your account structure" imgSrc="/NAS/Marketplaces/understand-your-account-structure.svg">
+
+For a more guided look into our integrated solutions platform.
+
+[Learn more](/marketplaces/account-structure)
+
+</ContentPanel>
+<ContentPanel title="Quick start" imgSrc="/NAS/Marketplaces/quick-start.svg">
+
+For those ready to jump in and begin their integration.
+
+[Lite account type](/marketplaces/quick-start-lite)
+
+[Full account type](/marketplaces/quick-start-full)
+
+</ContentPanel>
+
+<ContentPanel title="Marketplace API reference" imgSrc="/NAS/Marketplaces/marketplaces-api.svg">
+
+Our API reference lists all the endpoints and methods provided in the Marketplace solution.
+
+<ExternalLink href="https://api-reference.checkout.com/preview/crusoe/#tag/Marketplace"  withArrow>Learn more</ExternalLink>
+
+</ContentPanel>
+<ContentPanel title="Marketplaces" imgSrc="/NAS/Marketplaces/understand-your-account-structure.svg" withBorder={false}>
+
+Create rich and flexible payment programs suited to the needs of you and your customers.
+
+[Learn more](/marketplaces)
+
+</ContentPanel>

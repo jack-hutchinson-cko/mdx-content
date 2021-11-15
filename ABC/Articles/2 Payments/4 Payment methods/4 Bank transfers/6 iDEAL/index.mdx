@@ -1,0 +1,433 @@
+---
+title: iDEAL
+account: ABC
+---
+
+Start accepting payments using <ExternalLink href="https://www.checkout.com/payment-methods/accept/ideal" >iDEAL</ExternalLink>, a favorite online payment method in The Netherlands.
+
+iDEAL payments are made through direct online transfer from the customer's bank account to your merchant bank account. Customers can use their mobile banking app or online banking environment. As soon as a payment is made, iDEAL sends you an online payment guarantee so you can deliver goods and services right away. 
+
+<TipBox variant="info">
+
+To start accepting iDEAL payments, please contact your Customer Success Manager.
+
+</TipBox>
+
+<Table>
+<TableBody>
+<TableRow>
+<TableCell withBackground>
+
+**Model**
+
+</TableCell>
+<TableCell>
+
+Collecting
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell withBackground>
+
+**Payment flow**
+
+</TableCell>
+<TableCell>
+
+Bank transfer
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell withBackground>
+
+**Payment method type**
+
+</TableCell>
+<TableCell>
+
+Online banking
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell withBackground>
+
+**One-step payment**
+
+</TableCell>
+<TableTicCell type="check"/>
+</TableRow>
+<TableRow>
+<TableCell withBackground>
+
+**Authorization**
+
+</TableCell>
+<TableTicCell type="error"/>
+</TableRow>
+<TableRow>
+<TableCell withBackground>
+
+**Capture**
+
+</TableCell>
+<TableTicCell type="error" />
+</TableRow>
+<TableRow>
+<TableCell withBackground>
+
+**Refund**
+
+</TableCell>
+<TableTicCell type="check" />
+</TableRow>
+<TableRow>
+<TableCell withBackground>
+
+**Partial refund**
+
+</TableCell>
+<TableTicCell type="check" />
+</TableRow>
+<TableRow>
+<TableCell withBackground>
+
+**Chargeback**
+
+</TableCell>
+<TableTicCell type="error" />
+</TableRow>
+<TableRow>
+<TableCell withBackground>
+
+**Recurring payment**
+
+</TableCell>
+<TableTicCell type="error" />
+</TableRow>
+</TableBody>
+</Table>
+
+---
+
+## Overview
+
+iDEAL payments follow a two-step process:
+
+1.  [Request a payment](/payments/payment-methods/bank-transfers/i-deal#Request_a_payment)
+2.  [Redirect the customer](/payments/payment-methods/bank-transfers/i-deal#Redirect_the_customer)
+
+---
+
+## Request a payment
+
+Use the details below to set up your request.
+
+### Endpoints
+
+You can find the full list, as well as complete request and response examples, in our <ExternalLink href="https://api-reference.checkout.com" >API reference</ExternalLink>.
+
+<tabs>
+<tab title="Live" active>
+<LineCodeWrapper type="post">
+
+`https://api.checkout.com/payments/`
+
+</LineCodeWrapper>
+</tab>
+<tab title="Sandbox">
+<LineCodeWrapper type="post">
+
+`https://api.sandbox.checkout.com/payments`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+
+### Request example
+
+```json
+    {
+      "source": {
+        "type": "ideal",
+        "bic":"INGBNL2A",
+        "description": "ORD50234E89",
+        "language": "nl"
+      },
+      "amount": 2000,
+      "currency": "EUR"
+    }
+```
+
+<TipBox variant="info">
+
+If a customer ID or email is not provided in the request, then we automatically create a customer profile and return the customer `id` in the response.
+
+</TipBox>
+
+### Response example
+
+If a payment id is returned, then your request was successful.
+
+```json
+    {
+      "id": "pay_yndlioum4gau3oizxihvzdgp4i",
+      "status": "Pending",
+      "customer": {
+        "id": "cus_erquvsbcz2xunm5rrwd5clyfiy"
+      },
+      "_links": {
+        "self": {
+          "href": "https://api.sandbox.checkout.com/payments/pay_yndlioum4gau3oizxihvzdgp4i"
+        },
+        "redirect": {
+          "href": "https://sandbox.checkout.com/LP.Core/api/payment/108659"
+        }
+      }
+    }
+```
+
+---
+
+## Redirect the customer
+
+Redirect your customer to the `redirect` link’s href in the above response. The redirect transfers the customer to their bank's website where they are required to enter their authorization details; if successful, the payment can be approved.
+
+<TipBox variant="note">
+
+For security reasons, iDEAL forbids using custom-made in-app browsers for redirection. We recommend that you open the device’s default browser to display the redirect. If you do want to use an in-app web view, you must use <ExternalLink href="https://developer.apple.com/documentation/safariservices/sfsafariviewcontroller" >SFSafariViewController</ExternalLink> for iOS or <ExternalLink href="https://developer.chrome.com/multidevice/android/customtabs" >Chrome Custom Tabs</ExternalLink> for Android.
+
+</TipBox>
+
+Once completed, the customer is transferred to your predefined success or failure URL. Confirmation of an iDEAL payment is **communicated only through webhooks**. When you receive a `payment_captured` webhook notification, the transaction has been completed successfully. Until the `payment_captured` webhook is received (response code `10000`), all payments are labeled as _Pending_.
+
+---
+
+## Get details about a payment
+
+You can use the `payment_id` found in the payment response, or the `cko-session-id` from the success/failure URL (e.g., `https://www.checkout.com/order/succeeded?cko-session-id=**sid_vii64oquze5u3h2x6hh4rurc4y**`) to retrieve details about the payment.
+
+<TipBox variant="note">
+
+The `cko-session-id` expires 15 minutes after being created.
+
+</TipBox>
+
+### Endpoints
+
+You can find the full list, as well as complete request and response examples, in our <ExternalLink href="https://api-reference.checkout.com" >API reference</ExternalLink>.
+
+<tabs>
+<tab title="Live" active>
+<LineCodeWrapper type="get">
+
+`https://api.checkout.com/payments/{payment_id}`
+
+</LineCodeWrapper>
+</tab>
+<tab title="Sandbox">
+<LineCodeWrapper type="get">
+
+`https://api.sandbox.checkout.com/payments/{payment_id}`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+### Response example
+
+```json
+    {
+      "id": "pay_gx2pyzir3nzuhfmz7djlrxuhre",
+      "requested_on": "2019-03-01T09:21:08Z",
+      "source": {
+        "type": "ideal",
+        "description": "iDEAL Demo Payment",
+        "bic": "INGBNL2A",
+        "iban": "NL53INGB0654422370",
+        "account_holder_name": "Hr E G H Küppers en/of MW M.J. Küppers-Veeneman"
+      },
+      "amount": 100,
+      "currency": "EUR",
+      "payment_type": "Regular",
+      "status": "Captured",
+      "approved": true,
+      "risk": {
+        "flagged": false
+      },
+      "customer": {
+        "id": "cus_smscm3h2nqpe3obmau4djsqfam"
+      },
+      "_links": {
+        "self": {
+          "href": "https://api.sandbox.checkout.com/payments/pay_gx2pyzir3nzuhfmz7djlrxuhre"
+        },
+        "actions": {
+          "href": "https://api.sandbox.checkout.com/payments/pay_gx2pyzir3nzuhfmz7djlrxuhre/actions"
+        },
+        "refund": {
+          "href": "https://api.sandbox.checkout.com/payments/pay_gx2pyzir3nzuhfmz7djlrxuhre/refunds"
+        }
+      }
+    }
+```
+
+---
+
+## Refund a payment
+
+iDEAL supports both partial and full refunds. You can refund a payment through the <ExternalLink href="https://hub.checkout.com/v2" >hub</ExternalLink> or using the [refund API](/payments/manage-payments/refund-a-payment).
+
+---
+
+## Cancel a payment
+
+If the customer fails to complete their payment, we will automatically void the payment and send a `payment_expired` webhook.
+
+If the customer cancels their payment, we will send `payment_canceled` webhook.
+
+---
+
+## Get a list of supported issuers
+
+Use the following request to get an up-to-date list of all issuers supporting iDEAL payments.
+
+### Endpoints
+
+You can find the full list, as well as complete request and response examples, in our <ExternalLink href="https://api-reference.checkout.com" >API reference</ExternalLink>.
+
+<tabs>
+<tab title="Live" active>
+<LineCodeWrapper type="get">
+
+`https://api.checkout.com/ideal-external/issuers`
+
+</LineCodeWrapper>
+</tab>
+<tab title="Sandbox">
+<LineCodeWrapper type="get">
+
+`https://api.sandbox.checkout.com/ideal-external/issuers`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+### Response example
+
+```json
+    {
+      "countries": [
+        {
+          "name": "Nederland",
+          "issuers": [
+            {
+              "bic": "INGBNL2A",
+              "name": "Issuer Simulation V3 - ING"
+            },
+            {
+              "bic": "RABONL2U",
+              "name": "Issuer Simulation V3 - RABO"
+            }
+          ]
+        }
+      ],
+        "_links": {
+          "self": {
+            "href": "https://sbapi.ckotech.co/ideal-external-api/issuers"
+          }
+        }
+    }
+```
+
+---
+
+## Testing iDEAL
+
+<TipBox variant="note">
+
+To start testing, you'll need to:
+
+*   <ExternalLink href="https://www.checkout.com/get-test-account" >create a test account</ExternalLink>, and
+*   contact your Customer Success Manager or Integrations engineer to activate iDEAL payments in the sandbox environment.
+
+</TipBox>
+
+### Test a payment request
+
+1.  Create an iDEAL transaction as above, following the redirect link in the response to the bank's website.
+2.  Click **Confirm transaction**. You should then be redirected to your predefined success URL.
+
+### Simulate payment states
+
+In the sandbox environment, you can test different payment states by putting one of the following values in the `amount` field of your payment request.
+
+<Table>
+<TableHead headers={['`amount` value', 'Simulated status']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+200
+
+</TableCell>
+<TableCell>
+
+Canceled
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+300
+
+</TableCell>
+<TableCell>
+
+Expired
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+400
+
+</TableCell>
+<TableCell>
+
+Pending
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+500
+
+</TableCell>
+<TableCell>
+
+Failure on the iDEAL test environment
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+700
+
+</TableCell>
+<TableCell>
+
+SO1000 Failure in system
+
+</TableCell>
+</TableRow>
+
+</TableBody>
+</Table>

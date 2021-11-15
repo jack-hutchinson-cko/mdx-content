@@ -1,0 +1,46 @@
+---
+title: payment_authorization_incremented
+account: NAS
+---
+
+## Example: Payment Authorization Incremented
+
+```json
+    {
+    "id": "evt_z5w4pkadoi3u5hu5lmlklwrxla",
+    "type": "payment_authorization_increment_approved",
+    "created_on": "2018-04-10T08:12:14Z",
+    "data": {
+   	    "id":"pay_sdcdhwmpjgberkbzkugqe7pfum",
+	    "action_id":"act_sdcdhwmpjgberkbzkugqe7pfum",
+	    "amount":1000,
+	    "currency":"EUR",
+	    "approved":false,
+	    "auth_code":"075867",
+	    "eci":"05",
+	    "scheme_id":"638284745624527",
+	    "response_code":"20005",
+	    "response_summary":"Declined",
+	    "risk":{
+		    "flagged":false
+	        },
+	    "processed_on":"2019-06-07T08:29:35Z",
+	    "processing":{
+		    "acquirer_transaction_id":"1551472431",
+		    "retrieval_reference_number":"261987338924"
+	        }
+        },
+    "_links": {
+        "self": {
+            "href": "https://api.checkout.com/events/evt_z5w4pkadoi3u5hu5lmlklwrxla"
+            },
+        "subject": {
+            "href": "https://api.checkout.com/workflows/events/subject/pay_jlfj2ful7z3u5lbykhy5lzezvm"
+            }
+        }
+    }
+```
+
+
+
+

@@ -1,0 +1,37 @@
+---
+title: dispute_resolved
+account: NAS
+---
+
+## Example: Dispute resolved
+
+```json
+    {
+    "id": "evt_3tquhbz5ochermjr4xk4gicmva",
+    "type": "dispute_resolved",
+    "created_on": "2018-06-21T12:00:31Z",
+    "data": {
+        "id": "dsp_9rjdlsd4epepfjyyf9vl",
+        "date": "2018-07-06T11:19:20Z",
+        "category": "canceled_recurring",
+        "amount": 20020,
+        "currency": "USD",
+        "reason_code": "10.4",
+        "resolved_reason": "already_refunded",
+        "payment_id": "pay_cnhuomagalglgozxy5zm",
+        "payment_action_id": "act_7B15779D173D0W45700D",
+        "payment_reference": "some-company-ref",
+        "payment_method": "Visa"
+        },
+    "_links": {
+        "self": {
+            "href": "https://api.checkout.com/workflows/events/evt_3tquhbz5ochermjr4xk4gicmva"
+            },
+        "subject": {
+            "href": "https://api.checkout.com/workflows/events/subject/dsp_9rjdlsd4epepfjyyf9vl"
+            }
+        }
+    }
+```
+
+

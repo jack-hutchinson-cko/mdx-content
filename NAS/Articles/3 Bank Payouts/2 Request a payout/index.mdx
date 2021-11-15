@@ -1,0 +1,1181 @@
+---
+title: Request a payout
+account: NAS
+description: Create a payout instrument to use one or several times, then request a payout to a bank account.
+---
+
+Make seamless payouts to your customer’s bank accounts with Bank Payouts. Access local clearing methods globally, circumventing the challenges of international payments and simplifying complex payment infrastructures.
+
+You can send a payout in two ways: (1) use a [bank account payment instrument](/payments/store-payment-details/payment-instruments) that you have previously created and stored, or (2) use the **bank account fields** required for the country and currency to which you want to pay out funds.
+
+---
+
+## Step 1: Get bank account field formatting
+
+Before you can request a payout, you need to use the [get bank account field formatting endpoint](/bank-payouts/request-a-payout/get-bank-account-field-formatting) to retrieve the relevant bank account fields and formatting for the country and currency to which you'll be paying out.
+
+Once you've done that, you can either use those bank account details directly in your [payout request](/bank-payouts/request-a-payout#Requestapayout-requestpayout), or use them to [create a reusable bank account payment instrument](/preview/archive/create-a-payment-instrument), which you can then use in your bank payout requests.
+
+---
+
+## Step 2: Request a payout
+
+Request a Bank Payout by using the relevant bank account fields or a bank account payment instrument (prefixed by `src_`). To get a detailed view of all required and optional fields, see our <ExternalLink href="https://api-reference.checkout.com/preview/crusoe" >API reference</ExternalLink>.
+
+### Endpoints
+
+
+<tabs>
+<tab title="Live">
+<LineCodeWrapper type="post">
+
+`https://api.checkout.com/payments`
+
+</LineCodeWrapper>
+</tab>
+<tab title="Sandbox">
+<LineCodeWrapper type="post">
+
+`https://api.sandbox.checkout.com/payments`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+### Header parameters
+
+<Table>
+<TableHead headers={["Header", "Value"]} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`Authorization`
+
+<StatusTag type="required"/>
+
+</TableCell>
+<TableCell>
+
+`OAuth Bearer access token`
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`Content-Type`
+
+<StatusTag type="required"/>
+
+</TableCell>
+<TableCell>
+
+`application/json`
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`Cko-Idempotency-Key`
+
+<StatusTag type="optional"/>
+
+</TableCell>
+<TableCell>
+
+An optional idempotency key for safely retrying payout requests.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+### Body parameters
+
+<TipBox variant="info">
+
+See our <ExternalLink href="https://api-reference.checkout.com/preview/crusoe/#operation/requestAPaymentOrPayout" >API reference</ExternalLink> for the full specification.
+
+</TipBox>
+
+<tabs>
+<tab title="Payment instrument">
+
+<Table>
+<TableHead headers={["Field name", "Description"]} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`source`
+
+<StatusTag type="required"/>
+<TypeTag type="object" />
+
+</TableCell>
+<TableCell>
+
+Details about the payout source.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`source.amount`
+
+<StatusTag type="conditional"/>
+<TypeTag type="integer" />
+
+</TableCell>
+<TableCell>
+
+The amount you want to pay out from your currency account. The exact format [depends on the currency](/resources/calculating-the-amount).
+
+<TipBox variant="note">
+
+You must specify either the `source.amount` or the destination `amount`.
+
+</TipBox>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`source.type`
+
+<StatusTag type="required"/>
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+The type of source. Set this to `currency_account`.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`source.id`
+
+<StatusTag type="required"/>
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+The source identifier. This is prefixed by `ca_`.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`destination`
+
+<StatusTag type="required"/>
+<TypeTag type="object" />
+
+</TableCell>
+<TableCell>
+
+Details about the payout destination.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`destination.type`
+
+<StatusTag type="required"/>
+<TypeTag type="object" />
+
+</TableCell>
+<TableCell>
+
+The type of payout destination. Set this to `id`.
+
+<TipBox variant="info">
+
+To create a bank account payment instrument, use our [Instruments API](/payments/store-payment-details/payment-instruments).
+
+</TipBox>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`destination.id`
+
+<StatusTag type="required"/>
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+The bank account payment instrument identifier. This is prefixed by `src_`.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`amount`
+
+<StatusTag type="conditional"/>
+<TypeTag type="integer(>=0)" />
+
+</TableCell>
+<TableCell>
+
+The amount you want to pay out to the destination account. The exact format [depends on the currency](/resources/calculating-the-amount).
+
+<TipBox variant="note">
+
+You must specify **either** the destination `amount` **or** the `source.amount`.
+
+</TipBox>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`currency`
+
+<StatusTag type="required"/>
+<TypeTag type="string (3 chars)" />
+
+</TableCell>
+<TableCell>
+
+The three-letter [ISO code](/resources/codes/currency-codes) of the destination currency.
+
+<InfoBox>
+
+The currency should match that of the destination account.
+
+</InfoBox>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`reference`
+
+<StatusTag type="optional"/>
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+An optional reference you can later use to identify this payout.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`billing_descriptor`
+
+<StatusTag type="required"/>
+<TypeTag type="object" />
+
+</TableCell>
+<TableCell>
+
+Details about the billing descriptor.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`billing_descriptor.reference`
+
+<StatusTag type="required"/>
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+The reference that is (where possible) displayed on the account holder's statement.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`sender`
+
+<StatusTag type="required"/>
+<TypeTag type="object" />
+
+</TableCell>
+<TableCell>
+
+Details about the sender of the payout's funds.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`sender.type`
+
+<StatusTag type="required"/>
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+The type of sender. This can be `instrument`, `individual`, or `corporate`.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`sender.address`
+
+<StatusTag type="required"/>
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+The sender's address.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`sender.reference`
+
+<StatusTag type="required"/>
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+The sender's unique ID.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`instruction`
+
+<StatusTag type="optional"/>
+<TypeTag type="object" />
+
+</TableCell>
+<TableCell>
+
+Details about the instruction for payouts to bank accounts.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`instruction.purpose`
+
+<StatusTag type="optional"/>
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+An optional description of the payout purpose, for example `Insurance claim` or `Remittance`.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`instruction.charge_bearer`
+
+<StatusTag type="optional"/>
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+Who should be charged the payout fee.
+
+This can be one of:
+* `OUR`
+* `SHA`
+
+<InfoBox>
+
+Only applies to only to international payments.
+
+</InfoBox>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`instruction.repair`
+
+<StatusTag type="optional"/>
+<TypeTag type="boolean" />
+
+</TableCell>
+<TableCell>
+
+Determines whether the payout details can be modified to attempt to prevent the payout from being returned.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`instruction.scheme`
+
+<StatusTag type="optional"/>
+<TypeTag type="string (enum)" />
+
+</TableCell>
+<TableCell>
+
+The preferred payment scheme or network the bank transfer will be sent through.
+
+This can be one of:
+* `swift`
+* `local`
+* `instant`
+
+<InfoBox>
+
+Bank details must be in line with the chosen scheme.
+
+</InfoBox>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`instruction.quote_id`
+
+<StatusTag type="optional"/>
+<TypeTag type="string (30 chars)" />
+
+</TableCell>
+<TableCell>
+
+The FX quote identifier. If omitted, and the source and destination currencies differ, the current market exchange rate will be used.
+
+<TipBox variant="info">
+
+To create a quote, use our [Foreign Exchange API](/bank-payouts/create-an-fx-quote).
+
+</TipBox>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`processing_channel_id`
+
+<StatusTag type="required"/>
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+The processing channel identifier.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+</tab>
+<tab title="Bank account fields">
+
+<Table>
+<TableHead headers={["Field name", "Description"]} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`source`
+
+<StatusTag type="required"/>
+<TypeTag type="object" />
+
+</TableCell>
+<TableCell>
+
+Details about the payout source.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`source.amount`
+
+<StatusTag type="conditional"/>
+<TypeTag type="integer" />
+
+</TableCell>
+<TableCell>
+
+The amount you want to pay out from your currency account. The exact format [depends on the currency](/resources/calculating-the-amount).
+
+<TipBox variant="note">
+
+You must specify either the `source.amount` or the destination `amount`.
+
+</TipBox>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`source.type`
+
+<StatusTag type="required"/>
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+The type of source. Set this to `currency_account`.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`source.id`
+
+<StatusTag type="required"/>
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+The source identifier. This is prefixed by `ca_`.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`destination`
+
+<StatusTag type="required"/>
+<TypeTag type="object" />
+
+</TableCell>
+<TableCell>
+
+Details about the payout destination.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`destination.type`
+
+<StatusTag type="required"/>
+<TypeTag type="object" />
+
+</TableCell>
+<TableCell>
+
+The type of payout destination. Set this to `bank_account`.
+
+<TipBox variant="info">
+
+To find out which bank account fields are required, use the [get bank account field formatting](/bank-payouts/request-a-payout/get-bank-account-field-formatting) endpoint.
+
+</TipBox>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`amount`
+
+<StatusTag type="conditional"/>
+<TypeTag type="integer(>=0)" />
+
+</TableCell>
+<TableCell>
+
+The amount you want to pay out to the destination account. The exact format [depends on the currency](/resources/calculating-the-amount).
+
+<TipBox variant="note">
+
+You must specify **either** the destination `amount` **or** the `source.amount`.
+
+</TipBox>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`currency`
+
+<StatusTag type="required"/>
+<TypeTag type="string (3 chars)" />
+
+</TableCell>
+<TableCell>
+
+The three-letter [ISO code](/resources/codes/currency-codes) of the destination currency.
+
+<InfoBox>
+
+The currency should match that of the destination account.
+
+</InfoBox>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`reference`
+
+<StatusTag type="optional"/>
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+An optional reference you can later use to identify this payout.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`billing_descriptor`
+
+<StatusTag type="required"/>
+<TypeTag type="object" />
+
+</TableCell>
+<TableCell>
+
+Details about the billing descriptor.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`billing_descriptor.reference`
+
+<StatusTag type="required"/>
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+The reference that is (where possible) displayed on the account holder's statement.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`sender`
+
+<StatusTag type="required"/>
+<TypeTag type="object" />
+
+</TableCell>
+<TableCell>
+
+Details about the sender of the payout's funds.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`sender.type`
+
+<StatusTag type="required"/>
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+The type of sender. This can be `instrument`, `individual`, or `corporate`.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`sender.address`
+
+<StatusTag type="required"/>
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+The sender's address.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`sender.reference`
+
+<StatusTag type="required"/>
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+The sender's unique ID.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`instruction`
+
+<StatusTag type="optional"/>
+<TypeTag type="object" />
+
+</TableCell>
+<TableCell>
+
+Details about the instruction for payouts to bank accounts.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`instruction.purpose`
+
+<StatusTag type="optional"/>
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+An optional description of the payout purpose, for example `Insurance claim` or `Remittance`.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`instruction.charge_bearer`
+
+<StatusTag type="optional"/>
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+Who should be charged the payout fee.
+
+This can be one of:
+* `OUR`
+* `SHA`
+
+<InfoBox>
+
+Only applies to only to international payments.
+
+</InfoBox>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`instruction.repair`
+
+<StatusTag type="optional"/>
+<TypeTag type="boolean" />
+
+</TableCell>
+<TableCell>
+
+Determines whether the payout details can be modified to attempt to prevent the payout from being returned.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`instruction.scheme`
+
+<StatusTag type="optional"/>
+<TypeTag type="string (enum)" />
+
+</TableCell>
+<TableCell>
+
+The preferred payment scheme or network the bank transfer will be sent through.
+
+This can be one of:
+* `swift`
+* `local`
+* `instant`
+
+<InfoBox>
+
+Bank details must be in line with the chosen scheme.
+
+</InfoBox>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`instruction.quote_id`
+
+<StatusTag type="optional"/>
+<TypeTag type="string (30 chars)" />
+
+</TableCell>
+<TableCell>
+
+The FX quote identifier. If omitted, and the source and destination currencies differ, the current market exchange rate will be used.
+
+<TipBox variant="info">
+
+To create a quote, use our [Foreign Exchange API](/bank-payouts/create-an-fx-quote).
+
+</TipBox>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`processing_channel_id`
+
+<StatusTag type="required"/>
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+The processing channel identifier.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+</tab>
+</tabs>
+
+### Request example
+
+<tabs>
+<tab title="Payment instrument">
+
+```json
+{
+  "source": {
+    "type": "currency_account",
+    "id": "ca_y3oqhf46pyzuxjbcn2giaqnb44"
+  },
+  "destination": {
+    "type": "id",
+    "id": "src_gsd2agaqd2sernz5tpcfv555nq"
+  },
+  "amount": 1000,
+  "currency": "GBP",
+  "reference": "PO-215-5721",
+  "billing_descriptor": {
+    "reference": "Withdrawal"
+  },
+  "sender": {
+    "type": "instrument",
+    "reference": "8285282045818"
+  },
+  "instruction": {
+    "purpose": "Withdrawal",
+    "scheme": "local",
+    "quote_id": "qte_mbabizu24mvu3mela5njyhpit4"
+  },
+  "processing_channel_id": "pc_hpswyyx23geezflc2ocz3exn4y"
+}
+```
+
+</tab>
+<tab title="Bank account fields">
+
+```json
+{
+  "source": {
+    "type": "currency_account",
+    "id": "ca_y3oqhf46pyzuxjbcn2giaqnb44"
+  },
+  "destination": {
+    "type": "bank_account",
+    "account_type": "current"
+    "account_number": "01008704"
+    "bank_code": "110350"
+    "country": "GB"
+    "account_holder": {
+      "type": "individual",
+      "first_name": "John",
+      "last_name": "Smith",
+      "billing_address": {
+        "address_line1": "99 Windsor Road",
+        "city": "London",
+        "zip": "N83 5QL",
+        "country_code": "GB"
+      }
+    }
+  },
+  "amount": 1000,
+  "currency": "GBP",
+  "reference": "PO-215-5721",
+  "billing_descriptor": {
+    "reference": "Withdrawal"
+  },
+  "sender": {
+    "type": "individual",
+    "first_name": "Jane"
+    "last_name": "Smith"
+    "address": {
+      "address_line1": "1 Broad Street",
+      "city": "London",
+      "zip": "W1T 3KL",
+      "country_code": "GB"
+    },
+    "reference": "8285282045818"
+  },
+  "instruction": {
+    "purpose": "Withdrawal",
+    "quote_id": "qte_mbabizu24mvu3mela5njyhpit4"
+  },
+  "processing_channel_id": "pc_hpswyyx23geezflc2ocz3exn4y"
+}
+```
+</tab>
+</tabs>
+
+### Response examples
+
+If your payout request was successfully sent, you will receive a 202 response, with the status `Pending`. If your request was unsuccessful, you will receive a 422 or 429 response containing the [error code](/bank-payouts/request-a-payout/payout-error-codes).
+
+You will then receive a [webhook notification](/bank-payouts/request-a-payout#Webhooks) indicating the status of your payout
+
+<tabs>
+<tab title="Successful – 202">
+
+```json
+{
+  "id": "pay_dvxl6j6stpqufkzfgbaahmfrzm",
+  "status": "Pending",
+  "reference": "PO-215-5721",
+  "instruction": {
+      "value_date": "2020-06-12T22:27:42.512594Z"
+  },
+  "_links": {
+    "self": {
+      "href": "https://api.sandbox.checkout.com/payments/pay_dvxl6j6stpqufkzfgbaahmfrzm"
+    },
+    "actions": {
+      "href": "https://api.sandbox.checkout.com/payments/pay_dvxl6j6stpqufkzfgbaahmfrzm/actions"
+    }
+  }
+}
+```
+
+</tab>
+<tab title="Unsuccessful – 422">
+
+```json
+{
+  "request_id": "0HM5M8APSODP0:00000018",
+  "error_type": "request_invalid",
+  "error_codes": [
+  "source_currency_account_not_found"
+  ]
+}
+```
+
+</tab>
+<tab title="Duplicate or too many requests – 429">
+
+```json
+{
+  "request_id": "0HL80RJLS76I7",
+  "error_type": "request_invalid",
+  "error_codes": [
+    "duplicate_request"
+  ]
+}
+```
+
+</tab>
+</tabs>
+
+## Webhooks
+
+After receiving the response to your payout request, you will get a webhook notification indicating the status of your payout:
+
+- If your payout is **successful**, you will receive a `payment_paid` webhook, with a `10000` response code and the `Approved` summary.
+- If your payout is **declined**, you will receive a `payment_declined` webhook with a `50001-50399` response code and a summary explaining the reason for the decline. You can view the list of response codes [here](/bank-payouts/request-a-payout/payout-response-codes).
+- If your payout is **returned**, you will receive a `payment_returned` webhook with `50401-50599` response code and a summary explaining the reason for the return. You can view the list of response codes [here](/bank-payouts/request-a-payout/payout-response-codes).
+
+<TipBox variant="success">
+
+Use our [testing guide](testing/bank-payouts-testing) to test different payout scenarios.
+
+</TipBox>
+
+### Webhook examples
+
+<tabs>
+<tab title="payment_paid">
+
+```json
+{
+  "id": "evt_ooratpvrc4yezkrjjrfohi26te",
+  "type": "payment_paid",
+  "version": "1.0.3",
+  "created_on": "2020-06-12T17:46:24.4862402Z",
+  "data": {
+    "id": "pay_dvxl6j6stpqufkzfgbaahmfrzm",
+    "reference": "PO-215-5721",
+    "action_id": "act_y37vtskjeweuhfy4mhiggxhpgu",
+    "response_code": "10000",
+    "response_summary": "Approved",
+    "amount": 1000,
+    "currency": "GBP",
+    "source": {
+      "type": "currency_account",
+      "id": "ca_y3oqhf46pyzuxjbcn2giaqnb44"
+    },
+    "destination": {
+      "type": "bank_account",
+      "id": "src_vovjchw6exauvjrdzpmfu3sm3y",
+      "fingerprint": "vnsdrvikkvre3dtrjjvlm5du4q"
+    },
+    "processed_on": "2020-06-12T17:46:15.2106459Z",
+    "instruction": {
+      "value_date": "2020-06-13T05:46:15.2845092Z"
+    }
+  },
+  "_links": {
+    "self": {
+      "href": "https://api.sandbox.checkout.com/workflows/events/evt_ooratpvrc4yezkrjjrfohi26te"
+    },
+    "subject": {
+      "href": "https://api.sandbox.checkout.com/workflows/events/subject/pay_dvxl6j6stpqufkzfgbaahmfrzm"
+    }
+  }
+}
+```
+</tab>
+<tab title="payment_declined">
+
+```json
+{
+  "id": "evt_6ebhaydlc3kepmacp22s5smodq",
+  "type": "payment_declined",
+  "version": "1.0.3",
+  "created_on": "2020-06-12T15:20:55.7983215Z",
+  "data": {
+    "id": "pay_axh4wk2nhjqenlr2vqvm6kxqta",
+    "reference": "PO-215-5721",
+    "action_id": "act_2sgst4337zjurdj7b2fsonxwre",
+    "response_code": "50001",
+    "response_summary": "Compliance error",
+    "amount": 1000,
+    "currency": "GBP",
+    "source": {
+      "type": "currency_account",
+      "id": "ca_y3oqhf46pyzuxjbcn2giaqnb44"
+    },
+    "destination": {
+      "type": "bank_account",
+      "id": "src_ez3bolgy7ggu5bnjsilialkegi",
+      "fingerprint": "vnsdrvikkvre3dtrjjvlm5du4q"
+    },
+    "processed_on": "2020-06-12T15:20:51.5677679Z"
+  },
+  "_links": {
+    "self": {
+      "href": "https://api.sandbox.checkout.com/workflows/events/evt_6ebhaydlc3kepmacp22s5smodq"
+    },
+    "subject": {
+      "href": "https://api.sandbox.checkout.com/workflows/events/subject/pay_axh4wk2nhjqenlr2vqvm6kxqta"
+    }
+  }
+}
+```
+</tab>
+<tab title="payment_returned">
+
+```json
+{
+  "id": "evt_djb3apm54d2ehg2pt4kmtlrfqu",
+  "type": "payment_returned",
+  "version": "1.0.3",
+  "created_on": "2020-06-12T17:44:34.2986234Z",
+  "data": {
+    "id": "pay_tli5tj6y5upe7m4chnunbzjr5q",
+    "reference": "PO-215-5721",
+    "action_id": "act_aw2a5iw4qgau7hekeiwjd3yjiy",
+    "response_code": "50401",
+    "response_summary": "Bank details invalid",
+    "amount": 1000,
+    "currency": "GBP",
+    "source": {
+      "type": "currency_account",
+      "id": "ca_y3oqhf46pyzuxjbcn2giaqnb44"
+    },
+    "destination": {
+      "type": "bank_account",
+      "id": "src_ddy3e5xuuilutddqxh5pso75i4",
+      "fingerprint": "vnsdrvikkvre3dtrjjvlm5du4q"
+    },
+    "processed_on": "2020-06-12T17:44.34Z"
+  },
+  "_links": {
+    "self": {
+      "href": "https://api.sandbox.checkout.com/workflows/events/evt_djb3apm54d2ehg2pt4kmtlrfqu"
+    },
+    "subject": {
+      "href": "https://api.sandbox.checkout.com/workflows/events/subject/pay_tli5tj6y5upe7m4chnunbzjr5q"
+    }
+  }
+}
+```
+</tab>
+</tabs>

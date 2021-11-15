@@ -1,0 +1,452 @@
+---
+title: Accept a payment on behalf of your sub-entities
+account: NAS
+---
+
+Once your sub-entity's payment capabilities have been enabled, you can process payments on behalf of them through our [Unified Payments API](/payments/request-a-payment). 
+
+On this page, we will walk through how you can request a payment on behalf of: 
+* [a single sub-entity](#Request_a_payment_for_a_single_sub-entity); or
+* [multiple sub-entities](#Request_a_payment_for_multiple_sub-entities) <span style={{display: "inline-block"}}><StatusTag type="Marketplaces only" /></span>
+
+
+## Payment Facilitators vs Marketplaces
+
+* If you are a Payment Facilitator, you process payments on behalf of a [single sub-entity](#Request_a_payment_for_a_single_sub-entity). 
+* If you are a Marketplace, you can process payments on behalf of your sub-entities using both options.
+
+## Request a payment for a single sub-entity 
+
+When processing a payment on behalf of a single sub-entity, you just need to create a payment request for the total purchase amount. Include all relevant fields using our <RequestTag type="POST"/>`/payments` endpoint. See our <ExternalLink href="https://api-reference.checkout.com/preview/crusoe/" >API reference</ExternalLink> for all required and optional fields.
+
+To associate this payment with the correct sub-entity, use the `marketplace` object and provide the ID in the `sub_entity_id` field.
+
+<TipBox>
+
+The sub-entity ID is returned during the [onboarding process](/marketplaces/onboarding).
+
+</TipBox>
+
+```json
+{
+  "amount":1000,
+  "currency":"GBP",
+  "reference":"ORD-5023",
+  "description":"Three chocolate donuts",
+  "capture":true,
+  "source":{
+    "type":"card",
+    "number":"4242424242424242",
+    "expiry_month":11,
+    "expiry_year":2024,
+    "cvv":"100"
+  },
+  "processing_channel_id":"pc_yghfzjebuiwelerjsk3atodrey",
+  "marketplace":{
+    "sub_entity_id":"ent_vv2jjkuf2gzj5tcw2x7ptua7zy"
+  }
+}
+
+```
+
+<TipBox variant="info">
+
+`processing_channel_id` corresponds to a specific MCC that you are set up to process payments for. Your processing channel IDs will be provided to you after we have completed your setup.
+
+</TipBox>
+
+## Request a payment for multiple sub-entities
+
+<StatusTag type="Marketplaces only"/>
+
+When a customer uses your platform to buy items from multiple sub-entities, you need to request one payment from the customer, and then split that amount appropriately across the different sub-entities. This is known as a **split payment**. You can also split or add a commission that could be both fixed and variable.
+
+---
+
+### How to split a payment
+
+Include all relevant fields using our <RequestTag type="POST"/>`/payments` endpoint. See our <ExternalLink href="https://api-reference.checkout.com/preview/crusoe/" >API reference</ExternalLink> for all required and optional fields.
+
+In the `marketplace` object, include the `sub_entities` array. This is an array of objects, where each object specifies:
+* The ID of the sub-entity.
+* The amount for that sub-entity.
+* An optional commission for your platform.
+* An optional reference to identify the split later.
+
+The sum of all split amounts must be equal to the payment amount. 
+
+<TipBox>
+
+The sub-entity ID is returned during the [onboarding process](/marketplaces/onboarding).
+
+</TipBox>
+
+### Split payments example scenario
+
+A customer makes a purchase of £100. The split payment contains three splits, which look like:
+1. Sub-entity A: £30 for a shirt
+2. Sub-entity B: £50 for trainers
+3. Sub-entity C: £20 for socks
+
+On top of this, you also charge a commission to sub-entities using your platform. You can specify a fixed amount or a percentage. You can also specify a percentage in addition to a fixed amount, depending on your business model. The commission will be applied to each split, and cannot exceed the split amount. 
+
+<TipBox>
+
+Remember our APIs work in the [minor currency unit](/resources/calculating-the-amount).
+
+</TipBox>
+
+### Request example
+
+In the example request below, we take the split shown above and demonstrate three ways you can split the payment and specify commission for your platform:
+* **Fixed commission amount**: Charge the sub-entity in this split a fixed commissiong amount of £2. This sub-entity would receive £28, and you would receive £2 in your currency account.
+* **Commission percentage**: Charge the sub-entity in this split a fee of 1.5%. This sub-entity would have 1.5% of £50 deducted, so would receive £49.25. You would receive 75p in your currency account.
+* **Fixed commission amount + commission percentage**: Charge the sub-entity in this split a fee of 1.5%, plus a fixed fee of £2. This sub-entity would have 1.5% of £20 deducted, plus another £2 deducted, so would receive £17.70. You would receive £2.30 in your currency account.
+
+<TipBox variant="info">
+
+You can also use this method on a single payment (not split) to collect commission. 
+
+</TipBox>
+
+```json
+{
+  "source": {
+    "type": "token",
+    "token": "tok_4gzeau5o2uqubbk6fufs3m7p54"
+  },
+  "amount": 10000,
+  "currency": "GBP",
+  "reference": "ORD-5023-4E89",
+  "description": "Multi-seller basket",
+  "processing_channel_id": "pc_hpswyyx23geezflc2ocz3exn4y",
+  "marketplace": {
+    "sub_entities": [
+      //Fixed commission amount
+      {
+        "id": "ent_pj6fv2w2wchfedchjjyobb4bni",
+        "amount": 3000,
+        "reference": "SALE-7627-8389",
+        "commission": {
+          "amount": 200
+        }
+      },
+      //Commission percentage
+       {
+        "id": "ent_kjx3tob2sxtl44wb7q7alwdu2m",
+        "amount": 5000,
+        "reference": "SALE-1729-3782",
+        "commission": {
+          "percentage": 1.5
+        }
+      },
+      //Fixed commission amount + commission percentage
+      {
+        "id": "ent_kklowryxmczwyoqe4z7yvcbwvy",
+        "amount": 2000,
+        "reference": "SALE-2127-9735",
+        "commission": {
+          "amount": 200, 
+          "percentage": 1.5,
+        }
+      }
+
+    ]
+  }
+}
+```
+
+## Response examples
+
+If you receive a successful response, the payment will be automatically associated with the correct sub-entity. A sub-entity's funds will be held in their currency account (as per their default holding currency set up during [onboarding](/marketplaces/onboarding)). Your commissions will be held in your platform's currency account (set up during your own onboarding with our Marketplaces solution).
+
+
+<TipBox variant="note">
+
+All Checkout fees for processing payments will be charged to you (the platform).
+
+</TipBox>
+
+<tabs>
+<tab title="201 - Success">
+
+```json withBorder=false
+{
+    "id": "pay_kwrzpz644g6uxmdkpe5u6ruecm",
+    "action_id": "act_ehwckitpyywunkxzou4e64iwhm",
+    "amount": 1000,
+    "currency": "GBP",
+    "approved": true,
+    "status": "Authorized",
+    "auth_code": "935891",
+    "response_code": "10000",
+    "response_summary": "Approved",
+    "balances": {
+        "total_authorized": 1000,
+        "total_voided": 0,
+        "available_to_void": 1000,
+        "total_captured": 0,
+        "available_to_capture": 1000,
+        "total_refunded": 0,
+        "available_to_refund": 0
+    },
+    "risk": {
+        "flagged": false
+    },
+    "source": {
+        "id": "src_nr35hmfxonjuvkykmuqirkgaoy",
+        "type": "card",
+        "expiry_month": 10,
+        "expiry_year": 2030,
+        "scheme": "Visa",
+        "last4": "6584",
+        "fingerprint": "50022A4E8D781BE774F239942C3BE78BA4E27DAF723AF559995749BE910A6E5D",
+        "bin": "448504",
+        "cvv_check": "Y",
+        "payment_account_reference": "V001959323431657433"
+    },
+    "processed_on": "2021-03-26T14:16:31.4428222Z",
+    "scheme_id": "314395993984285",
+    "processing": {
+        "acquirer_transaction_id": "925794281492281823871",
+        "retrieval_reference_number": "645049548991"
+    },
+    "expires_on": "2021-04-25T14:16:31.4428222Z",
+    "_links": {
+        "self": {
+            "href": "https://api.sandbox.checkout.com/payments/pay_kwrzpz644g6uxmdkpe5u6ruecm"
+        },
+        "actions": {
+            "href": "https://api.sandbox.checkout.com/payments/pay_kwrzpz644g6uxmdkpe5u6ruecm/actions"
+        },
+        "capture": {
+            "href": "https://api.sandbox.checkout.com/payments/pay_kwrzpz644g6uxmdkpe5u6ruecm/captures"
+        },
+        "void": {
+            "href": "https://api.sandbox.checkout.com/payments/pay_kwrzpz644g6uxmdkpe5u6ruecm/voids"
+        }
+    }
+}
+```
+
+</tab>
+<tab title="422 - Invalid data was sent">
+
+When you receive a `422`, please check the API request to make sure you've included all of the required values. You can see our <ExternalLink href="https://api-reference.checkout.com/preview/crusoe/) for a full overview." >API reference</ExternalLink>.
+
+```json withBorder=false
+{
+  "request_id": "0HL80RJLS76I7",
+  "error_type": "request_invalid",
+  "error_codes": [
+    "sub_entity_id_invalid"
+  ]
+}
+```
+
+<Accordion isBoldTitle={true} title='Possible error codes'>
+
+This is a list of error codes specifically related to **split payments**. 
+
+<Table>
+<TableHead headers={['Name','Description']} sizes={['60%', 'auto']}></TableHead>
+<TableBody>
+<TableRow>
+<TableCell>
+
+`marketplace_required`
+
+</TableCell>
+<TableCell>
+
+Marketplace section is empty for business model.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`marketplace_not_supported`
+
+</TableCell>
+<TableCell>
+
+Marketplace is not supported for your account.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`marketplace_business_model_invalid`
+
+</TableCell>
+<TableCell>
+
+Sub-entity ID is set, but business model is not is not a Payment Facilitator.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`marketplace__business_model_invalid`
+
+</TableCell>
+<TableCell>
+
+Sub-entity ID is set, but business model is not is not a Marketplace.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`sub_entity_not_found`
+
+</TableCell>
+<TableCell>
+
+No sub-entity with such ID is found in sub-entities list.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`sub_entity_id_invalid`
+
+</TableCell>
+<TableCell>
+
+The format of the sub-entity ID in the sub-entity or sub-entity list is invalid.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`sub_entities_max_count_exceeded`
+
+</TableCell>
+<TableCell>
+
+Too many sub-entities in a list.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`sub_entity_id_required`
+
+</TableCell>
+<TableCell>
+
+Empty ID in sub-entities list.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`sub_entity_amount_required`
+
+</TableCell>
+<TableCell>
+
+Empty amount in sub-entity.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`sub_entity_amount_invalid`
+
+</TableCell>
+<TableCell>
+
+Field out of range, input is a decimal value, or amount is less than commission.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`sub_entity_reference_length_invalid`
+
+</TableCell>
+<TableCell>
+
+Reference exceeds allowed length.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`sub_entity_commission_amount_invalid`
+
+</TableCell>
+<TableCell>
+
+Not in allowed range or input is a decimal value.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`sub_entity_commission_percentage_invalid`
+
+</TableCell>
+<TableCell>
+
+Not in allowed range or value is too long.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`sub_entity_id_duplicated`
+
+</TableCell>
+<TableCell>
+
+Multiple sub-entities with the same ID.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+</Accordion>
+</tab>
+</tabs>
+
+When you make a payment, we will let you know what stage the payment is at through [webhook notifications](/workflows).
+
+## Where to next?
+
+---
+
+<ContentPanel variant="heading" title="About making payouts" imgSrc="/NAS/Marketplaces/about-making-payouts.svg" withBorder={false}>
+
+**`Full`** sub-entities have payout capability. Use this page to find out what you can do.
+
+[Learn more](/marketplaces/payouts)
+
+</ContentPanel>
+
+## Find out more
+
+---
+
+<ContentPanel variant="heading" title="Marketplace API" imgSrc="/NAS/Marketplaces/marketplaces-api.svg" withBorder={false}>
+
+To get a detailed view of all required and optional fields, see our API reference.
+
+<ExternalLink href="https://api-reference.checkout.com/preview/crusoe/#tag/Marketplace" >Learn more</ExternalLink>
+</ContentPanel>

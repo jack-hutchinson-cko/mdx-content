@@ -1,0 +1,354 @@
+---
+title: Hosted Payments Page
+account: NAS
+---
+
+Accept card payments with a Hosted Payments Page—a fast and easy way to collect your customer’s payment information, process the payment request and handle authentication.
+
+## How it works
+
+When your customer is ready to check out:
+
+1. Create a Hosted Payments Page session and pass through all the payment information, like the amount, currency, country and reference.
+2. We'll use this information to render the Hosted Payments Page to which you will redirect your customer to make their payment.
+3. Once your customer fills in the required payment details, we will process the payment and handle the authentication flow.
+4. And after the payment has been successfully processed, you will be notified by a [webhook](/workflows).
+
+<img src="/docs/Integrate/Hosted Payments/Hosted+Payments+page.png"  />
+
+---
+
+## Try it out
+
+Preview a Hosted Payments Page using one of our [test cards](/testing/test-cards) with any future expiry date, or use the details below for a basic payment flow:
+
+<tabs>
+<tab title="Card">
+
+Use one of our [test cards](/testing/test-cards) with any future expiry date, or use the details below:
+
+- **Card number**: 4242 4242 4242 4242
+- **Expiry date**: Any future date
+- **CVV**: 100
+
+</tab>
+
+<tab title="Sofort">
+
+Use the following details to test a Sofort payment flow:
+
+1. In the _Bank name_, _BLZ_, _IBAN_ or _BIC_ field, enter `88888888`, and then select _Next_.
+2. Enter `88888888` in the _Account number_ field, and `123456` in the _PIN_ field. Select _Next_.
+3. Select any account, and then select _Next_.
+4. Enter `12345` in the _TAN_ field and select _Next_.
+
+</tab>
+</tabs>
+
+<Iframe src="https://pay.sandbox.checkout.com/examples/docs-example/" height="700" width="100%" />
+
+---
+
+## Get started
+
+### Step 1: Register to use Hosted Payments Pages
+
+To get started with our Hosted Payments Page, contact your Solutions Engineer or <ExternalLink href="mailto:integration@checkout.com">integration@checkout.com</ExternalLink>.
+
+<TipBox variant="success">
+
+If you haven't already, create a free <ExternalLink href="https://www.checkout.com/get-test-account" >test account now</ExternalLink>. This will give you access to the <ExternalLink href="https://dashboard.checkout.com/login" >Dashboard</ExternalLink>, where you'll find your `secret_key` and `public_key`, which you'll need to make requests to our API.
+
+</TipBox>
+
+### Step 2: Create a Hosted Payments Page session
+
+<TipBox variant="info" title="Sessions expire">
+
+Hosted Payments Page sessions expire after 30 minutes.
+
+</TipBox>
+
+To create a Hosted Payments Page on which your customers can make their payment, use the endpoint below.
+
+### The request
+
+For the full specification, see our <ExternalLink href="https://api-reference.checkout.com/preview/crusoe/#operation/createAHostedPaymentsSession" >API reference</ExternalLink>
+
+### Endpoints
+
+<tabs>
+<tab title="Live">
+<LineCodeWrapper type="post">
+
+`https://api.checkout.com/hosted-payments`
+
+</LineCodeWrapper>
+</tab>
+<tab title="Sandbox">
+<LineCodeWrapper type="post">
+
+`https://api.sandbox.checkout.com/hosted-payments`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+<TipBox variant="warning" title="Testing">
+
+http://localhost/ can only be used for the URL fields during testing and will not work in production.
+
+</TipBox>
+
+### Alternative payment methods
+
+We've listed the available alternative payment methods for the Hosted Payments Page below.
+
+Different payment methods have different required and optional fields when making a request. We've listed these below.
+
+You can view a request example with all of these fields on our <ExternalLink href="https://api-reference.checkout.com/preview/crusoe/#operation/createAHostedPaymentsSession" >API reference</ExternalLink>
+
+<Table>
+<TableHead headers={["Payment method", "Field requirements"]}/>
+<TableBody>
+{/* <TableRow>
+<TableCell>
+
+KNET
+
+</TableCell>
+<TableCell>
+
+* `billing.address.country`: `KW` for Kuwait.
+* `currency` to `KWD`.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Mada
+
+</TableCell>
+<TableCell>
+
+* `billing.address.country`: `SA` for Saudi Arabia
+* `currency`: `SAR`.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+PayPal
+
+</TableCell>
+<TableCell>
+
+* `reference` is required.
+* `billing.address.country` and `currency` is required and can be any [that are supported](/payments/payment-methods/wallets).
+
+</TableCell>
+</TableRow> */}
+<TableRow>
+<TableCell>
+
+iDEAL
+
+</TableCell>
+<TableCell>
+
+* `currency` should be set to `EUR`
+* `billing.address.country`: `NL` for Netherlands
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Sofort
+
+</TableCell>
+<TableCell>
+
+* `currency` should be set to `EUR`
+* `billing.address.country` is required and can be any [country that is supported](/payments/payment-methods/bank-transfers).
+
+</TableCell>
+</TableRow>
+{/* <TableRow>
+<TableCell>
+
+Bancontact
+
+</TableCell>
+<TableCell>
+
+* `billing.address.country`: `BE` for Belgium.
+* `currency`: `EUR`.
+* `customer.name` is required.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+EPS
+
+</TableCell>
+<TableCell>
+
+* `billing.address.country`: `AT` for Austria.
+* `currency`: `EUR`.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Giropay
+
+</TableCell>
+<TableCell>
+
+* `billing.address.country`: `DE` for Germany.
+* `currency`: `EUR`.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Multibanco
+
+</TableCell>
+<TableCell>
+
+* `billing.address.country`: `PT` for Portugal.
+* `currency`: `EUR`.
+* `customer.name` is required.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Przelewey24
+
+</TableCell>
+<TableCell>
+
+* `billing.address.country`: `PL` for Poland.
+* `currency`: `EUR` or `PLN`.
+* `customer.name` is required.
+* `customer.email` is required.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+SEPA
+
+</TableCell>
+<TableCell>
+
+* `currency` should be set to `EUR`
+* `billing.address.country` is required and can be any [country that is supported](/payments/payment-methods/direct-debit).
+
+</TableCell>
+</TableRow> */}
+{/* <TableRow>
+<TableCell>
+
+Fawry
+
+</TableCell>
+<TableCell>
+
+* `billing.address.country`: `EG` for Egypt.
+* `currency`: `EGP`.
+* `customer.email` is required.
+* `billing.phone.number` is required.
+* `products` is required.
+
+</TableCell>
+</TableRow> */}
+</TableBody>
+</Table>
+
+### Request example
+
+```json
+{
+  "amount": 1000,
+  "currency": "GBP",
+  "reference": "ORD-123A",
+  "billing": {
+    "address": {
+      "country": "GB"
+    }
+  },
+  "customer": {
+    "name": "Bruce Wayne",
+    "email": "brucewayne@gmail.com"
+  },
+  "success_url": "https://example.com/payments/success",
+  "failure_url": "https://example.com/payments/failure",
+  "cancel_url": "https://example.com/payments/checkout"
+}
+```
+
+### Response example
+
+The response will include the `redirect` link to which you should redirect your customer to finalize the payment.
+
+```json
+{
+  "reference": "ORD-123A",
+  "_links": {
+    "redirect": {
+      "href": "https://pay.sandbox.checkout.com/page/hpp_xGQBg0AXl3cM"
+    }
+  }
+}
+```
+
+---
+
+### Step 3: Redirect your customer
+
+Redirect the customer to the `_links.redirect` URL you received in the response above, using either a server-side or client-side call.
+
+<tabs>
+<tab title="Server-side redirect">
+
+```json
+res.redirect(hostedPaymentsResponse._links.redirect.href);
+```
+
+</tab>
+<tab title="Client-side redirect">
+
+```json
+window.location.href(hostedPaymentsResponse._links.redirect.href);
+```
+
+</tab>
+</tabs>
+
+### Step 4: Confirm the payment status
+
+When your customer completes the payment, they will be redirected to the `success_url`. The `session ID` or `payment ID` is provided in the query parameter included in the redirect URL. It should look something either of the links below:
+
+- `http://example.com/success?cko-session-id=sid_ubfj2q76miwundwlk72vxt2i7`
+- `http://example.com/success?cko-payment-id=pay_mbabizu24mvu3mela5njyhpit4`
+
+You can set up [webhooks](/workflows) to be notified when the payment has been approved to continue the sales fulfilment flow.
+
+---
+
+## Next steps
+
+- Learn how to [refund](/payments/manage-payments/refund-a-payment) a payment, [and more](/payments/manage-payments).
+- [Set up webhooks](workflows) to be notified about the status of payments.

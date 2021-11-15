@@ -1,0 +1,275 @@
+--- 
+title: Go further with Magento 2
+account: ABC
+---
+
+There are a number of ways you can extend your Magento 2 integration so that it suits all your business needs. 
+
+In this guide, you'll find how to:
+
+- [Add more payment methods](#Add_more_payment_methods)
+- [Enable 3D Secure payments](#Enable_3D_Secure_payments)
+- [Enable payments with saved cards](#Enable_payments_with_saved_cards)
+- [Enable MOTO payments](#Enable_MOTO_payments)
+- [Configure card payment options](#Card_payment_options)
+- [Configure general payment options](#General_payment_options)
+- [Manually capture, void and refund payments](#Manually_capture,_void_and_refund_payments)
+- [Configure order settings](#Order_settings)
+
+---
+
+## Add more payment methods
+
+<TipBox variant="note" title="Before you start">
+
+In order to start accepting an alternative payment method, we first need to enable it on your account. Please contact your Customer Success manager or our <ExternalLink href="https://checkout.com/contact-sales" >Sales team</ExternalLink> to get started.
+
+</TipBox>
+<TipBox variant="info">
+
+Check the individual payment method pages to see which ones you can support. It will depend on your location, as well the currency and billing address of your customer.
+
+</TipBox>
+
+We currently support the following payment methods on Magento 2:
+
+- [Alipay](/payments/payment-methods/wallets/alipay)
+- [Boleto Bancário](/payments/payment-methods/cash-and-atm-payment/boleto-bancario)
+- [Giropay](/payments/payment-methods/bank-transfers/giropay)
+- [iDEAL](/payments/payment-methods/bank-transfers/ideal)
+- [Klarna](/payments/payment-methods/invoice-and-pay-later/klarna)
+- [Poli](/payments/payment-methods/bank-transfers/poli)
+- [SEPA Direct Debit](/payments/payment-methods/direct-debit/sepa-direct-debit)
+- [Sofort](/payments/payment-methods/bank-transfers/sofort)
+- [EPS](/payments/payment-methods/bank-transfers/eps)
+- [Bancontact](/payments/payment-methods/cards/bancontact)
+- [KNET](/payments/payment-methods/cards/knet)
+- [Fawry](/payments/payment-methods/cash-and-atm-payment/fawry)
+- [Apple Pay](/payments/payment-methods/wallets/apple-pay)
+- [Google Pay](/payments/payment-methods/wallets/google-pay)
+- [PayPal](/payments/payment-methods/wallets/paypal)
+
+### Enable alternative payments
+
+1. Log in to your Magento Admin Panel and go to _Stores > Configuration > Sales > Payment Methods_, find the Checkout.com plugin, select _Configure_ and expand _Alternative Payments_.
+
+<img
+  maxWidth={800}
+  src="/docs/Integrate/Magento 2/alternative_payments_magento_2.png"
+  title="Alternative Payments Magento 2"
+  
+/>
+
+2. Specify the Title customers will see when they select an alternative payment method.
+3. Set _Enable Alternative Payments_ to _Yes_.
+4. Select the payment methods you want to support.
+5. Select _Save Config_.
+
+### Apple Pay
+
+<TipBox variant="info">
+
+See our [Apple Pay documentation](/payments/payment-methods/wallets/apple-pay) for more information.
+
+</TipBox>
+
+1. Log in to your Magento Admin Panel, go the Checkout.com plugin's configuration panel and expand _Apple Pay Payments_.
+2. Specify the _Title_ customers see when they select this payment method.
+3. Set _Enable Apple Pay_ to _Yes_.
+4. Enter the absolute path of your Payment Processing Certificate (e.g., `mywebsite/app/checkout/certificate.pem`). To get this, find your certificate (a .pem file) in your Apple Developer account and then upload it to your server.
+5. Enter your Processing Certificate Password, if you have one.
+6. Enter the absolute path of your Merchant Identity Certificate (e.g., `mywebsite/app/checkout/certificate_key.key`). To get this, find your key (a `.key` file) in your Apple Developer account and then upload it to your server.
+7. Enter your Merchant ID. You can find this in your Apple Developer account.
+8. Choose the appearance of the Apple Pay button with the Button Style option. See the <ExternalLink href="https://developer.apple.com/design/human-interface-guidelines/apple-pay/overview/buttons-and-marks/" >Apple Developer docs</ExternalLink> for more detail.
+9. Select which card networks you want to allow through Apple Pay with the _Supported Networks_ option.
+10. Select what sort of cards you want to allow with the _Merchant Capabilities_ option.
+11. If you want to add an Apple Pay button to your shopping basket page, so your customers can choose to check out via Apple Pay from their cart, set _Enable Apple Pay On Cart Page_ to _Yes_.
+
+<TipBox variant="note">
+
+You can only add an Apple Pay button to the shopping basket page if you are running version 2.2.6, or above, of the plugin.
+
+</TipBox>
+
+12. Click _Save Config_.
+
+### Google Pay
+
+<TipBox variant="info">
+
+See our [Google Pay documentation](/payments/payment-methods/wallets/google-pay) for more information.
+
+</TipBox>
+
+1.  Log in to your Magento Admin Panel, go the Checkout.com plugin's configuration panel and expand _Google Pay Payments_.
+2.  Specify the Title customers see when they select this payment method.
+3.  Set _Enable Google Pay_ to _Yes_.
+4.  Select your Google Pay Environment – either _Test_ or _Production_. Note: This is not the same as the Checkout.com environment setting.
+5.  Enter your Merchant ID. You can find this in your Google payments profile. If testing, use `01234567890123456789`. Note: Make sure you use the right merchant ID for your chosen Google Pay environment.
+6.  Select the appearance of the Google Pay button with the _Button Style_ option. See the <ExternalLink href="https://developers.google.com/pay/api/web/guides/brand-guidelines" >Google Pay docs</ExternalLink> for more detail.
+7.  Choose which card networks you want to allow through Google Pay with the _Supported Networks_ option.
+8.  Select _Save Config_.
+
+---
+
+## Enable 3D Secure payments
+
+<TipBox variant="note">
+
+If you enable this feature, every transaction will trigger a 3D Secure (3DS) check. If you only want to trigger 3DS authentication for certain transactions, contact your customer success manager.
+
+</TipBox>
+
+1.  Log in to your Magento Admin Panel, go the Checkout.com plugin's configuration panel and expand _Card Payments_.
+2.  Make sure Enable Card Payments is set to _Yes_.
+3.  Set Use 3D Secure to _Yes_.
+4.  Select whether you want to Attempt non-3D Secure transactions. If you select _Yes_, any cards that do not support 3DS will go through without a 3DS check. If you select _No_, cards that do no support 3DS will be blocked.
+5.  Select _Save Config_.
+
+---
+
+## Enable payments with saved cards
+
+1.  Log in to your Magento Admin Panel, go the Checkout.com plugin's configuration panel and expand _Card Payments_.
+2.  Set _Save Card Option_ to _Yes_ if you want to allow your customers to save their cards for future payments. They can then use the same card on your website without re-entering the details.
+3.  Next, expand _Saved Card Payments_.
+
+<img src="/docs/Integrate/Magento 2/saved_card_payments.png" title="Saved Card Payments"  />
+
+4.  Set _Vault Enabled_ to _Yes_.
+5.  Specify the _Title_ customers see when they choose to pay with a saved card.
+6.  Set _Use 3D Secure_ to _Yes_ if you want saved cards to go through 3D Secure authentication.
+7.  Select whether or not you want to Attempt non-3D Secure transactions for saved cards. If you select _Yes_, any saved cards that do not support 3DS will go through without a 3DS check. If you select _No_, saved cards that do no support 3DS will be blocked.
+8.  Set _Require CVV for saved cards_ to _Yes_ if you want the customer to enter the three (or four) digit CVV when they pay with a saved card. This provides additional security against fraud. Select _No_ if you're happy for the customer to pay with a saved card without entering the card's CVV.
+9.  Select _Save Config_.
+
+---
+
+## Enable MOTO payments
+
+These settings allow the administrator of your account to carry out mail order / telephone order (MOTO) payments on your customers' behalf.
+
+1.  Log in to your Magento Admin Panel, go the Checkout.com plugin's configuration panel and expand _MOTO Payments_.
+2.  Set _MOTO Enabled_ to _Yes_ if you want to allow your administrator to carry out MOTO payments.
+3.  Specify what _Title_ you want your customers to see when they select the MOTO payment option.
+4.  Set _Saved Cards Enabled_ to _Yes_ if you want to allow your administrator to make MOTO payments using customers' saved cards.
+5.  Select _Save Config_.
+
+---
+
+## Card payment options
+
+To find these settings, log in to your Magento Admin Panel, go the Checkout.com plugin's configuration panel and expand _Card Payments_.
+
+### Payment option title
+
+Allows you to specify what title the customer will see when they choose to pay by card.
+
+### Display card icons
+
+Set to _Yes_ if you want to display card scheme logos to customers, and then select the particular scheme logos you want to display.
+
+### Enable Mada BIN check
+
+<TipBox variant="note">
+
+Mada cards always require a CVV check, so make sure you set the _Require CVV for saved cards_ option to _Yes_ in the Card Payments settings. This will ensure that the customer is asked to enter the CVV when they make a payment with a saved Mada card.
+
+</TipBox>
+
+Mada is a local card scheme in Saudi Arabia. If you are going to be processing Mada cards, you should set _Enable MADA Bin Check_ to _Yes_.
+
+When enabled, we check the card's BIN to see if the customer is using a Mada card, and then apply the necessary configuration before sending the payment request.
+
+Enabling this feature will also mean all Mada card payment are auto-capture and 3DS authentication for requests.
+
+Take a look at our [Mada guide](/payments/payment-methods/cards/mada) to find out more.
+
+### Payment form layout
+
+Select your preferred layout for the payment form. _Single iframe_ displays a one-line payment form. _Multiple iframes_ displays a payment form of three fields. See our [Frames customization guide](/integrate/frames/frames-customization-guide) for more information.
+
+### Payment form styles
+
+Allows you to customize the payment form's look and feel. You can add CSS styles in JSON format to alter the form's appearance. For example: `{"base":{"color":"blue","fontSize":"18px"}}`. See our [Frames customization guide](/integrate/frames/frames-customization-guide) for more information.
+
+---
+
+## General payment options
+
+To find these settings, log in to your Magento Admin Panel, go the Checkout.com plugin's configuration panel and expand _Global Settings_.
+
+### Payment action
+
+If you want to manually capture payments, rather than have payments automatically captured (the _Authorize_ and _Capture_ option), set _Payment Action_ to _Authorize_. Payments will now be authorized, but you will need to manually capture the payment afterwards.
+
+### Capture time
+
+If you set the _Authorize_ and _Capture_ as the _Payment Action_, you can use this setting to specify the delay (in hours) before the payment is captured. For example, `1.500` for capture after one hour and 30 minutes; `0.02` for capture after 72 seconds. We don't recommend setting a value lower than `0.02` (72 seconds).
+
+### Dynamic descriptor
+
+This is an extra field that you can send to the issuer, appearing on the customer's bank statement as an additional description of the payment.
+
+1.  Set _Enable Dynamic Descriptor_ to _Yes_ if you want to send this extra information. If not enabled, the shopper will just see your merchant name as it appears in your Hub account.
+2.  Specify the _Descriptor Name_. This is the first line of the descriptor, usually your merchant name. You can use up to 25 characters.
+3.  Specify the _Descriptor City_. This is the second line of the descriptor, usually the city of your merchant address. You can use up to 13 characters.
+
+---
+
+## Manually capture, void and refund payments
+
+As well as doing so through the Hub, you can also manually capture, void, and refund payments from the Magento Admin Panel. These actions will show in both Magento and the Hub.
+
+### Manually capture payment
+
+1.  Log in to your Magento Admin Panel, go the Checkout.com plugin's configuration panel and expand _Global Settings_.
+2.  Make sure _Payment Action_ is set to _Authorize_.
+3.  Once you've created an order, find it in _Sales > Orders_ in your Magento Admin Panel. It should have a `Pending Payment` status. Select _View_ on the order.
+4.  Select _Invoice_.
+5.  Select _Submit Invoice_ at the bottom of the page to complete and capture the payment.
+
+### Void payment
+
+<TipBox variant="note">
+
+You can only void payments that have been authorized but not yet captured.
+
+</TipBox>
+
+1.  Log in to your Magento Admin Panel, go the Checkout.com plugin's configuration panel and expand _Global Settings_.
+2.  Make sure _Payment Action_ is set to _Authorize_.
+3.  Once you've created an order, find it in _Sales > Orders_ in your Magento Admin Panel. It should have a `Pending Payment` status. Select _View_ on the order.
+4.  Select _Void_ to void the payment.
+
+### Refund a payment
+
+<TipBox variant="note">
+
+If refunding through Magento, we recommend you do so through the invoice for the order, rather than selecting _Credit Memo_ from the order view. The latter only gives you a _Refund offline_ option, which will not record the refund in your Hub account.
+
+</TipBox>
+
+1.  Once you've created an order, log in to your Magento Admin Panel and find the order in _Sales > Orders_.
+2.  If the payment wasn't captured automatically on authorization, capture the payment now. A captured payment will have a `Processing` status.
+3.  Select _View_ on the order.
+4.  From the Invoices section of the order, select _Credit Memo_.
+5.  Select the products you want to refund and select _Refund_ (not Refund offline).
+
+---
+
+## Order settings
+
+To find these settings, log in to your Magento Admin Panel, go to the Checkout.com plugin's configuration panel, select _Configuration_ and then expand _Order Settings_.
+
+### Action on failed payment
+
+Select the action you want to be taken on orders with failed payments. We recommend you choose _Cancel the order_. This will cancel the order where the payment fails, but still record it so you have a trace of all failed orders. If you choose _Delete the order_, it will delete any trace of the failed order, leaving no record of it.
+
+### Order confirmation email
+
+Select at what point you want to send the customer an order confirmation email. _Authorize_ will send an order confirmation email to the customer as soon as the payment is authorized. _Authorize and Capture_ will send it only after the payment has been both authorized and captured.
+
+### Order statuses
+
+These settings allow you edit the order statuses in line with the status of the payment. But they are automatically set to Magento's default values, so be aware that editing them may cause problems with the order flow.

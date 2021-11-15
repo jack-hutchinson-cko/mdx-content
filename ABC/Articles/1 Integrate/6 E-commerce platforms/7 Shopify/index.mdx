@@ -1,0 +1,314 @@
+--- 
+title: Shopify
+account: ABC
+---
+
+The Checkout.com payment gateway is fully integrated with Shopify. If you're already using Shopify, you can start accepting payments through our gateway by configuring a few simple settings.
+
+On this page, we will walk through: 
+* [Setting up the integration](#Set_up_your_integration)
+* [Creating redirects and webhooks](#Create_redirects_and_webhooks)
+
+---
+
+## Before you begin
+
+If you haven't already, <ExternalLink href="https://www.checkout.com/get-test-account" >create a test Checkout.com account</ExternalLink> to test this integration.
+
+---
+
+## Choose either the on-site or off-site integration option
+
+We provide two Shopify integration methods:
+
+* [On site](#On-site_integration), where your customer enters their payment details on your website. 
+* [Off site](#Off-site_integration), where they will be redirected to a Checkout.com page to do so.
+
+Review the following table for a breakdown of features. 
+
+<Table>
+<TableHead headers={["Features", "On site", "Off site"]} sizes={['20%', 'auto']}/>
+<TableBody>
+<TableRow>
+<TableCell withBackground>
+
+**Payments**
+
+</TableCell>
+<TableCell>
+
+Completed on your checkout page.
+
+</TableCell>
+<TableCell>
+
+Completed on a Checkout.com redirect page. 
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell withBackground>
+
+**3DS**
+
+</TableCell>
+<TableCell>
+
+Additional set up and cost with Cardinal Commerce.
+
+</TableCell>
+<TableCell>
+
+We handle 3DS with no extra cost.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell withBackground>
+
+**Local payments**
+
+</TableCell>
+<TableCell>
+
+Not supported.
+
+</TableCell>
+<TableCell>
+
+Partially supported.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell withBackground>
+
+**Refunds**
+
+</TableCell>
+<TableCell>
+
+Handled directly in Shopify Admin Portal.
+
+</TableCell>
+<TableCell>
+
+Handled in <ExternalLink href="https://hub.checkout.com/login" >the Hub</ExternalLink>.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+<TipBox>
+
+If you do not need 3DS authentication, we recommend using the on-site integration. Please contact your Solutions Engineer for any questions.
+
+</TipBox>
+
+---
+
+## Set up your integration
+
+Follow the steps for your chosen method to integrate. 
+
+### On-site integration 
+
+You will need to access both the Shopify Admin Portal and our Hub during these steps. 
+
+1. From the Hub, navigate to _Settings > Channels_. Here you will find your secret key, which we will need when we run through the Shopify Admin Portal. 
+2. From the Shopify Admin Portal, navigate to _Settings > Payments_.
+3. Select _See all other providers_.
+
+<img
+  maxWidth={500}
+  src="/docs/Integrate/Shopify/third-party-shopify.png"
+  title="Select all providers in Shopify"
+  withFullscreenPreview
+/>
+
+4. Use the search bar to search for Checkout.com. Select our name when it appears. 
+5. Navigate to the _Account information_ section and paste the secret key from the Hub into the _Secret Key_ field. 
+
+<img
+  maxWidth={300}
+  src="/docs/Integrate/Shopify/shopify-secret-key.png"
+  title="Configure webhook"
+  withFullscreenPreview
+/>
+
+6. Select which payment methods you'd like to accept.
+7. If your 3D Secure is enabled with Cardinal Commerce, select _Enable 3D Secure with Cardinal_, then input your Cardinal Commerce credentials.
+8. Under the _Test mode_ section, select _Enable test mode_ for using the sandbox environment. Remember to clear this for production. 
+
+
+### Off-site integration
+
+You will need to access both the Shopify Admin Portal and our Hub during these steps. 
+
+1. From the Hub, navigate to _Settings > Channels_. Here you will find your secret key, which we will need when we run through the Shopify Admin Portal. 
+2. Follow <ExternalLink href="https://www.shopify.com/login?redirect=authorize_gateway%2F1031113" >this authorization link</ExternalLink> and log in with your Shopify credentials.
+3. You will see the message `You are about to install Checkout.com (Offsite)`. Select _Install payment provider_.
+4. From the Shopify Admin Portal, navigate to _Settings > Payments_.
+5. Select _See all other providers_.
+
+<img
+  maxWidth={500}
+  src="/docs/Integrate/Shopify/third-party-shopify.png"
+  title="Select all providers in Shopify"
+  withFullscreenPreview
+/>
+
+6. Use the search bar to search for Checkout.com. Select _Checkout.com (Offsite)_.
+7. Navigate to the _Account information_ section and paste your public key into the _Publishable Key_ field and your secret key into the _Secret Key_ field. 
+8. Select which payment methods you'd like to accept.
+9. Under the _Test mode_ section, select _Enable test mode_ for using the sandbox environment. Remember to clear this for production. 
+10. Under _Deactivate Shopify Payments_, select _Other > Other_. 
+11. Select _Active Checkout.com (Offsite)_.
+
+<img
+  maxWidth={300}
+  src="/docs/Integrate/Shopify/activate.png"
+  title="Configure webhook"
+  withFullscreenPreview
+/>
+
+---
+
+## Create redirects and webhooks
+
+When a customer submits a payment, they are taken to a payment success or a payment error screen. You need to set up redirects so we know where to send the customer when these events happen. In this section, we will walk through how to do this, as well as creating webhook notifications so you are kept informed about a payments timeline.
+
+### Create redirects
+
+1. From the Hub, navigate to _Settings > Channels_.
+2. Navigate to the _URLs_ section and paste in the following URLs (depending on your environment).
+
+<tabs>
+<tab title="Sandbox">
+<Table type="auto">
+<TableBody>
+<TableRow>
+<TableCell isNoWrap withBackground>
+
+**Payment success URL**
+
+</TableCell>
+<TableCell>
+
+`https://sandbox.checkout.com/integration.app/shopify/paymentcomplete`
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell isNoWrap withBackground>
+
+**Payment fail URL**
+
+</TableCell>
+<TableCell>
+
+`https://sandbox.checkout.com/integration.app/shopify/paymentcomplete`
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+</tab>
+<tab title="Live">
+<Table type="auto">
+<TableBody>
+<TableRow>
+<TableCell isNoWrap withBackground>
+
+**Payment success URL**
+
+</TableCell>
+<TableCell>
+
+`https://api2.checkout.com/integration.app/shopify/paymentcomplete`
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell isNoWrap withBackground>
+
+**Payment fail URL**
+
+</TableCell>
+<TableCell>
+
+`https://api2.checkout.com/integration.app/shopify/paymentcomplete`
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+</tab>
+</tabs>
+
+<img
+  maxWidth={500}
+  src="/docs/Integrate/Shopify/redirect-webhook.png"
+  title="Set up a redirect"
+  withFullscreenPreview
+/>
+
+3. Select _Save changes_. 
+
+### Create a webhook
+
+1. From the Hub, navigate to _Settings > Channels_.
+2. Navigate to the _Webhooks sections_ and select _New webhook._
+3. Paste in the following URLs (depending on your environment).
+
+<tabs>
+<tab title="Sandbox">
+<Table type="auto">
+<TableBody>
+<TableRow>
+<TableCell isNoWrap withBackground>
+
+**Webhook endpoint URL**
+
+</TableCell>
+<TableCell>
+
+`https://sandbox.checkout.com/integration.app/shopify/webhook`
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+</tab>
+<tab title="Live">
+<Table type="auto">
+<TableBody>
+<TableRow>
+<TableCell isNoWrap withBackground>
+
+**Webhook endpoint URL**
+
+</TableCell>
+<TableCell>
+
+`https://api2.checkout.com/integration.app/shopify/webhook`
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+</tab>
+</tabs>
+
+<img
+  maxWidth={300}
+  src="/docs/Integrate/Shopify/webhook.png"
+  title="Configure webhook"
+  withFullscreenPreview
+/>
+
+4.  Select _API - v1.0_.
+5.  Select _Select all_, then select _Create webhook_.
+
+You've successfully set up the integration your Shopify account! If you're having any problems or just have a question, please contact our <ExternalLink href="mailto:support@checkout.com" >Support team</ExternalLink> for help.

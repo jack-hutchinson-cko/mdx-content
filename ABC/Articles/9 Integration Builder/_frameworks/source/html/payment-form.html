@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Frames integration builder</title>
+		<link rel="stylesheet" href="style.css" />
+		<script src="https://cdn.checkout.com/js/framesv2.min.js" defer></script>
+		<script src="app.js" defer></script>
+	</head>
+
+	<body>
+		<form id="payment-form" method="POST" action="/payment">
+			<label for="card-number">Card number</label>
+			<div class="input-container card-number">
+				<div class="icon-container">
+					<img
+						id="icon-card-number"
+						src="media/card-icons/card.svg"
+						alt="PAN"
+					/>
+				</div>
+				<div class="card-number-frame"></div>
+				<div class="icon-container payment-method">
+					<img id="logo-payment-method" />
+				</div>
+				<div class="icon-container">
+					<img id="icon-card-number-error" src="media/card-icons/error.svg" />
+				</div>
+			</div>
+
+			<label for="security-code">Security code</label>
+			<div class="date-and-code">
+				<div>
+					<div class="input-container expiry-date">
+						<div class="icon-container">
+							<img
+								id="icon-expiry-date"
+								src="media/card-icons/exp-date.svg"
+								alt="Expiry date"
+							/>
+						</div>
+						<div class="expiry-date-frame"></div>
+						<div class="icon-container">
+							<img
+								id="icon-expiry-date-error"
+								src="media/card-icons/error.svg"
+							/>
+						</div>
+					</div>
+				</div>
+
+				<div>
+					<div class="input-container cvv">
+						<div class="icon-container">
+							<img id="icon-cvv" src="media/card-icons/cvv.svg" alt="CVV" />
+						</div>
+						<div class="cvv-frame"></div>
+						<div class="icon-container">
+							<img id="icon-cvv-error" src="media/card-icons/error.svg" />
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<button id="pay-button" disabled="">Pay £25.00</button>
+
+			<div>
+				<span class="error-message error-message__card-number"></span>
+				<span class="error-message error-message__expiry-date"></span>
+				<span class="error-message error-message__cvv"></span>
+			</div>
+
+			<p class="success-payment-message"></p>
+		</form>
+	</body>
+</html>

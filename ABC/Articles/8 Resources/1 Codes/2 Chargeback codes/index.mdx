@@ -1,0 +1,3313 @@
+---
+title: Chargeback codes
+account: ABC
+---
+
+Below you'll find a list of chargeback codes along with an explanation of what each one means, covering both general codes and those specific to the major card schemes.
+
+---
+
+## Dispute indicator codes
+
+**Cbind** is the chargeback indicator (4-char).
+
+<Table>
+<TableHead headers={['Name', 'Chargeback code', 'Description']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+Debit to Account
+
+</TableCell>
+<TableCell>
+
+ADJM
+
+</TableCell>
+<TableCell>
+
+The chargeback has been issued, and your account has been debited.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Auto Representment
+
+</TableCell>
+<TableCell>
+
+AUTO
+
+</TableCell>
+<TableCell>
+
+The chargeback was received, but the bank automatically represented it
+for specific reasons, e.g., the transaction was already refunded before
+the chargeback was received.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Issuer Reversal
+
+</TableCell>
+<TableCell>
+
+CBRV
+
+</TableCell>
+<TableCell>
+
+The chargeback was reversed/canceled by the issuing bank.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Evidence Under Review
+
+</TableCell>
+<TableCell>
+
+RPDR
+
+</TableCell>
+<TableCell>
+
+You have provided the required evidence and we have forwarded this to
+card scheme.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Case Lost
+
+</TableCell>
+<TableCell>
+
+RPDL
+
+</TableCell>
+<TableCell>
+
+You have lost the dispute.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Case Won
+
+</TableCell>
+<TableCell>
+
+RPDW
+
+</TableCell>
+<TableCell>
+
+You have won the dispute.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Arbitration Review
+
+</TableCell>
+<TableCell>
+
+ARBR
+
+</TableCell>
+<TableCell>
+
+The case has been escalated to arbitration upon your request, supported
+by your rebuttal letter/other additional evidence.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Arbitration won
+
+</TableCell>
+<TableCell>
+
+ARBW
+
+</TableCell>
+<TableCell>
+
+You have won the arbitration case.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Arbitration Lost
+
+</TableCell>
+<TableCell>
+
+ARBL
+
+</TableCell>
+<TableCell>
+
+You have lost the arbitration case. Your account will be debited the
+arbitration fee.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+---
+
+## Visa
+
+### Fraud
+
+<Table>
+<TableHead headers={['Reason code', 'Description', 'Media required']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+10.1
+
+</TableCell>
+<TableCell>
+
+**EMV Liability Shift Counterfeit Fraud** <br />
+A cardholder has disputed the transaction, claiming that either a
+fraudster or an unwitting participant authorized the transaction
+without the cardholder's knowledge. The cardholder may also claim that
+a counterfeit card authorized a transaction from his or her account.
+
+</TableCell>
+<TableCell>
+
+A signed sales receipt with imprint or swipe.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+10.2
+
+</TableCell>
+<TableCell>
+
+**EMV Liability Shift Non-Counterfeit Fraud** <br />
+The cardholder believes that the fraudulent activity originated with the
+EMV terminal. He or she may claim you were negligent in spotting the
+fraudulent activity.
+
+</TableCell>
+<TableCell>
+
+Provide correct documentation to prove your EMV terminal had no relation
+to the disputed transaction. Some examples include your MID and the
+payment gateways that you use to process transactions.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+10.3
+
+</TableCell>
+<TableCell>
+
+**Fraud – Card Present Environment** <br />
+The cardholder never authorized or participated in a Card Present environment
+transaction. Or a fraudulent transaction was completed in a Card
+Present environment using an account number for which no valid card
+was issued or is outstanding, and no authorization was obtained.
+
+</TableCell>
+<TableCell>
+
+A signed sales receipt with a valid imprint or swipe. If you participate
+in the CVV2 in lieu of imprint program, the signed draft and CVV2
+certification letter are required at draft retrieval in order to protect
+you.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+10.4
+
+</TableCell>
+<TableCell>
+
+**Fraudulent Transaction – Card Absent Environment** <br />
+The cardholder did not authorize or participate in a transaction conducted
+in a Card Not Present environment. _or_ A
+fraudulent transaction was completed in a Card Not Present environment
+using an account number where no valid card was issued or is
+outstanding, and no authorization was obtained.
+
+</TableCell>
+<TableCell>
+
+An invoice with ship to/bill to addresses matching, AVS results of X or
+Y, and signed proof of delivery. If T&E, proof that the sale was a
+properly processed "no show" transaction.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+10.5
+
+</TableCell>
+<TableCell>
+
+**Visa Fraud Monitoring Program** <br />
+Visa notified the issuer that the Visa Fraud Monitoring Program identified the
+transaction and the issuer has not successfully charged back the
+transaction using another reason code.
+
+</TableCell>
+<TableCell>
+
+No reversal rights except for credit issued.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+### Authorization
+
+<Table>
+<TableHead headers={['Reason code', 'Description', 'Media required']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+11.1
+
+</TableCell>
+<TableCell>
+
+**Card Recovery Bulletin**<br />
+The transaction was below the merchant's floor limit, and an authorization was not obtained. On
+the date of the transaction, the account number appeared in the Card
+Recovery Bulletin for the Visa Region where the merchant is located
+(All excluding US Domestic).
+
+</TableCell>
+<TableCell>
+
+Auth code along with date and amount of authorization, if other than the
+transaction date and amount.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+11.2
+
+</TableCell>
+<TableCell>
+
+**Declined Authorization** <br />
+Authorization was declined and merchant completed the transaction. If the authorization
+response was `decline`, `pick-up` or `referral` and a key entered _or_ a voice
+authorization code was obtained and a counterfeit card was used, the
+sale may be charged back.
+
+</TableCell>
+<TableCell>
+
+Auth code along with date and amount of authorization, if other than the
+transaction date and amount.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+11.3
+
+</TableCell>
+<TableCell>
+
+**No Authorization** <br />
+Transaction exceeds the floor limit, and an authorization was not obtained on the transaction,
+_or_ the transaction is an online check card transaction or an original
+adjustment.
+
+</TableCell>
+<TableCell>
+
+Auth code along with date and amount of authorization, if other than the
+transaction date and amount.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+11.4
+
+</TableCell>
+<TableCell>
+
+**Service Code Violation** <br />
+Authorization was not obtained for a magnetic-stripe read transaction on a Visa Electron
+Card or on a Visa Card in a registered mandatory positive
+authorization (X2X service code) account range, excluding U.S.
+comestic transactions.
+
+</TableCell>
+<TableCell>
+
+Date and amount of authorization, if other than the transaction date and amount.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+### Processing errors
+
+<Table>
+<TableHead headers={['Reason code', 'Description', 'Media required']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+12.1
+
+</TableCell>
+<TableCell>
+
+**Late Presentment** <br />
+The transaction was not processed within the required time-limit, and the account used was not
+in a positive status on the date the chargeback was processed. <br />
+_or_ <br />
+The transaction date was more than 180 days before the processing date.
+
+</TableCell>
+<TableCell>
+
+Limited reversal rights: permitted only if credit was issued or if proof
+can be presented that the sale was processed within the allotted time.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+12.2
+
+</TableCell>
+<TableCell>
+
+**Incorrect Transaction Code** <br />
+The transaction processing code used has caused the cardholder to suffer a financial
+loss. For example, if a full credit processed does not fully offset
+the debit on a cardholder’s card account (due to fluctuation in
+exchange rate), the latter may use this chargeback reason code to
+recover the financial loss.
+
+</TableCell>
+<TableCell>
+
+A signed sales receipt with imprint or swipe for all transactions
+involved in the dispute and a written rebuttal to explain why the
+cardholder is not due credit.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+12.3
+
+</TableCell>
+<TableCell>
+
+**Incorrect Currency** <br />
+This chargeback involves the use of an incorrect currency.
+
+</TableCell>
+<TableCell>
+
+Provide evidence and authorization details that indicates consent was
+given to the merchant, and that the currency is correct.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+12.4
+
+</TableCell>
+<TableCell>
+
+**Non-Matching Account Number** <br />
+Transaction did not receive authorization and was processed using an account number that
+does not match any on the issuer's master file or an original credit
+was processed using an account number that does not match any on the
+issuer's master file.
+
+</TableCell>
+<TableCell>
+
+Sales receipt and proof of authorization by issuer.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+12.5
+
+</TableCell>
+<TableCell>
+
+**Incorrect Transaction Amount or Account Number** <br />
+Used under any of the following circumstances:
+
+- merchant processed an incorrect transaction amount
+- merchant processed an account number that did not match the one on the transaction receipt
+- cardholder’s transaction receipt contains an addition or transposition error
+- transaction receipt was altered without cardholder permission
+
+</TableCell>
+<TableCell>
+
+A signed sales receipt with imprint or swipe to show that cardholder
+agreed to the amount or that card number was correct. Written rebuttal
+if amount was altered after cardholder signed the receipt.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+12.6.1
+
+</TableCell>
+<TableCell>
+
+**Duplicate Processing** <br />
+A single transaction was presented two or more times to the issuer for the same cardholder
+account number, similar transaction amounts and similar clearing data.
+If the same transaction was processed by different acquirers, the
+issuer is required to dispute the transaction that posted last. <br />
+For express payment service (EPS) or small ticket transactions, the amounts must be the same.
+
+</TableCell>
+<TableCell>
+
+Two different, signed (if possible) receipts or invoices. If sales
+receipt does not contain detail of items purchase, include an itemized
+list. For EPS and Small Ticket transactions, signatures aren’t required,
+just detail of what was purchased.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+12.6.2
+
+</TableCell>
+<TableCell>
+
+**Altered Amount / Paid by Other Means** <br />
+A sale posted to the cardholder’s credit card account; however, the
+cardholder can prove that he paid by an alternative means. Alternative
+means can be cash, check, a sale to a different credit card, or a sale
+to a debit card.
+
+</TableCell>
+<TableCell>
+
+A written rebuttal addressing the cardholder’s claim and any supporting
+documentation to prove the case such as proof that credit was issued or
+that each transaction is different (i.e., different merchandise).
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+12.7
+
+</TableCell>
+<TableCell>
+
+**Invalid Data** <br />
+No authorization or invalid data for authorization.
+
+</TableCell>
+<TableCell>
+
+Provide evidence that an authorization was provided by the cardholder.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+### Consumer disputes
+
+<Table>
+<TableHead headers={['Reason code', 'Description', 'Media required']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+13.1
+
+</TableCell>
+<TableCell>
+
+**Services Not Provided or Merchandise Not Received** <br />
+Cardholder did not receive, due to merchant’s unwillingness or inability:
+
+- services
+- shipped merchandise or merchandise that was to be received at the point of sale and was not
+- merchandise delivered at the agreed-upon location or by the agreed-upon date
+- airline or passenger rail tickets order via mail/phone or online
+
+</TableCell>
+<TableCell>
+
+Documentation to prove that the cardholder received the services or
+merchandise, or proof that credit was issued.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+13.2
+
+</TableCell>
+<TableCell>
+
+**Canceled Recurring Transaction** <br />
+The sale resulted from a recurring transaction or pre-authorized healthcare transaction and:
+
+- the issuer receives a complaint from the cardholder that payment of
+  a recurring transaction or pre-authorized health care transaction
+  was canceled prior to or on the transaction date; or
+- a previous transaction, resulting from the same written
+  authorization was charged back and such authorization was not
+  expressly renewed by the cardholder; or
+- the issuer receives a complaint from the cardholder that (i) the
+  recurring transaction amount was not within the range of amounts
+  pre-authorized by the cardholder on the recurring transaction order
+  form or (ii) the merchant was to notify the cardholder prior to
+  processing each recurring transaction, and
+- the cardholder did not receive written notification of the charge
+  from the merchant postmarked at least 10 days prior to the
+  transaction date, or
+- the merchant sent written notification of the charge at least 10
+  days prior to the transaction date but the cardholder responded
+  denying consent for the change to be posted to his/her account; or
+- the cardholder's account was canceled and/or is closed and previous
+  notice was provided to the acquirer or the merchant that the account
+  number was not be honored
+
+</TableCell>
+<TableCell>
+
+A written rebuttal addressing the cardholder’s claim and any supporting
+documentation (i.e., contract that shows cancelation requirements).
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+13.3
+
+</TableCell>
+<TableCell>
+
+**Not as Described or Defective Merchandise/Services** <br />
+Goods or services received were not as described on the
+transaction receipt or other documentation presented to the cardholder
+or, if a mail/phone order or online purchase, as described by the
+merchant or, the merchandise was received damaged, defective or
+otherwise unsuitable for the purpose sold. <br />
+Cardholder must attempt to return the merchandise or resolve the dispute before
+contacting their bank.
+
+</TableCell>
+<TableCell>
+
+A detailed written rebuttal addressing the cardholder’s claim (point by
+point) and any supporting documentation to prove the case. Rebuttal must
+address what steps were taken to resolve the complaint before it became
+a chargeback.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+13.4
+
+</TableCell>
+<TableCell>
+
+**Counterfeit Merchandise** <br />
+The cardholder claims that the purchased merchandise was counterfeit.
+
+</TableCell>
+<TableCell>
+
+Provide proof that the purchased merchandise is authentic, and that the
+cardholder knew of its quality during the transaction.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+13.5
+
+</TableCell>
+<TableCell>
+
+**Misrepresentation** <br />
+The cardholder claims the purchased good/service was misrepresented during the transaction.
+
+</TableCell>
+<TableCell>
+
+Provide proof that all representation of purchased good/service was, and
+is, accurate during the transaction.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+13.6
+
+</TableCell>
+<TableCell>
+
+**Credit Not Processed** <br />
+The merchant issued a credit transaction receipt or refund acknowledgement but the
+transaction was not processed through interchange, _or_ <br />
+The cardholder returned merchandise or canceled a sale but did not receive a credit receipt or refund acknowledgement.
+
+</TableCell>
+<TableCell>
+
+A written rebuttal addressing the cardholder’s claim and any supporting
+documentation to prove the case, such as a signed contract, return
+policy, or proof of proper disclosure. If credit has been issued, a
+statement/proof that credit issued belongs to transaction in question.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+13.7
+
+</TableCell>
+<TableCell>
+
+**Canceled Merchandise/Services** <br />
+The cardholder claims that the merchant had charged him or her for a
+merchandise/service that was canceled.
+
+</TableCell>
+<TableCell>
+
+Provide proof that the disputed transaction was not canceled, and that
+the cardholder did not give any demand to cancel said transaction.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+13.8
+
+</TableCell>
+<TableCell>
+
+**Original Credit Transaction Not Accepted**
+
+</TableCell>
+<TableCell>
+
+Provide evidence of either the transaction receipt or other records to
+prove that the merchant properly disclosed a limited return or
+cancelation policy at the time of the transaction.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+13.9
+
+</TableCell>
+<TableCell>
+
+**Non-receipt of cash or merchandise** <br />
+Cardholder completed an ATM or TravelMoney transaction but received only partial
+funds or no funds.
+
+</TableCell>
+<TableCell>
+
+ATM audit log.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+---
+
+## Mastercard
+
+<Table>
+<TableHead headers={['Reason code', 'Description', 'Media required']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+4807
+
+</TableCell>
+<TableCell>
+
+**Warning Bulletin File** <br />
+A transaction was not previously authorized with an approval response as specified in the
+MasterCard Authorization System Manual and the account number was
+listed in the Mastercard Electronic Warning Bulletin File on the date
+of the transaction for the region in which the transaction was
+acquired.
+
+</TableCell>
+<TableCell>
+
+Date and amount of authorization, if other than the transaction date and
+amount.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+4808
+
+</TableCell>
+<TableCell>
+
+**Authorization-Related Chargeback** <br />
+
+1. Requested/Required Authorization Not Obtained (e.g., the authorization
+   was declined)
+2. Warning Bulletin File
+3. Account Number Not On File
+
+</TableCell>
+<TableCell>
+
+1. & 2. Date and amount of authorization, if other than the
+   transaction date and amount.
+3. A signed sales receipt with imprint or swipe. If card-not-present
+   transaction, date of authorization if different from transaction date.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+4812
+
+</TableCell>
+<TableCell>
+
+**Account Number Not On File** <br />
+A transaction was presented with an account number that does not match any account
+number on file.
+
+</TableCell>
+<TableCell>
+
+A signed sales receipt with imprint or swipe. If card-not-present
+transaction, date of authorization if different from transaction date.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+4831
+
+</TableCell>
+<TableCell>
+
+**Transaction Amount Differs** <br />
+Cardholder states that he or she was billed an incorrect amount.
+
+</TableCell>
+<TableCell>
+
+Signed sales receipt or documentation proving that an addition error has
+not occurred.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+4834
+
+</TableCell>
+<TableCell>
+
+**Point-Of Interaction Error** <br />
+
+1. Duplicate Processing (cardholder or issuer)
+2. Transaction amount differs
+3. Late presentment
+4. Correct transaction currency code not provided
+
+</TableCell>
+<TableCell>
+
+1. Two different, signed receipts (signature not required) or invoices
+   if sale draft does not. If receipt does not contain detail of items
+   purchased, include an itemized list or invoices.
+2. Signed sales receipt or documentation proving that an addition
+   error has not occurred.
+3. The sales receipt and/or date and amount of the authorization if
+   other than the transaction date.
+4. Documentation proving that the correct currency was used to settle
+   the sale.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+4837
+
+</TableCell>
+<TableCell>
+
+**No Cardholder Authorization** <br />
+The cardholder states, in writing, that neither they nor anyone authorized by them
+engaged in the transaction _or_, <br /> A face-to-face
+transaction took place using a once valid, unexpired, revoked account
+number and the issuer can certify in writing that the unexpired
+physical card is not outstanding because it was recovered, destroyed,
+or both.
+
+</TableCell>
+<TableCell>
+
+A signed and swiped/imprinted sales receipt. If Card Not Present
+transaction, invoice with bill to/ship to addresses, AVS results signed
+proof of delivery (signed POD good to have but not required).
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+4840
+
+</TableCell>
+<TableCell>
+
+**Fraudulent Processing of Transactions** <br />
+The cardholder states, in writing, that neither they nor anyone authorized
+by them was still in the possession and control of all valid cards at
+the time of the transaction, and the cardholder admits to at least one
+legitimate transaction at a given card acceptor location, but denies
+knowledge of one or more additional unauthorized transactions at that
+same card acceptor location.
+
+</TableCell>
+<TableCell>
+
+Signed sales receipts or invoices on all transactions and a detailed
+rebuttal describing the difference in the sales, or any additional
+information as to why cardholder did make both transactions (ie rebate
+or gift needed two separate receipts)
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+4841
+
+</TableCell>
+<TableCell>
+
+**Canceled Recurring Transaction**
+
+<TipBox variant="note">
+
+It must be a payment without an end-date in order to qualify
+as a recurring transaction (i.e., an insurance premium,
+computer service, or a book-of-the-month club).
+
+</TipBox>
+
+The card acceptor continued to bill a cardholder after receiving
+notification of cancelation from the cardholder or issuer.
+
+_or_
+
+The issuer listed the cardholder’s account information on the
+Recurring Payment Cancelation Service (RPCS) and notified the
+acquirer.
+
+</TableCell>
+<TableCell>
+
+A written rebuttal addressing the cardholder's claim and any supporting
+documentation to prove the case (i.e., contract).
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+4842
+
+</TableCell>
+<TableCell>
+
+**Late Presentment** <br />
+The issuer may use message reason code 4842 if the account is permanently closed and
+the Central Site Business Date is:
+
+- more than seven calendar days after the transaction date and the
+  transaction was completed with electronically recorded card
+  information (whether card-read or key-entered)
+- more than 30 calendar days after the transaction date, and the
+  transaction was completed with manually recorded card information
+  (whether imprinted or handwritten)
+- more than 30 calendar days after the transaction date and the
+  account is statused by one of the following codes:
+  - C: credit problem
+  - F: other fraud (lost/stolen/never received)
+  - X: counterfeit card
+  - O: account closed
+
+<TipBox variant="note">
+
+A payment transaction must be presented in clearing within one
+business day of the authorization date. Therefore, the issuer
+may submit a chargeback for a Payment Transaction using the
+message reason code 4842 before the 30-calendar day
+presentment time frame normally required for this message
+reason code.
+
+</TipBox>
+</TableCell>
+<TableCell>
+
+The sales receipt and/or date and amount of the authorization if other
+than the transaction date.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+4846
+
+</TableCell>
+<TableCell>
+
+**Correct Transaction Currency Code Not Provided** <br />
+The acquirer did not transmit the correct transaction currency code for the currency in which the transaction was completed.
+
+_or_
+
+The transaction occurred in a dual currency environment and a
+transaction currency is not specified on the TID. <br />
+No Specified Currency on TID. If no currency indicator is specified on the
+transaction receipt, the currency which is legal tender in the country
+where the transaction took place is the original transaction currency.
+
+</TableCell>
+<TableCell>
+
+Documentation proving that the correct currency was used to settle the sale.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+4849
+
+</TableCell>
+<TableCell>
+
+**Questionable Merchant Activity** <br />
+An acquirer processed a transaction for a card acceptor that later was listed in a
+Mastercard Global Security Bulletin for violating section 9.14.1 in
+the Mastercard Bylaws and Rules or section 8.4 in the Security Rules
+and Procedures manual. <br />
+The issuer must have properly reported
+the transaction to SAFE with one of the following fraud codes:
+
+- 00: Lost Fraud
+- 01: Stolen Fraud
+- 04: Counterfeit Card Fraud
+- 06: Card Not Present Fraud
+- 07: Multiple Imprint Fraud
+
+</TableCell>
+<TableCell>
+
+No reversal rights except for credit issued. The card acceptor in
+question was not listed in the Mastercard Global Security Bulletin. The
+transaction did not occur within the period specified
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+4850
+
+</TableCell>
+<TableCell>
+
+**Instalment Billing Dispute** <br />
+A cardholder account has been inaccurately posted with a debit instead
+of a credit as a result of an incorrect transaction code or keying
+error (i.e., credit posted as a retail sale).
+
+</TableCell>
+<TableCell>
+
+A copy of the TID or other documentation showing that the cardholder
+agreed to the number of installments and amount processed, or proof that
+the acquirer corrected the discrepancy that led to the dispute.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+4853
+
+</TableCell>
+<TableCell>
+
+**Cardholder Dispute** <br />
+
+1. Defective/Not As Described
+2. Canceled Recurring Transaction
+3. Non-Receipt of Merchandise
+4. Services Not Rendered
+5. Credit Not Processed
+
+</TableCell>
+<TableCell>
+
+1. A detailed written rebuttal addressing the cardholder's claim
+   (point by point) and any supporting documentation to prove the case.
+   Rebuttal must address what steps the merchant took to resolve the
+   complaint before it became a chargeback.
+2. A written rebuttal addressing the cardholder's claim and any supporting documentation to
+   prove the case (ie: contract).
+3. Documentation to prove that the cardholder received the merchandise (e.g., signed proof of delivery)
+   or proof that credit was issued.
+4. Documentation to prove that the cardholder received the services, or proof that credit was issued.
+5. A written rebuttal addressing the cardholder's claim
+   and any supporting documentation to prove the case. (e.g.,
+   goods/services have been used by cardholder).
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+4854
+
+</TableCell>
+<TableCell>
+
+**Cardholder Dispute — Not Elsewhere Slassified (US region only)** <br />
+Cardholder has made an unsuccessful good-faith effort to
+resolve a dispute with the card acceptor that involves goods or
+services, and the dispute reflects a claim or defense authorized
+against issuers or creditors according to federal, state, or local
+truth-in-lending laws.
+
+</TableCell>
+<TableCell>
+
+A detailed written rebuttal addressing the cardholder's claim (point by
+point) and any supporting documentation to prove the case. Rebuttal must
+address what steps the merchant took to resolve the complaint before it
+became a chargeback.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+4855
+
+</TableCell>
+<TableCell>
+
+**Goods or Services Not Provided** <br />
+The cardholder or his or her authorized representative did not receive goods that were
+to be shipped or delivered.
+
+</TableCell>
+<TableCell>
+
+Documentation to prove that the cardholder received the merchandise or
+proof that credit was issued.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+4859
+
+</TableCell>
+<TableCell>
+
+**Addendum, No-show, or ATM Dispute** <br />
+Cardholder disputes a transaction for one of the following reasons:
+
+- cardholder received none or only part of an ATM cash disbursement
+  (not applicable in cases of alleged fraud)
+- cardholder is disputing a "no-show” hotel charge from a card
+  acceptor that participates in the Mastercard Guaranteed Reservations
+  Service
+- cardholder is disputing any subsequent transaction representing an
+  addendum to any valid transaction from the same card acceptor
+
+</TableCell>
+<TableCell>
+
+Documentation to prove that the cardholder received the services, or
+proof that credit was issued.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+4860
+
+</TableCell>
+<TableCell>
+
+** Credit Not Processed** <br />
+Issuer received a letter of complaint from a cardholder stating that a card acceptor has not
+posted a credit to his or her account or that the card acceptor posted
+a credit and reduced the amount of the credit due without proper
+disclosure.
+
+</TableCell>
+<TableCell>
+
+A written rebuttal addressing the cardholder's claim and any supporting
+documentation to prove the case.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+4863
+
+</TableCell>
+<TableCell>
+
+**Cardholder Does Not Recognize — Potential Fraud** <br />
+Cardholder claims that he or she does not recognize a
+face-to-face transaction appearing on their statement and the issuer
+made a good-faith effort to identify the transaction for the
+cardholder. <br />
+The issuer may use message reason code 4863 for all
+non–face-to-face (Card Not Present) transactions if the cardholder
+claims that he or she does not recognize the transaction appearing on
+the cardholder statement.
+
+</TableCell>
+<TableCell>
+
+A signed sales receipt with imprint or swipe. If card-not-present
+transaction, invoice, AVS results, CVV2 results, and signed proof of
+delivery. Documentation that would further identify the transaction.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+4870, 4871
+
+</TableCell>
+<TableCell>
+
+**Counterfeit transaction, chip liability shift, chip/PIN liability
+shift** <br />
+The cardholder did not participate in the transaction (a fraudster
+made a duplicate or counterfeit copy of the card). Applicable to Card
+Present transactions only.
+
+</TableCell>
+<TableCell>
+
+N/A
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+4999
+
+</TableCell>
+<TableCell>
+
+**Domestic chargeback dispute (Europe region only)** <br />
+This reason code may be used by issuer where a dispute is available
+according to the applicable domestic rule, but cannot be processed
+under a different message reason code.
+
+</TableCell>
+<TableCell>
+
+Documentation to support that the disputed transaction has been
+completed in accordance to applicable domestic rule.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+---
+
+## American Express
+
+<Table>
+<TableHead headers={['Reason code', 'Description']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+6003
+
+</TableCell>
+<TableCell>
+
+Chargeback Documentation.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+6006
+
+</TableCell>
+<TableCell>
+
+Cardmember Claims Fraud.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+6008
+
+</TableCell>
+<TableCell>
+
+Cardmember Requests Copy Bearing Signature.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+6013
+
+</TableCell>
+<TableCell>
+
+Documentation Previously Sent Is Illegible/Incomplete.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+6014
+
+</TableCell>
+<TableCell>
+
+Unrecognized Transaction.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+6016
+
+</TableCell>
+<TableCell>
+
+Personal Information.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+4507
+
+</TableCell>
+<TableCell>
+
+Incorrect Transaction Amount or Primary Account Number Presented.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+4512
+
+</TableCell>
+<TableCell>
+
+Multiple Processing.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+4513
+
+</TableCell>
+<TableCell>
+
+Credit Not Presented.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+4515
+
+</TableCell>
+<TableCell>
+
+Paid Through Other Means
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+4516
+
+</TableCell>
+<TableCell>
+
+No Reply To Disputes Enquiry Letter.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+4517
+
+</TableCell>
+<TableCell>
+
+Insufficient or Unclear Reply to Disputes Enquiry Letter.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+4521
+
+</TableCell>
+<TableCell>
+
+Invalid Authorization.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+4523
+
+</TableCell>
+<TableCell>
+
+Unassigned Cardmember Account Number.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+4526
+
+</TableCell>
+<TableCell>
+
+Missing Signature.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+4527
+
+</TableCell>
+<TableCell>
+
+Missing Imprint.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+4530
+
+</TableCell>
+<TableCell>
+
+Currency Discrepancy.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+4534
+
+</TableCell>
+<TableCell>
+
+Multiple ROCs.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+4536
+
+</TableCell>
+<TableCell>
+
+Late Presentment.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+4540
+
+</TableCell>
+<TableCell>
+
+Card Not Present.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+4544
+
+</TableCell>
+<TableCell>
+
+Cancelation of Recurring Goods/Services.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+4553
+
+</TableCell>
+<TableCell>
+
+Not As Described.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+4554
+
+</TableCell>
+<TableCell>
+
+Goods/Services Ordered but Not Received.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+4750
+
+</TableCell>
+<TableCell>
+
+Car Rental Charge Non-Qualified or Unsubstantiated.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+4752
+
+</TableCell>
+<TableCell>
+
+Credit/Debit Presentment Error.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+4754
+
+</TableCell>
+<TableCell>
+
+Local Regulatory/Legal Dispute.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+4755
+
+</TableCell>
+<TableCell>
+
+No Valid Authorization.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+4758
+
+</TableCell>
+<TableCell>
+
+Expired/Not Yet Valid Card.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+4763
+
+</TableCell>
+<TableCell>
+
+Fraud Full Recourse.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+4798
+
+</TableCell>
+<TableCell>
+
+Fraud Liability Shift — Counterfeit.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+4799
+
+</TableCell>
+<TableCell>
+
+Fraud Liability Shift — Lost/Stolen.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+---
+
+## American Express for US merchants
+
+<Table>
+<TableHead headers={['Reason code', 'Description']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+A01
+
+</TableCell>
+<TableCell>
+
+Charge Amount Exceeds Authorization Amount.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+A02
+
+</TableCell>
+<TableCell>
+
+No Valid Authorization.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+A08
+
+</TableCell>
+<TableCell>
+
+Authorization Approval Expired.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+F10
+
+</TableCell>
+<TableCell>
+
+Missing Imprint (requires Inquiry prior to Chargeback).
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+F22
+
+</TableCell>
+<TableCell>
+
+Expired or Not Yet Valid Card.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+F24
+
+</TableCell>
+<TableCell>
+
+No Card Member Authorization (requires Inquiry prior to Chargeback).
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+F29
+
+</TableCell>
+<TableCell>
+
+Card Not Present.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+F30
+
+</TableCell>
+<TableCell>
+
+EMV Counterfeit.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+C02
+
+</TableCell>
+<TableCell>
+
+Credit (or Partial Credit) Not Processed.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+C04
+
+</TableCell>
+<TableCell>
+
+Goods/Services Returned or Refused.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+C05
+
+</TableCell>
+<TableCell>
+
+Goods/Services Canceled.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+C08
+
+</TableCell>
+<TableCell>
+
+Goods/Services Not Received or Only Partially Received
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+C14
+
+</TableCell>
+<TableCell>
+
+Paid by Other Means.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+C18
+
+</TableCell>
+<TableCell>
+
+"No Show" or CARDeposit Canceled.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+C28
+
+</TableCell>
+<TableCell>
+
+Canceled Recurring Billing.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+C31
+
+</TableCell>
+<TableCell>
+
+Goods/Services Not as Described.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+C32
+
+</TableCell>
+<TableCell>
+
+Goods/Services Damaged or Defective.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+M10
+
+</TableCell>
+<TableCell>
+
+Vehicle Rental - Capital Damages.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+M49
+
+</TableCell>
+<TableCell>
+
+Vehicle Rental - Theft or Loss of Use.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+P01
+
+</TableCell>
+<TableCell>
+
+Unassigned Card Number.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+P03
+
+</TableCell>
+<TableCell>
+
+Credit Processed as Charge.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+P04
+
+</TableCell>
+<TableCell>
+
+Charge Processed as Credit.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+P05
+
+</TableCell>
+<TableCell>
+
+Incorrect Charge Amount.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+P07
+
+</TableCell>
+<TableCell>
+
+Late Submission.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+P08
+
+</TableCell>
+<TableCell>
+
+Duplicate Charge.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+P22
+
+</TableCell>
+<TableCell>
+
+Nonmatching Card Number.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+P23
+
+</TableCell>
+<TableCell>
+
+Currency Discrepancy.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+R03
+
+</TableCell>
+<TableCell>
+
+Insufficient Reply (requires Inquiry prior to Chargeback).
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+R13
+
+</TableCell>
+<TableCell>
+
+No Reply (requires Inquiry prior to Chargeback).
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+M01
+
+</TableCell>
+<TableCell>
+
+Chargeback Authorization (requires Inquiry prior to Chargeback).
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+FR2
+
+</TableCell>
+<TableCell>
+
+Fraud Full Recourse Program.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+FR4
+
+</TableCell>
+<TableCell>
+
+Immediate Chargeback Program.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+FR6
+
+</TableCell>
+<TableCell>
+
+Partial Immediate Chargeback Program.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+---
+
+## Diners
+
+<Table>
+<TableHead headers={['Reason code', 'Description']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+A02
+
+</TableCell>
+<TableCell>
+
+Acquirer Stand-In Processing Errors.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+A03
+
+</TableCell>
+<TableCell>
+
+Required Authorization Not Obtained.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+A05
+
+</TableCell>
+<TableCell>
+
+Card Not Valid or Expired.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+A06
+
+</TableCell>
+<TableCell>
+
+Unissued Account Number.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+A07
+
+</TableCell>
+<TableCell>
+
+Incorrect Charge type Provided in Authorization Request.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+B21
+
+</TableCell>
+<TableCell>
+
+Requested Digitized Copy of the Charge Form Not Received.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+B22
+
+</TableCell>
+<TableCell>
+
+Wrong Document Received for Retrieval Request.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+B23
+
+</TableCell>
+<TableCell>
+
+Requested Digitized Copy of the Charge Form Not Legible.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+B24
+
+</TableCell>
+<TableCell>
+
+Charge Older Than Thirty Days.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+B25
+
+</TableCell>
+<TableCell>
+
+Duplicate Charge.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+B26
+
+</TableCell>
+<TableCell>
+
+Alternate Settlement Currency Incorrect Exchange Rates.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+B27
+
+</TableCell>
+<TableCell>
+
+Incorrect Currency.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+C41
+
+</TableCell>
+<TableCell>
+
+Key Entered Fraudulent Charge.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+C42
+
+</TableCell>
+<TableCell>
+
+Card Not Present Fraudulent Charge.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+C43
+
+</TableCell>
+<TableCell>
+
+Skimming Counterfeit Fraudulent Charge.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+C44
+
+</TableCell>
+<TableCell>
+
+Manual Counterfeit Fraudulent Charge.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+C46
+
+</TableCell>
+<TableCell>
+
+Multiple Charges at Service Establishment Fraudulent Transaction.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+C47
+
+</TableCell>
+<TableCell>
+
+Unsigned Fraudulent Transactions.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+C48
+
+</TableCell>
+<TableCell>
+
+Card Not Present Fraudulent Transaction.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+C49
+
+</TableCell>
+<TableCell>
+
+Cardmember Activated Transaction.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+C50
+
+</TableCell>
+<TableCell>
+
+Suspect Service Establishment – No Response to the Suspected Fraudulent
+Service Establishment Report.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+C51
+
+</TableCell>
+<TableCell>
+
+Suspect Service Establishment–Terminated Service Establishment.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+D61
+
+</TableCell>
+<TableCell>
+
+Altered Charges.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+D62
+
+</TableCell>
+<TableCell>
+
+Service Not Received.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+D63
+
+</TableCell>
+<TableCell>
+
+Merchandise Not Received.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+D64
+
+</TableCell>
+<TableCell>
+
+Additional Amounts on Settled Charges.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+D65
+
+</TableCell>
+<TableCell>
+
+Credit Processed as a Charge.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+D66
+
+</TableCell>
+<TableCell>
+
+Credit Not Processed.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+D67
+
+</TableCell>
+<TableCell>
+
+Cardmember Paid by Other Means.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+D68
+
+</TableCell>
+<TableCell>
+
+No Show Charges.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+D69
+
+</TableCell>
+<TableCell>
+
+Canceled Recurring Transaction.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+D70
+
+</TableCell>
+<TableCell>
+
+Unsigned Charges.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+D71
+
+</TableCell>
+<TableCell>
+
+Non Receipt of Cash (ATM).
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+---
+
+## Discover for US merchants
+
+<Table>
+<TableHead headers={['Reason code', 'Description']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+4502
+
+</TableCell>
+<TableCell>
+
+Illegible Sales Data.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+4534
+
+</TableCell>
+<TableCell>
+
+Duplicate Processing.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+4541
+
+</TableCell>
+<TableCell>
+
+Recurring Payments.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+4542
+
+</TableCell>
+<TableCell>
+
+Late Presentation.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+4550
+
+</TableCell>
+<TableCell>
+
+Credit/Debit Posted Incorrectly.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+4553
+
+</TableCell>
+<TableCell>
+
+Cardholder Disputes Quality of Goods or Services.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+4554
+
+</TableCell>
+<TableCell>
+
+Not Classified.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+4586
+
+</TableCell>
+<TableCell>
+
+Altered Amount.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+4753
+
+</TableCell>
+<TableCell>
+
+Invalid Cardholder Number.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+4755
+
+</TableCell>
+<TableCell>
+
+Non-Receipt of Goods or Services.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+4757
+
+</TableCell>
+<TableCell>
+
+Violation of Operating Regulations.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+4863
+
+</TableCell>
+<TableCell>
+
+Authorization Noncompliance.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+7001
+
+</TableCell>
+<TableCell>
+
+Fraud - Card Present Transaction.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+7030
+
+</TableCell>
+<TableCell>
+
+Fraud - Card Not Present Transaction.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+8002
+
+</TableCell>
+<TableCell>
+
+Credit Not Processed.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+---
+
+## JCB
+
+### Invalid transaction/authorization
+
+<Table>
+<TableHead headers={['Reason code', 'Description', 'Media required']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+501
+
+</TableCell>
+<TableCell>
+
+No Authorization /Non-JCB Card
+
+</TableCell>
+<TableCell>
+
+Documentation to show that the transaction was authorized online by the
+issuer with an authorization number.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+503
+
+</TableCell>
+<TableCell>
+
+Expired JCB Card
+
+</TableCell>
+<TableCell>
+
+Documentation to show that the transaction was authorized online by the
+issuer with an authorization number.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+521
+
+</TableCell>
+<TableCell>
+
+Transaction Exceeds Floor Limit
+
+</TableCell>
+<TableCell>
+
+Documentation to show that the transaction was authorized online by the
+issuer with an authorization number.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+522
+
+</TableCell>
+<TableCell>
+
+Authorization Declined
+
+</TableCell>
+<TableCell>
+
+Documentation to show that the transaction was authorized online by the
+issuer with an authorization number
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+523
+
+</TableCell>
+<TableCell>
+
+Incorrect Cardnumber
+
+</TableCell>
+<TableCell>
+
+Documentation to show that the transaction was authorized online by the
+issuer with an authorization number
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+541
+
+</TableCell>
+<TableCell>
+
+Illegible Item
+
+</TableCell>
+<TableCell>
+
+Documentation to show that the transaction was authorized online by the
+issuer with an authorization number
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+547
+
+</TableCell>
+<TableCell>
+
+JCB Card on Stop List
+
+</TableCell>
+<TableCell>
+
+Documentation to show that the transaction was authorized online by the
+issuer with an authorization number
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+581
+
+</TableCell>
+<TableCell>
+
+Split Sale
+
+</TableCell>
+<TableCell>
+
+Documentation to show that the transaction was authorized online by the
+issuer with an authorization number
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+### Retrieval requests
+
+<Table>
+<TableHead headers={['Reason code', 'Description', 'Media required']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+516
+
+</TableCell>
+<TableCell>
+
+Non-Receipt of Requested Item
+
+</TableCell>
+<TableCell>
+
+Documentation to show that a legible and correct documentation were sent
+with the fulfilment.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+517
+
+</TableCell>
+<TableCell>
+
+Requested Copy Illegible
+
+</TableCell>
+<TableCell>
+
+Documentation to show that a legible and correct documentation were sent
+with the fulfilment.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+580
+
+</TableCell>
+<TableCell>
+
+Non-Receipt of T&E Document
+
+</TableCell>
+<TableCell>
+
+Documentation to show that a legible and correct documentation were sent
+with the fulfilment.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+### T&E transactions
+
+<Table>
+<TableHead headers={['Reason code', 'Description', 'Media required']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+537
+
+</TableCell>
+<TableCell>
+
+No Show Dispute
+
+</TableCell>
+<TableCell>
+
+Copy of cancelation and refund policy. Documentation to proof the
+correct processing of the No show charge, or evidence showing that the
+charge is not in connection to No show.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+538
+
+</TableCell>
+<TableCell>
+
+Advance Deposit
+
+</TableCell>
+<TableCell>
+
+Copy of cancelation and refund policy. Documentation showing that
+cardholder did not cancel according to cancelation policy and that the
+cancelation/refund policy was properly disclosed to the cardholder at
+the beginning of purchase.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+### Card absent transactions
+
+<Table>
+<TableHead headers={['Reason code', 'Description']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+544
+
+</TableCell>
+<TableCell>
+
+Canceled Recurring transaction
+
+</TableCell>
+<TableCell>
+
+Copy of cancelation and refund policy. Documentation showing that
+cardholder did not cancel according to cancelation policy and that the
+cancelation/refund policy was properly disclosed to the cardholder at
+the beginning purchase. Copy of usage log showing use of service after
+date of claimed cancelation.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+546
+
+</TableCell>
+<TableCell>
+
+Unauthorized Purchase
+
+</TableCell>
+<TableCell>
+
+Documentation showing cardholders involvement and authorization of the
+transaction.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+### Cardmember disputes
+
+<Table>
+<TableHead headers={['Reason code', 'Description', 'Media required']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+502
+
+</TableCell>
+<TableCell>
+
+Card Member Dispute
+
+</TableCell>
+<TableCell>
+
+Documentation as applicable. Copy of cancelation and refund policy.
+Documentation showing that the cancelation/refund policy was properly
+disclosed to the cardholder at the beginning purchase. Evidence showing
+that the merchandise/service was received by the cardholder e.g.
+delivery receipt signed by cardholder. Evidence showing that the
+description of goods on order form/invoice was delivered, accepted and
+signed for by the cardholder. Copy of email communications with
+cardholder.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+513
+
+</TableCell>
+<TableCell>
+
+Credit Not Received
+
+</TableCell>
+<TableCell>
+
+Copy of cancelation and refund policy. Documentation showing that
+cardholder did not cancel according to cancelation policy and that the
+cancelation/refund policy was properly disclosed to the cardholder at
+the beginning purchase. Proof that credit was processed, if applicable.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+526
+
+</TableCell>
+<TableCell>
+
+No Signature
+
+</TableCell>
+<TableCell>
+
+Copy of card present sale slip signed by the cardholder or verified with PIN.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+527
+
+</TableCell>
+<TableCell>
+
+No Imprint
+
+</TableCell>
+<TableCell>
+
+Copy of card present sale slip signed by the cardholder or verified with PIN.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+534
+
+</TableCell>
+<TableCell>
+
+Unauthorized Multiple Transaction
+
+</TableCell>
+<TableCell>
+
+Copy of two card present sale slips signed by the cardholder or verified with PIN.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+554
+
+</TableCell>
+<TableCell>
+
+Non-receipt of Merchandise
+
+</TableCell>
+<TableCell>
+
+Evidence showing that the merchandise/service was received by the
+cardholder e.g., delivery receipt signed by cardholder. Evidence showing
+that the description of goods on order form/invoice was delivered,
+accepted and signed for by the cardholder.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+583
+
+</TableCell>
+<TableCell>
+
+Paid by Other Means
+
+</TableCell>
+<TableCell>
+
+Documentation proving that the merchant did not receive payment by other means.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+### Processing errors
+
+<Table>
+<TableHead headers={['Reason code', 'Description', 'Media required']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+507
+
+</TableCell>
+<TableCell>
+
+Incorrect Transaction Amount
+
+</TableCell>
+<TableCell>
+
+Documentation showing that the cardholder authorized the amount charged.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+510
+
+</TableCell>
+<TableCell>
+
+Mispot
+
+</TableCell>
+<TableCell>
+
+Documentation showing that the cardholder authorized the amount charged.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+512
+
+</TableCell>
+<TableCell>
+
+Duplicate Processing
+
+</TableCell>
+<TableCell>
+
+Copies of two different transaction documents showing different merchandise or service.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+524
+
+</TableCell>
+<TableCell>
+
+Addition Error
+
+</TableCell>
+<TableCell>
+
+Documentation proofing the correct addition and that the cardholder authorized the amount charged.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+525
+
+</TableCell>
+<TableCell>
+
+Altered Amount
+
+</TableCell>
+<TableCell>
+
+Documentation showing that the cardholder authorized the amount charged.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+536
+
+</TableCell>
+<TableCell>
+
+Late Submission
+
+</TableCell>
+<TableCell>
+
+Proof that the transaction was processed within the presentment timeframe rules.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+545
+
+</TableCell>
+<TableCell>
+
+Incorrect ECI
+
+</TableCell>
+<TableCell>
+
+Documentation showing the cardmembers authorization of the ECI transaction.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+582
+
+</TableCell>
+<TableCell>
+
+Domestic Transaction
+
+</TableCell>
+<TableCell>
+
+Evidence showing the transaction to be international.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+
+
+

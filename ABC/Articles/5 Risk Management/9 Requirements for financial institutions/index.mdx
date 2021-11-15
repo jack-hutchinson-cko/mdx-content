@@ -1,0 +1,159 @@
+---
+title: Requirements for financial institutions
+account: ABC
+---
+
+Due to requirements implemented by Visa and Mastercard Europe, any business categorized as a financial institution (MCC 6012) must provide additional information when processing any domestic UK transaction (transactions for customers based in the UK) through their account.
+
+The scope for these changes varies slightly between Visa and Mastercard:
+
+*   **Visa**: applies to all merchants categorized as MCC 6012 on all payments.
+*   **Mastercard**: applies only to merchants categorized as MCC 6012 for domestic UK debit card payments being used to pay off a credit or prepaid card.
+
+<TipBox variant="info">
+
+For **Mastercard payments** or **payments involving** **a full card number**, merchants categorized as a financial institution must be fully PCI compliant (SAQ D PCI).
+
+</TipBox>
+
+---
+
+## What is a financial institution?
+
+The term financial institution encapsulates businesses that, for example, issue payday loans, handle mortgage repayments, or facilitate the paying off of credit card balances. These are businesses that fall under the Merchant Category Code 6012.
+
+If your business falls into this area, you will be **required** to submit additional information with all your UK transactions.
+
+---
+
+## What do I need to do?
+
+If your company is a financial institution, you must provide further information, when processing a domestic UK transaction with us, about the primary recipient of the funds. Additional fields needed for financial institutions:
+
+The primary recipient's...
+
+*   Date of birth
+*   Account number
+*   Postcode
+*   Surname
+
+### Example request
+
+```json
+    "recipient": {
+      "dob": "1991-12-30",
+      "account_number": "8573498821",
+      "zip": "W1T",
+      "last_name": "Smith"
+    }
+```
+
+### Body parameters
+
+<Table>
+<TableHead headers={['Field name', 'Description', 'Example', 'Length' ]} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`account_number`
+
+<StatusTag type="required" />
+<TypeTag type="string" />
+</TableCell>
+<TableCell>
+
+*   **Visa**: If the payment is being made with a VISA card, then provide the first six digits and the last four digits of the primary recipient’s card, without any spaces. Or, the first 10 digits of the primary recipient’s account number.
+*   **Mastercard**: If the payment is being made with a Mastercard card, then provide the primary recipient's full card number.
+
+</TableCell>
+<TableCell>
+
+`8573498821`
+
+</TableCell>
+<TableCell>
+
+*   **Visa**: 10
+*   **Mastercard**: Full
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`dob`
+
+<StatusTag type="required" />
+<TypeTag type="string" />
+</TableCell>
+<TableCell>
+
+The date of birth of the primary recipient in the following format: `yyyy-mm-dd`
+
+</TableCell>
+<TableCell>
+
+`1991-12-30`
+
+</TableCell>
+<TableCell>
+
+8
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`zip`
+
+<StatusTag type="required" />
+<TypeTag type="string" />
+</TableCell>
+<TableCell>
+
+The first part of the UK postcode. For example, W1T 4TJ would be `W1T`.
+
+</TableCell>
+<TableCell>
+
+`W1T`
+
+</TableCell>
+<TableCell>
+
+6
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`last_name`
+
+<StatusTag type="required" />
+<TypeTag type="string" />
+</TableCell>
+<TableCell>
+
+The first six characters of the primary recipient’s surname. Only alphabetic characters are allowed.
+
+</TableCell>
+<TableCell>
+
+`Smith`
+
+</TableCell>
+<TableCell>
+
+6
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+
+
+

@@ -1,0 +1,448 @@
+---
+title: Slovenia
+account: NAS
+---
+
+### Basic information
+
+<TipBox variant="info">
+
+If you want the recipient to be paid instantly, we recommend including `“preferred_network”: “instant”` in your request. If the recipient’s bank does not accept SEPA Instant, or the destination amount is above 100,000.00 EUR, we will automatically send the payout as EUR International Wire. Please note that if the preferred network is specified and the recipient bank does NOT support SEPA Instant, the payout will be rejected.
+
+</TipBox>
+
+<tabs withBorder={false}>
+<tab title="Local">
+
+<Table>
+<TableBody>
+<TableRow>
+<TableCell withBackground>
+
+**Country code**
+
+</TableCell>
+<TableCell colSpan={3}>
+
+SI
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell withBackground>
+
+**Supported currency**
+
+</TableCell>
+<TableCell colSpan={3}>
+
+EUR
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell withBackground>
+
+**Scheme**
+
+</TableCell>
+<TableCell colSpan={3}>
+
+SEPA:
+- **Minimum amount (local currency):** 0.01
+- **Maximum amount (local currency):** no maximum
+- **Cut-off time:** 11:30 GMT
+- **Settlement:** T+1 next day
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+### Payment information
+
+<Accordion title="Individual" headerIcon={<IndividualPayment/>}>
+
+### Beneficiary information
+
+<Table>
+<TableBody>
+<TableRow>
+<TableCell withBackground>
+
+**Beneficiary type**
+
+</TableCell>
+<TableCell>
+
+The type of account holder. Set this to `individual`.
+
+</TableCell>
+<TableCell>
+
+`account_holder.type`
+<StatusTag type="required" />
+<TypeTag type="enum" />
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell withBackground rowSpan="2">
+
+**Beneficiary name**
+
+</TableCell>
+<TableCell rowSpan="2">
+
+The account holder's first and last name.
+
+</TableCell>
+<TableCell>
+
+`account_holder.first_name`
+<StatusTag type="required" />
+<TypeTag type="string" />
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`account_holder.last_name`
+<StatusTag type="required" />
+<TypeTag type="string" />
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell withBackground rowSpan="5">
+
+**Beneficiary address**
+
+</TableCell>
+<TableCell rowSpan="5">
+
+The account holder's address.
+
+</TableCell>
+<TableCell>
+
+`account_holder.billing_address.address_line1`
+<StatusTag type="OPTIONAL" />
+<TypeTag type="string" />
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`account_holder.billing_address.address_line2`
+<StatusTag type="OPTIONAL" />
+<TypeTag type="string" />
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`account_holder.billing_address.city`
+<StatusTag type="OPTIONAL" />
+<TypeTag type="string" />
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`account_holder.billing_address.zip`
+<StatusTag type="OPTIONAL" />
+<TypeTag type="string" />
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`account_holder.billing_address.country`
+<StatusTag type="required" />
+<TypeTag type="enum, 2 characters" />
+<InfoBox>
+
+This must be a [two-letter ISO code](/resources/codes/country-codes).
+
+</InfoBox>
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+### Bank details
+
+<Table>
+<TableBody>
+<TableRow>
+<TableCell withBackground>
+
+**IBAN**
+
+</TableCell>
+<TableCell>
+
+The account holder's IBAN.
+
+</TableCell>
+<TableCell>
+
+`iban`
+<StatusTag type="required" />
+<TypeTag type="string, 21 characters" />
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell withBackground>
+
+**SWIFT BIC**
+
+</TableCell>
+<TableCell>
+
+The account holder's SWIFT BIC.
+
+</TableCell>
+<TableCell>
+
+`swift_bic`
+<StatusTag type="required" />
+<TypeTag type="string, ^[a-z]{6}[a-z0-9]{2}([a-z0-9]{3})?$" />
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+</Accordion>
+
+<Accordion title="Corporate" headerIcon={<CorporatePayment/>}>
+
+### Beneficiary information
+
+<Table>
+<TableBody>
+<TableRow>
+<TableCell withBackground>
+
+**Beneficiary type**
+
+</TableCell>
+<TableCell>
+
+The type of account holder. Set this to `corporate`.
+
+</TableCell>
+<TableCell>
+
+`account_holder.type`
+<StatusTag type="required" />
+<TypeTag type="enum" />
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell withBackground>
+
+**Beneficiary name**
+
+</TableCell>
+<TableCell>
+
+The account holder's company name.
+
+</TableCell>
+<TableCell>
+
+`account_holder.company_name`
+<StatusTag type="required" />
+<TypeTag type="string" />
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell withBackground rowSpan="5">
+
+**Beneficiary address**
+
+</TableCell>
+<TableCell rowSpan="5">
+
+The account holder's address.
+
+</TableCell>
+<TableCell>
+
+`account_holder.billing_address.address_line1`
+<StatusTag type="required" />
+<TypeTag type="string" />
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`account_holder.billing_address.address_line2`
+<StatusTag type="OPTIONAL" />
+<TypeTag type="string" />
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`account_holder.billing_address.city`
+<StatusTag type="required" />
+<TypeTag type="string" />
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`account_holder.billing_address.zip`
+<StatusTag type="OPTIONAL" />
+<TypeTag type="string" />
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`account_holder.billing_address.country`
+<StatusTag type="required" />
+<TypeTag type="enum, 2 characters" />
+<InfoBox>
+
+This must be a [two-letter ISO code](/resources/codes/country-codes).
+
+</InfoBox>
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+### Bank details
+
+<Table>
+<TableBody>
+<TableRow>
+<TableCell withBackground>
+
+**IBAN**
+
+</TableCell>
+<TableCell>
+
+The account holder's IBAN.
+
+</TableCell>
+<TableCell>
+
+`iban`
+<StatusTag type="required" />
+<TypeTag type="string, 21 characters" />
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell withBackground>
+
+**SWIFT BIC**
+
+</TableCell>
+<TableCell>
+
+The account holder's SWIFT BIC.
+
+</TableCell>
+<TableCell>
+
+`swift_bic`
+<StatusTag type="required" />
+<TypeTag type="string, ^[a-z]{6}[a-z0-9]{2}([a-z0-9]{3})?$" />
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+</Accordion>
+
+### Example
+
+<tabs withBorder={false}>
+<tab title="Payment instrument request (EUR)">
+
+``` json
+{
+  "type": "bank_account",
+  "iban": "SI56263300012039086",
+  "swift_bic": "BSLJSI2XXXX",
+  "currency": "EUR",
+  "country": "SI",
+  "account_holder": {
+    "first_name": "John",
+    "last_name": "Smith",
+    "address_line1": "99 Windsor Road",
+    "address_city": "Ljubljana",
+    "country_code": "SI",
+    "billing_address": {
+      "address_line1": "99 Windsor Road",
+      "country_code": "SI",
+      "address_city": "Ljubljana"
+    }
+  }
+}
+```
+</tab>
+<tab title="Payout request (EUR)">
+
+``` json
+{
+  "currency": "EUR",
+  "source": {
+    "amount": 100,
+    "type": "currency_account",
+    "id": "ca_vrsqwv6tgtyufgi5xahfqmqq7a"
+  },
+  "reference": "CKO Test",
+  "destination": {
+    "type": "id",
+    "id": "src_6gtxe3cxns7uld5ytsemv6pdma"
+  },
+  "billing_descriptor": {
+    "reference": "CKO Test"
+  },
+  "sender": {
+    "type": "instrument",
+    "reference": "CKO Test",
+    "first_name": "John",
+    "last_name": "Smith",
+    "address_line1": "99 Windsor Road",
+    "address_city": "Ljubljana",
+    "country_code": "SI"
+  },
+  "instruction": {
+    "purpose": "CKO Test EUR"
+  },
+  "processing_channel_id": "pc_hpswyyx23geezflc2ocz3exn4y"
+}
+```
+</tab>
+</tabs>
+
+</tab>
+<tab title="International">
+
+Coming soon.
+
+</tab>
+</tabs>

@@ -1,0 +1,36 @@
+---
+title: dispute_expired
+account: NAS
+---
+
+## Example: Dispute expired
+
+```json
+    {
+    "id": "evt_h4htejbikgjurfdpczhbfvgh7a",
+    "type": "dispute_expired",
+    "created_on": "2018-06-21T12:00:31Z",
+    "data": {
+        "id": "dsp_9rjdlsd4epepfjyyf9vl",
+        "date": "2018-07-06T11:19:20Z",
+        "category": "canceled_recurring",
+        "amount": 20020,
+        "currency": "USD",
+        "reason_code": "10.4",
+        "payment_id": "pay_cnhuomagalglgozxy5zm",
+        "payment_action_id": "act_7B15779D173D0W45700D",
+        "payment_reference": "some-company-ref",
+        "payment_method": "Visa"
+        },
+    "_links": {
+        "self": {
+            "href": "https://api.checkout.com/workflows/events/evt_h4htejbikgjurfdpczhbfvgh7a"
+            },
+        "subject": {
+            "href": "https://api.checkout.com/workflows/events/subject/dsp_9rjdlsd4epepfjyyf9vl"
+            }
+        }
+    }
+```
+
+

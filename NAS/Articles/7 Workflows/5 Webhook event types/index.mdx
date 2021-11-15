@@ -1,0 +1,995 @@
+---
+title: Webhook event types
+account: NAS
+---
+
+## Gateway
+
+<Accordion title="See gateway event types and descriptions">
+<Table>
+<TableHead headers={['Event type', 'Display name', 'Description']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`payment_voided`
+
+View a [payment voided webhook example](/workflows/webhook-event-types/payment_voided).
+
+</TableCell>
+<TableCell>
+
+Payment voided	
+
+</TableCell>
+<TableCell>
+
+Occurs when a void is successful.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`payment_void_declined`
+
+View a [payment void declined webhook example](/workflows/webhook-event-types/payment_void_declined).
+
+</TableCell>
+<TableCell>
+
+Payment void declined	
+
+</TableCell>
+<TableCell>
+
+Occurs when a void is declined.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`payment_returned`
+
+View a [payment returned webhook example](/workflows/webhook-event-types/payment_returned).
+
+</TableCell>
+<TableCell>
+
+Payment returned	
+
+</TableCell>
+<TableCell>
+
+Occurs when a payment is returned.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`payment_refunded`
+
+View a [payment refunded webhook example](/workflows/webhook-event-types/payment_refunded).
+
+</TableCell>
+<TableCell>
+
+Payment refunded	
+
+</TableCell>
+<TableCell>
+
+Occurs when a refund is successful.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`payment_refund_pending`
+
+View a [payment refund pending example](/workflows/webhook-event-types/payment_refund_pending).
+
+</TableCell>
+<TableCell>
+
+Payment refund pending	
+
+</TableCell>
+<TableCell>
+
+Occurs when a refund request has been successfully initiated.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`payment_refund_declined`
+
+View a [payment refund declined webhook example](/workflows/webhook-event-types/payment_refund_declined).
+
+</TableCell>
+<TableCell>
+
+Payment refund declined	
+
+</TableCell>
+<TableCell>
+
+Occurs when a refund is declined.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`payment_pending`
+
+View a [payment pending webhook example](/workflows/webhook-event-types/payment_pending).
+
+</TableCell>
+<TableCell>
+
+Payment pending	
+
+</TableCell>
+<TableCell>
+
+Occurs when a payment request has successfully initiated.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`payment_paid`
+
+View a [payment paid webhook example](/workflows/webhook-event-types/payment_paid).
+
+</TableCell>
+<TableCell>
+
+Payment paid	
+
+</TableCell>
+<TableCell>
+
+Occurs when a payment is paid.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`payment_expired`
+
+View a [payment expired webhook example](/workflows/webhook-event-types/payment_expired).
+
+</TableCell>
+<TableCell>
+
+Payment expired	
+
+</TableCell>
+<TableCell>
+
+Occurs when the payment has expired.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`payment_declined`
+
+View a [payment declined webhook example](/workflows/webhook-event-types/payment_declined).
+
+</TableCell>
+<TableCell>
+
+Payment declined	
+
+</TableCell>
+<TableCell>
+
+Occurs when a payment is declined.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`payment_captured`
+
+View a [payment captured webhook example](/workflows/webhook-event-types/payment_captured).
+
+</TableCell>
+<TableCell>
+
+Payment captured	
+
+</TableCell>
+<TableCell>
+
+Occurs when a capture is successful.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`payment_capture_pending`
+
+View a [payment capture pending webhook example](/workflows/webhook-event-types/payment_capture_pending).
+
+</TableCell>
+<TableCell>
+
+Payment capture pending	
+
+</TableCell>
+<TableCell>
+
+Occurs when the customer has approved the payment on the banking page.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`payment_capture_declined`
+
+View a [payment capture declined webhook example](/workflows/webhook-event-types/payment_capture_declined).
+
+</TableCell>
+<TableCell>
+
+Payment capture declined	
+
+</TableCell>
+<TableCell>
+
+Occurs when a capture is declined.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`payment_canceled`
+
+View a [payment canceled webhook example](/workflows/webhook-event-types/payment_canceled).
+
+</TableCell>
+<TableCell>
+
+Payment canceled	
+
+</TableCell>
+<TableCell>
+
+Occurs when the customer has canceled the payment or the payment has failed.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`payment_authorization_incremented`
+
+View a [payment authorization incremented webhook example](/workflows/webhook-event-types/payment_authorization_incremented).
+
+</TableCell>
+<TableCell>
+
+Payment authorization incremented	
+
+</TableCell>
+<TableCell>
+
+Occurs when an authorization is successfully incremented.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`payment_authorization_increment_declined`
+
+View a [payment authorization increment declined webhook example](/workflows/webhook-event-types/payment_authorization_increment_declined).
+
+</TableCell>
+<TableCell>
+
+Payment authorization increment declined	
+
+</TableCell>
+<TableCell>
+
+Occurs when an authorization is declined.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`payment_approved`
+
+View a [payment approved webhook example](/workflows/webhook-event-types/payment_approved).
+
+</TableCell>
+<TableCell>
+
+Payment approved	
+
+</TableCell>
+<TableCell>
+
+Occurs when a payment is successfully approved.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`card_verified`
+
+View a [card verified webhook example](/workflows/webhook-event-types/card_verified).
+
+</TableCell>
+<TableCell>
+
+Card verified	
+
+</TableCell>
+<TableCell>
+
+Occurs when a card verification is successful.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`card_verification_declined`
+
+View a [card verification declined webhook example](/workflows/webhook-event-types/card_verification_declined).
+
+</TableCell>
+<TableCell>
+
+Card verification declined	
+
+</TableCell>
+<TableCell>
+
+Occurs when a card verification is declined.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+</Accordion>
+
+## Marketplace
+ 
+<Accordion title="See marketplace event types and descriptions">
+<Table>
+<TableHead headers={['Event type', 'Display name', 'Description']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`sub_entity_created`
+
+View a [sub entity created webhook example](/workflows/webhook-event-types/sub_entity_created).
+
+</TableCell>
+<TableCell>
+
+Sub entity created	
+
+</TableCell>
+<TableCell>
+
+The sub-entity has been created successfully.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`payments_enabled`
+
+View a [payments enabled webhook example](/workflows/webhook-event-types/payments_enabled).
+
+</TableCell>
+<TableCell>
+
+Payments enabled	
+
+</TableCell>
+<TableCell>
+
+Occurs when payment capabilities are enabled for a sub-entity.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`payments_disabled`
+
+View a [payments disabled webhook example](/workflows/webhook-event-types/payments_disabled).
+
+</TableCell>
+<TableCell>
+
+Payments disabled	
+
+</TableCell>
+<TableCell>
+
+Occurs when payment capabilities are disabled for a sub-entity.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`payouts_enabled`
+
+View a [payouts enabled webhook example](/workflows/webhook-event-types/payouts_enabled).
+
+</TableCell>
+<TableCell>
+
+Payouts enabled	
+
+</TableCell>
+<TableCell>
+
+Occurs when payout capabilities are enabled for a sub-entity.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`payouts_disabled`
+
+View a [payouts disabled webhook example](/workflows/webhook-event-types/payouts_disabled).
+
+</TableCell>
+<TableCell>
+
+Payouts disabled	
+
+</TableCell>
+<TableCell>
+
+Occurs when payout capabilities are disabled for a sub-entity.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`vmss_passed`
+
+View a [VMSS passed webhook example](/workflows/webhook-event-types/vmss_passed).
+
+</TableCell>
+<TableCell>
+
+VMSS passed	
+
+</TableCell>
+<TableCell>
+
+Occurs when a sub-entity passes due diligence VMSS checks.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`vmss_failed`
+
+View a [VMSS failed webhook example](/workflows/webhook-event-types/vmss_failed).
+
+</TableCell>
+<TableCell>
+
+VMSS failed	
+
+</TableCell>
+<TableCell>
+
+Occurs when a sub-entity fails due diligence VMSS checks.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`match_passed`
+
+View a [MATCH passed webhook example](/workflows/webhook-event-types/match_passed).
+
+</TableCell>
+<TableCell>
+
+Match passed	
+
+</TableCell>
+<TableCell>
+
+The sub-entity has passed their MATCH check.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`match_failed`
+
+View a [MATCH failed webhook example](/workflows/webhook-event-types/match_failed).
+
+</TableCell>
+<TableCell>
+
+Match failed	
+
+</TableCell>
+<TableCell>
+
+The sub-entity has failed their MATCH check.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`full_dd_passed`
+
+View a [full DD passed webhook example](/workflows/webhook-event-types/full_dd_passed).
+
+</TableCell>
+<TableCell>
+
+Full DD passed	
+
+</TableCell>
+<TableCell>
+
+The sub-entity has passed their due diligence checks.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`full_dd_failed`
+
+View a [full DD failed webhook example](/workflows/webhook-event-types/full_dd_failed).
+
+</TableCell>
+<TableCell>
+
+Full DD failed	
+
+</TableCell>
+<TableCell>
+
+The sub-entity has failed their due diligence checks.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`status_changed`
+
+View a [status changed webhook example](/workflows/webhook-event-types/status_changed).
+
+</TableCell>
+<TableCell>
+
+Status changed	
+
+</TableCell>
+<TableCell>
+
+Occurs when the status of a sub-entity has changed.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`payment_instrument_created`
+
+View a [payment instrument created webhook example](/workflows/webhook-event-types/payment_instrument_created).
+
+</TableCell>
+<TableCell>
+
+Payment instrument created	
+
+</TableCell>
+<TableCell>
+
+Occurs when a payment instrument is created associated with a sub-entity.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`payment_instrument_error`
+
+View a [payment instrument error webhook example](/workflows/webhook-event-types/payment_instrument_error).
+
+</TableCell>
+<TableCell>
+
+Payment instrument error	
+
+</TableCell>
+<TableCell>
+
+Occurs when a payment instrument has failed to be created.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`payment_instrument_verification_passed`
+
+View a [payment instrument verification passed webhook example](/workflows/webhook-event-types/payment_instrument_verification_passed).
+
+</TableCell>
+<TableCell>
+
+Payment instrument verification passed	
+
+</TableCell>
+<TableCell>
+
+The payment instrument has passed verification.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`payment_instrument_verification_failed`
+
+View a [payment instrument verification failed webhook example](/workflows/webhook-event-types/payment_instrument_verification_failed).
+
+</TableCell>
+<TableCell>
+
+Payment instrument verification failed	
+
+</TableCell>
+<TableCell>
+
+The payment instrument has failed verification.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+</Accordion>
+
+## Dispute
+ 
+<Accordion title="See dispute event types and descriptions">
+<Table>
+<TableHead headers={['Event type', 'Display name', 'Description']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`request_for_information_received`
+
+View a [request for information received webhook example](/workflows/webhook-event-types/request_for_information_received).
+
+</TableCell>
+<TableCell>
+
+Request for information received	
+
+</TableCell>
+<TableCell>
+
+Occurs when additional information has been requested for a given payment.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`dispute_received`
+
+View a [dispute received webhook example](/workflows/webhook-event-types/dispute_received).
+
+</TableCell>
+<TableCell>
+
+Dispute received	
+
+</TableCell>
+<TableCell>
+
+Sent when a dispute notification has been received from the scheme before knowing if further action is possible.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`dispute_resolved`
+
+View a [dispute resolved webhook example](/workflows/webhook-event-types/dispute_resolved).
+
+</TableCell>
+<TableCell>
+
+Dispute resolved	
+
+</TableCell>
+<TableCell>
+
+Occurs when a dispute is received but no further actions is required from you, because you've already refunded the customer.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`dispute_canceled`
+
+View a [dispute canceled webhook example](/workflows/webhook-event-types/dispute_canceled).
+
+</TableCell>
+<TableCell>
+
+Dispute canceled	
+
+</TableCell>
+<TableCell>
+
+Occurs when a dispute is canceled by the issuing bank. If previously debited, the disputed amount has been credited back to you.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`dispute_evidence_required`
+
+View a [dispute evidence required webhook example](/workflows/webhook-event-types/dispute_evidence_required).
+
+</TableCell>
+<TableCell>
+
+Dispute evidence required	
+
+</TableCell>
+<TableCell>
+
+Occurs when a dispute has been received for which evidence is required.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`dispute_accepted`
+
+View a [dispute accepted webhook example](/workflows/webhook-event-types/dispute_accepted).
+
+</TableCell>
+<TableCell>
+
+Dispute accepted	
+
+</TableCell>
+<TableCell>
+
+Occurs when you have accepted a dispute. No further action is required.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`dispute_expired`
+
+View a [dispute expired webhook example](/workflows/webhook-event-types/dispute_expired).
+
+</TableCell>
+<TableCell>
+
+Dispute expired	
+
+</TableCell>
+<TableCell>
+
+Occurs when the time limit to take action against a dispute has been exceeded. No further action is possible.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`dispute_evidence_submitted`
+
+View a [dispute evidence submitted webhook example](/workflows/webhook-event-types/dispute_evidence_submitted).
+
+</TableCell>
+<TableCell>
+
+Dispute evidence submitted	
+
+</TableCell>
+<TableCell>
+
+Occurs once you have submitted evidence for a given dispute. No further action is required from you.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`dispute_evidence_acknowledged_by_scheme`
+
+View a [dispute evidence acknowledged by the scheme webhook example](/workflows/webhook-event-types/dispute_evidence_acknowledged_by_scheme).
+
+</TableCell>
+<TableCell>
+
+Dispute evidence acknowledged by the scheme	
+
+</TableCell>
+<TableCell>
+
+Occurs when the supporting documents you sent us have been forwarded to the scheme.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`dispute_won`
+
+View a [dispute won webhook example](/workflows/webhook-event-types/dispute_won).
+
+</TableCell>
+<TableCell>
+
+Dispute won	
+
+</TableCell>
+<TableCell>
+
+Occurs when the issuing bank has accepted your evidence and you have won the dispute. If previously debited, the amount of the dispute has been credited back to you.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`dispute_lost`
+
+View a [dispute lost webhook example](/workflows/webhook-event-types/dispute_lost).
+
+</TableCell>
+<TableCell>
+
+Dispute lost	
+
+</TableCell>
+<TableCell>
+
+Occurs when the issuing bank has rejected your evidence and you have lost the dispute.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`dispute_arbitration_sent_to_scheme`
+
+View a [dispute arbitration sent to scheme webhook example](/workflows/webhook-event-types/dispute_arbitration_sent_to_scheme).
+
+</TableCell>
+<TableCell>
+
+Dispute arbitration sent to scheme	
+
+</TableCell>
+<TableCell>
+
+Occurs when the documentation for an arbitration has been sent to the scheme.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`dispute_arbitration_won`
+
+View a [dispute arbitration won webhook example](/workflows/webhook-event-types/dispute_arbitration_won).
+
+</TableCell>
+<TableCell>
+
+Dispute arbitration won	
+
+</TableCell>
+<TableCell>
+
+Occurs when the arbitration has been won. Your account will be credited the disputed amount.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`dispute_arbitration_lost`
+
+View a [dispute arbitration lost webhook example](/workflows/webhook-event-types/dispute_arbitration_lost).
+
+</TableCell>
+<TableCell>
+
+Dispute arbitration lost	
+
+</TableCell>
+<TableCell>
+
+Occurs when an arbitration has been lost. Your account will be debited any additional arbitration-related fees.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+</Accordion>
+
+## FinCrime
+ 
+<Accordion title="See FinCrime event types and descriptions">
+<Table>
+<TableHead headers={['Event type', 'Display name', 'Description']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`payment_compliance_review`
+
+View a [payment compliance review webhook example](/workflows/webhook-event-types/payment_compliance_review).
+
+</TableCell>
+<TableCell>
+
+Compliance review
+
+</TableCell>
+<TableCell>
+
+Occurs when a payment is pending while under compliance review.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+</Accordion>
+

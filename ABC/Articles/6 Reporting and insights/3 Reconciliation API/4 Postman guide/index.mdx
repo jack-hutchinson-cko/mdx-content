@@ -1,0 +1,211 @@
+---
+title: Postman guide
+account: ABC
+---
+
+Learn how to create requests and receive responses from both the payments and statements endpoints of the Reconciliation API, using the Postman application.
+
+---
+
+## Before you start
+
+- Download and install the Postman application. You can find it here: <ExternalLink href="https://www.getpostman.com" >https://www.getpostman.com</ExternalLink>.
+- Grab your secret key. You can find it in the <ExternalLink href="https://hub.checkout.com/login" >Hub</ExternalLink> under _Settings > Channels._
+
+---
+
+## Payments endpoint
+
+### Step 1: Configure the endpoint
+
+In the GET field, enter the following endpoint:
+
+```json
+https://api.checkout.com/reporting/payments
+```
+
+<img maxWidth={600} src="/docs/Reporting_and_insights/Postman guide/postman-guide1.png"  />
+
+### Step 2: Set your parameters
+
+To use this endpoint, you need to specify one of the 3 parameters below:
+
+- date / time in <ExternalLink href="https://www.w3.org/TR/NOTE-datetime) (`from` and `to`" >ISO format</ExternalLink>
+- payment ID (`paymentId`)
+- reference (`reference`)
+
+In the example below, we'll specify the date / time, i.e., the timeframe during which the payments occurred.
+
+In the _Params_ tab, enter `From` in the _Key_ column. Add the start date of your timeframe in the _Value_ column — this must be in ISO format (`YYYY-MM-DD`). In the row below, enter `To` in the _Key_ column and the end date of your timeframe in the _Value_ column.
+
+<img maxWidth={660} src="/docs/Reporting_and_insights/Postman guide/postman-guide2.png"  />
+
+You can also add your parameter directly to your endpoint. For example:
+
+```json
+https://api.checkout.com/reporting/payments?from={start-date-time}&to={end-date-time}
+```
+
+<TipBox variant="info">
+
+The same logic applies for the other available parameters:
+
+```json
+https://api.checkout.com/reporting/payments/{paymentId}
+```
+
+```json
+https://api.checkout.com/reporting/payments?reference={reference}
+```
+
+</TipBox>
+
+### Step 3: Authenticate your request
+
+After setting your parameters, you need to authenticate your request with your secret key and specify the response format you would like to receive.
+
+In the _Headers_ tab, enter `Authorization` in the _Key_ column. In the _Value_ column, add your secret key. You can find your secret key in the _Settings > Channels_ section of the <ExternalLink href="https://hub.checkout.com" >Hub</ExternalLink>. Next, enter `Content-Type` in the _Key_ column and `application/json` in the _Value_ column.
+
+<img maxWidth={650} src="/docs/Reporting_and_insights/Postman guide/postman-guide3.png"  />
+
+### Step 4: Send your request
+
+### If you want a JSON response...
+
+Select _Send_ to submit your request.
+
+<img maxWidth={240} src="/docs/Reporting_and_insights/Postman guide/postman-send.png"  />
+
+The response will be displayed in the bottom half of your screen.
+
+### If you want a CSV report...
+
+Add `/download` in the URL field after `payments`, like this:
+
+```json
+https://api.checkout.com/reporting/payments/download?from={start-date-time}&to={end-date-time}
+```
+
+Select the down arrow to the right of the Send button, then select _Send and Download._
+
+<img
+  maxWidth={290}
+  src="/docs/Reporting_and_insights/Postman guide/postman-send-and-download.png"
+  
+/>
+
+Once the download is complete, save the file to your preferred location. You can name it anything you like — just make sure your filename ends in `.csv`.
+
+---
+
+## Statements endpoint
+
+### Step 1: Configure the endpoint
+
+In the GET field, enter the following endpoint:
+
+```json
+https://api.checkout.com/reporting/statements?from={start-date}&to={end-date}
+```
+
+<TipBox variant="note">
+
+When using the statements endpoint, you **must** include a date for when the Statement ID was created (or the timeframe in which it was created).
+
+</TipBox>
+
+### Step 2: Authenticate your request
+
+In the Headers tab, enter `Authorization` in the _Key_ column. In the _Value_ column, add your secret key. You can find your secret key in the _Settings > Channels_ section of the <ExternalLink href="https://hub.checkout.com/login" >Hub</ExternalLink>.
+
+Next, enter `Content-Type` in the _Key_ column and `application/json` in the _Value_ column.
+
+The end result should look something like this:
+
+<img maxWidth={650} src="/docs/Reporting_and_insights/Postman guide/postman-guide5.png"  />
+
+### Step 3: Send your request
+
+### If you want a JSON response...
+
+Select _Send_ to submit your request.
+
+<img maxWidth={240} src="/docs/Reporting_and_insights/Postman guide/postman-send-1.png"  />
+
+The JSON response will be displayed in the bottom half of your screen.
+
+### If you want a CSV report...
+
+Add `/download` in the URL field after `statements`, like this:
+
+```json
+https://api.checkout.com/reporting/statements/download?from={start-date-time}&to={end-date-time}
+```
+
+Select the down arrow to the right of the _Send_ button, then select _Send and Download_.
+
+<img
+  maxWidth={290}
+  src="/docs/Reporting_and_insights/Postman guide/postman-send-and-download-1.png"
+  
+/>
+
+Once the download is complete, save the file to your preferred location. You can name it anything you like — just make sure your filename ends in `.csv`.
+
+## Extensions
+
+### Payout breakdown
+
+You can break down the detail even further by using the `payout_breakdown` field. This will provide all totals from each section of the statement.
+
+Set up your request as above, then simply add `&include=payout_breakdown` at the end of the URL.
+
+For example:
+
+```json
+https://api.checkout.com/reporting/statements?from=2018-09-01&to=2018-09-19&include=payout_breakdown
+```
+
+<TipBox variant="success">
+
+You can download a CSV copy by adding `/download` after `statements` in the URL, like this:
+
+```json
+https://api.checkout.com/reporting/statements/download?from={start-date-time}&to={end-date-time}&include=payout_breakdown
+```
+
+</TipBox>
+
+### Statements / statement ID / payments
+
+This extension will allow you to retrieve the list of payments and associated fees included in a given statement, payout or payout currency.
+
+You can filter your request using any of the three parameters defined below.
+
+### Statement ID:
+
+```json
+https://api.checkout.com/reporting/statements/{StatementId}/payments
+```
+
+### Payout ID:
+
+```json
+https://api.checkout.com/reporting/statements/{StatementId}/payments?payout_id={PayoutId}
+```
+
+### Payout currency:
+
+```json
+https://api.checkout.com/reporting/statements/{StatementId}/payments?payout_currency={PayoutCurrency}
+```
+
+<TipBox variant="success">
+
+You can download a CSV copy by adding `/download` after `payments` in the URL, like this:
+
+```json
+https://api.checkout.com/reporting/statements/{StatementId}/payments/download
+```
+
+</TipBox>

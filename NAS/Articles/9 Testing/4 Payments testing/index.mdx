@@ -1,0 +1,296 @@
+---
+title: Payments testing
+account: NAS
+---
+
+Create a token that represents a card's details that you can later use to request a test payment, without you having to process or store any sensitive information.
+
+---
+
+## Step 1: Request a token
+
+Exchange card details for a reference token that can be used later to request a card payment. Tokens are single use and expire after 15 minutes. To create a token, you'll need to authenticate using your public API key.
+
+### The request
+
+### Endpoint
+
+<tabs>
+<tab title="Sandbox">
+<LineCodeWrapper type="post">
+
+`https://api.sandbox.checkout.com/tokens`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+### Header parameters
+
+<Table>
+<TableHead headers={['Header', 'Value']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`Authorization`
+
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+`Public API key`
+
+<InfoBox>
+
+This will be prefixed by **pk_test_**.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`Content-Type`
+
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+`application/json`
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+### Body parameters
+
+<TipBox variant="success">
+
+You can use any of our [test cards](/testing/test-cards)' details in the body of your request.
+
+</TipBox>
+
+<Table>
+<TableHead headers={['Field name', 'Description']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`type`
+
+<StatusTag type="required" />
+<TypeTag type="string" />
+</TableCell>
+<TableCell>
+
+Set this to `card`.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`number`
+
+<StatusTag type="required" />
+<TypeTag type="string" />
+</TableCell>
+<TableCell>
+
+The card number.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`expiry_month`
+
+<StatusTag type="required" />
+<TypeTag type="integer" />
+</TableCell>
+<TableCell>
+
+The expiry month of the card.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`expiry_year`
+
+<StatusTag type="required" />
+<TypeTag type="integer" />
+</TableCell>
+<TableCell>
+
+The expiry year of the card.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`name`
+
+<StatusTag type="optional" />
+<TypeTag type="string" />
+</TableCell>
+<TableCell>
+
+The cardholder's name.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`cvv`
+
+<StatusTag type="optional" />
+<TypeTag type="string" />
+</TableCell>
+<TableCell>
+
+The card verification value/code. 3 digits, except for Amex (4 digits).
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`billing.address`
+
+<StatusTag type="optional" />
+<TypeTag type="object" />
+</TableCell>
+<TableCell>
+
+The payment source owner's billing address.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`phone`
+
+<StatusTag type="optional" />
+<TypeTag type="object" />
+</TableCell>
+<TableCell>
+
+The payment source owner's phone number.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+### Request example
+
+<tabs>
+<tab title="Payload" active>
+
+```json
+{
+  "type": "card",
+  "number": "4543474002249996",
+  "expiry_month": 6,
+  "expiry_year": 2025,
+  "name": "Bruce Wayne",
+  "cvv": "956",
+  "billing_address": {
+    "address_line1": "Checkout.com",
+    "address_line2": "90 Tottenham Court Road",
+    "city": "London",
+    "state": "London",
+    "zip": "W1T 4TJ",
+    "country": "GB"
+  },
+  "phone": {
+    "country_code": "+1",
+    "number": "415 555 2671"
+  }
+}
+```
+
+</tab>
+<tab title="Node.js (Beta)">
+
+```javascript
+import { Checkout } from "checkout-node-sdk";
+
+const cko = new Checkout("sk_XXXX", { pk: "pk_YYYY" });
+
+try {
+  const token = await cko.tokens.request({
+    // infered type: "applepay"
+    token_data: {
+      version: "EC_v1",
+      data: "t7GeajLB9skXB6QSWfEpPA4WPhDqB7ekdd+F7588arLzve...",
+      signature: "MIAGCSqGbGUg...",
+      header: {
+        ephemeralPublicKey: "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgA...",
+        transactionId: "3cee89679130a4b...",
+      },
+    },
+  });
+} catch (err) {
+  console.log(err.name);
+}
+```
+
+</tab>
+</tabs>
+
+### The response
+
+If your request was successful, you'll receive a 201 response containing a card token prefixed by `tok_`. You then have 15 minutes to request a payment using this token.
+
+### Response example
+
+```javascript
+{
+  "type": "card",
+  "token": "tok_ubfj2q76miwundwlk72vxt2i7q",
+  "expires_on": "2020-08-27T11:37:30Z",
+  "expiry_month": 6,
+  "expiry_year": 2025,
+  "scheme": "VISA",
+  "last4": "9996",
+  "bin": "454347",
+  "card_type": "Credit",
+  "card_category": "Consumer",
+  "issuer": "GOTHAM STATE BANK",
+  "issuer_country": "US",
+  "product_id": "F",
+  "product_type": "CLASSIC",
+  "billing_address": {
+    "address_line1": "Checkout.com",
+    "address_line2": "90 Tottenham Court Road",
+    "city": "London",
+    "state": "London",
+    "zip": "W1T 4TJ",
+    "country": "GB"
+  },
+  "phone": {
+    "country_code": "+1",
+    "number": "415 555 2671"
+  },
+  "name": "Bruce Wayne"
+}
+```
+
+---
+
+## Step 2: Request a payment using the token
+
+[Create a payment request](/payments/accept-payments/request-a-payment#Using_a_token) using the token you just received.
+
+
+
+

@@ -1,0 +1,222 @@
+--- 
+title: iOS SDK customization guide
+account: ABC
+---
+
+## Customization for the pre-built UI
+
+### CheckoutTheme class
+
+Customize `CardViewController` with the `CheckoutTheme` class.
+
+```swift
+// Apply customisations to CheckoutTheme.
+CheckoutTheme.primaryBackgroundColor = .purple
+CheckoutTheme.secondaryBackgroundColor = .magenta
+CheckoutTheme.tertiaryBackgroundColor = .red
+CheckoutTheme.color = .white
+CheckoutTheme.secondaryColor = .lightGray
+CheckoutTheme.errorColor = .blue
+CheckoutTheme.chevronColor = .white
+CheckoutTheme.font = UIFont(name: "Chalkboard SE", size: 12)!
+
+// Create the CheckoutAPIClient and CardViewController in the usual manner.
+let checkoutAPIClient = CheckoutAPIClient(
+    publicKey: "<Your Public Key>",
+    environment: .sandbox)
+
+let cardViewController = CardViewController(
+    checkoutApiClient: checkoutAPIClient,
+    cardHolderNameState: .normal,
+    billingDetailsState: .normal)
+```
+
+<img src="/docs/Integrate/SDKs/iOS SDK/customization-example.png" />
+
+### CheckoutTheme class methods
+
+<Table>
+<TableHead headers={['Method', 'Description', 'Declaration']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`primaryBackgroundColor`
+
+</TableCell>
+<TableCell>
+
+Change the background color of the views.
+
+</TableCell>
+<TableCell>
+
+`public static var primaryBackgroundColor: UI Color
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`secondaryBackgroundColor`
+
+</TableCell>
+<TableCell>
+
+Change the background color of input views.
+
+</TableCell>
+<TableCell>
+
+`public static var secondaryBackgroundColor: UI Color`
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`tertiaryBackgroundColor`
+
+</TableCell>
+<TableCell>
+
+Change the color of the `Table View Cell` in the country selection table.
+
+</TableCell>
+<TableCell>
+
+`public static var tertiaryBackgroundColor: UI Color`
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`color`
+
+</TableCell>
+<TableCell>
+
+Change the main text color.
+
+</TableCell>
+<TableCell>
+
+`public static var color: UIColor`
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`secondaryColor`
+
+</TableCell>
+<TableCell>
+
+Change the input view placeholder text color.
+
+</TableCell>
+<TableCell>
+
+`public static var secondaryColor: UIColor`
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`errorColor`
+
+</TableCell>
+<TableCell>
+
+Change the color of any error text
+
+</TableCell>
+<TableCell>
+
+`public static var errorColor: UIColor`
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`font`
+
+</TableCell>
+<TableCell>
+
+Change the font for all text content.
+
+</TableCell>
+<TableCell>
+
+`public static var font: UIFont`
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`barStyle`
+
+</TableCell>
+<TableCell>
+
+Change the style of the search bar.
+
+</TableCell>
+<TableCell>
+
+`public static var barStyle: UIBarStyle`
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+### Customize the fields
+
+Start by initializing the `CardViewController` without the cardholder and billing details fields.
+
+```swift
+let cardViewController = CardViewController(
+    checkoutApiClient: checkoutAPIClient,
+    cardHolderNameState: .hidden,
+    billingDetailsState: .hidden)
+```
+
+Access the `cardViewController` card view to begin making edits to the colour and style. 
+
+```swift
+func customizeTheme()func customizeTheme() {
+    let cardView = cardViewController.cardView
+    cardView.backgroundColor = .systemBackground
+    cardView.acceptedCardLabel.textColor = .label
+    let views: [StandardInputView] = [
+        cardView.cardNumberInputView,
+        cardView.expirationDateInputView,
+        cardView.cvvInputView
+    ]
+    views.forEach { view in
+        view.layer.borderColor = UIColor.opaqueSeparator.cgColor
+        view.layer.borderWidth = 2
+        view.layer.cornerRadius = 10
+        view.backgroundColor = .secondarySystemBackground
+        view.textField.textColor = .label
+        view.label.textColor = .label
+    }
+}
+```
+
+Inside the `viewDidLoad` method, we can call the customizeFields function.
+
+```swift
+override func viewDidLoad() {
+     super.viewDidLoad()
+     customizeTheme()
+ }
+ ```
+

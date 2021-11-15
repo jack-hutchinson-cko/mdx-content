@@ -1,0 +1,143 @@
+---
+title: Google Pay with 3D Secure
+account: NAS
+---
+
+Google Pay offers two authentication modes:
+
+1. ``PAN_ONLY`` - the card is stored on file with your customer's Google account. Thus, the payment credentials are not bound to an Android device (for example, desktop or non-Android mobile web).
+2. ``CRYPTOGRAM_3DS`` - Google Pay offers SCA compliance by binding payment credentials to an Android device and allowing issuers to delegate the authentication to Google for all subsequent payments on that device. 
+
+Find out below how you can comply with SCA requirements for PAN_ONLY scenarios.
+
+---
+
+## Tokenize the Google Pay payment data
+
+Once you have received the payment data from Google, you first need to get the Checkout.com token to encrypt the payment data. You then receive a new ``token_format`` in the response to help you identify whether or not subsequent payments using this token already meet SCA requirements. 
+
+### Android native app and mobile web
+
+<Table>
+<TableHead headers={['``token_format``', 'SCA compliance']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+``CRYPTOGRAM_3DS``
+
+</TableCell>
+<TableCell>
+
+Google handles the authentication and provides a payload that meets the SCA requirements.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+<TipBox variant="note">
+
+In cases where the Google Pay payment does not require a 3D Secure setup (for example, payments using a ``CRYPTOGRAM_3DS`` token), we will handle the non-3DS authorization request.
+
+</TipBox>
+
+### Desktop (or when device binding is unavailable)
+
+<Table>
+<TableHead headers={['``token_format``', 'SCA compliance']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+``PAN_ONLY``
+
+</TableCell>
+<TableCell>
+
+For in-scope transactions, the payment should use a 3D Secure exemption or be processed as 3D Secure.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+### Response example
+
+```json
+    {
+    "type": "googlepay",
+    "token": "tok_xac73j6l7rue7freatxtonf3pi",
+    "expires_on": "2021-09-15T11:14:15Z",
+    "expiry_month": 12,
+    "expiry_year": 2026,
+    "last4": "1111",
+    "bin": "411111",
+    "token_format": "pan_only"
+    }
+```    
+
+---
+
+## Request a 3D Secure payment using Google Pay
+
+<TipBox variant="info">
+
+To enable 3D Secure for Google Pay, please contact your Customer Success Manager.
+
+</TipBox>
+
+After receiving your token, you can authenticate the transaction as follows:
+
+1. Include the Google Pay token in the payment request body.
+2. To process this transaction as a 3D Secure payment, set the ``3ds.enabled`` field to ``true`` as in the request example below.
+
+### Request example
+
+```json
+    {
+    "source": {
+        "type": "token",
+        "token": "tok_lrn2umaznynuvkcjc6unno663u"
+        },
+    "amount": 1234,
+    "currency": "GBP",
+    "3ds": {
+        "enabled": true
+        }
+    }
+```
+
+### Response example
+
+If the card is enrolled in 3D Secure, you will receive a `202 Success` response. This response contains a redirect link for your customer.
+
+```json
+    {
+    "id": "pay_hl4k4b5n6pfklmfayflhzw3ovq",
+    "status": "Pending",
+    "customer": {
+        "id": "cus_rtr7qq37wzhujcp5iv36qys43i"
+        },
+    "3ds": {
+        "downgraded": false,
+        "enrolled": "Y"
+        },
+    "_links": {
+        "self": {
+            "href": "https://api.sandbox.checkout.com/payments/pay_hl4k4b5n6pfklmfayflhzw3ovq"
+            },
+        "redirect": {
+            "href": "https://3ds2-sandbox.ckotech.co/interceptor/3ds_bicq62vdvrbuznjzcmcfrhtswy"
+         }
+      }
+    }
+```
+
+
+
+
+
+
+
+

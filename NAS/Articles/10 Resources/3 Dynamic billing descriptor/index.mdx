@@ -1,0 +1,101 @@
+---
+title: Dynamic billing descriptor
+account: NAS
+---
+
+The billing descriptor is the text that is displayed on the customer's credit card statement identifying a purchase from a merchant’s website. This descriptor can be set dynamically in a payment request.
+
+<TipBox variant="info">
+
+If you would like to enable this functionality, please contact our <ExternalLink href="mailto:support@checkout.com">Support team</ExternalLink>.
+
+</TipBox>
+
+### Parameters
+
+<Table>
+<TableHead headers={['Field name', 'Description']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`billing_descriptor`
+
+<StatusTag type="optional" />
+<TypeTag type="object" />
+
+</TableCell>
+<TableCell>
+
+Details about the billing descriptor.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`billing_descriptor.name`
+
+<StatusTag type="required" />
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+Dynamic description of the charge.
+
+<InfoBox>
+
+Up to 25 characters
+
+</InfoBox>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`billing_descriptor.city`
+
+<StatusTag type="required" />
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+City from which the charge originated.
+
+<InfoBox>
+
+Up to 13 characters
+
+</InfoBox>
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+<TipBox variant="success" >
+
+You can use the following characters in your descriptor:
+
+- Uppercase: `A-Z`
+- Lowercase: `a-z`
+- Numbers: `0-9`
+- Special characters: `. ! * - = _`
+
+</TipBox>
+
+### Example
+
+```json
+"billing_descriptor": {
+  "name": "Checkout.com",
+  "city": "London"
+}
+```
+
+
+
+

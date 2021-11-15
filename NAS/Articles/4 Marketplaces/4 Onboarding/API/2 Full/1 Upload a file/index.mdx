@@ -1,0 +1,434 @@
+--- 
+title: Upload a file 
+account: NAS
+---
+
+Use our Files API to upload identity documentation required for `full` due diligence as part of our Marketplace solution.
+
+When you upload a file, the API returns an `id` that represents that file. You can use this `id` to attach:
+* Identity documentation when [creating or updating your sub-entity.](/marketplaces/onboarding/api/full)
+* Bank verification documentation when [creating a payment instrument](/marketplaces/payouts/make-a-payout)
+
+## Before you begin
+
+If you are uploading a bank statement to verify a set of bank details, subscribe to the following webhook events: 
+
+* `payment_instrument_verification_passed`
+* `payment_instrument_verification_failed`
+
+## Types of identification and requirements
+
+The API accepts the following types of documentation. Depending on the identification type, you may need to provide both the back and the front. Use the table below to find out more.
+
+<Table>
+<TableHead headers={['Type','Front required','Back required']}></TableHead>
+<TableBody>
+<TableRow>
+<TableCell>
+
+Passport
+
+</TableCell>
+<TableCell>
+
+Y
+
+</TableCell>
+<TableCell>
+
+N
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Driving licence
+
+</TableCell>
+<TableCell>
+
+Y
+
+</TableCell>
+<TableCell>
+
+Y
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+National identity card
+
+</TableCell>
+<TableCell>
+
+Y
+
+</TableCell>
+<TableCell>
+
+Y
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Citizen card
+
+</TableCell>
+<TableCell>
+
+Y
+
+</TableCell>
+<TableCell>
+
+Y
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Residence permit
+
+</TableCell>
+<TableCell>
+
+Y
+
+</TableCell>
+<TableCell>
+
+Y
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Electoral ID
+
+</TableCell>
+<TableCell>
+
+Y
+
+</TableCell>
+<TableCell>
+
+Y
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Bank statement
+
+</TableCell>
+<TableCell>
+
+Y
+
+</TableCell>
+<TableCell>
+
+N
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+## Upload a file
+
+Your request must be multipart/form-data and the file no larger than 4Mb.
+
+* **For identification documents**: the format must be in either JPEG/JPG or PNG format.
+* **For bank statements**: the format must be in JPEG/JPG, PNG or PDF no larger than 4Mb.
+
+Follow the steps to upload the document and receive an `id`. If the identification you are providing requires both the back and front, you will need to make **two requests** to the API.
+
+---
+
+### Endpoints
+
+Sandbox is a testing area, so you can practise API calls. <ExternalLink href="https://www.checkout.com/get-test-account" >Request a test account.</ExternalLink>
+
+<TipBox variant='note'>
+
+Notice that the sub-domain – files.checkout.com – is slightly different to Checkout.com's other endpoints.
+
+</TipBox>
+
+<tabs>
+<tab title='Live'>
+<LineCodeWrapper type="post">
+
+`https://files.checkout.com`
+
+</LineCodeWrapper>
+</tab>
+<tab title='Sandbox'>
+<LineCodeWrapper type="post">
+
+`https://files.sandbox.checkout.com`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+### Request example
+
+Your request should include the **type** of document, the **file path** and the **purpose** of the document. When uploading an identification document, set this to `identification`. For a full list of possible fields, see our <ExternalLink href="https://api-reference.checkout.com/preview/crusoe/#tag/Marketplace/" >API reference.</ExternalLink>
+
+
+<Table>
+<TableHead headers={['Header','Description']}></TableHead>
+<TableBody>
+<TableRow>
+<TableCell>
+
+Authorization
+<StatusTag type="required" />
+
+</TableCell>
+<TableCell>
+
+`OAuth Bearer access token`
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Content-Type
+<StatusTag type="required" />
+
+</TableCell>
+<TableCell>
+
+`multipart/form-data`
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+```json
+curl https://files.checkout.com \
+  -F "type=passport" \
+  -F "cw_passport.jpg" \
+  -F "purpose=identification"
+```
+
+### Response examples
+
+<tabs>
+<tab title='201 - Document accepted'>
+
+If you received a file `id` in your response, the document was accepted. You can see this association by [retrieving the sub-entity.](/marketplaces/onboarding/api/full).
+
+```json withBorder=false
+{
+  "id": "file_6lbss42ezvoufcb2beo76rvwly",
+  "_links": {
+    "self": {
+      "href": "https://files.sandbox.checkout.com/files/file_6lbss42ezvoufcb2beo76rvwly"
+    }
+  }
+}
+```
+
+</tab>
+<tab title='422 - Invalid data was sent'>
+
+In the `error_codes` object, we will let you know what data was invalid.
+
+In the example response, we received `back_required` because the uploaded document was a passport, which requires a front **and** back.
+
+```json withBorder=false
+{
+    "request_id": "0HM72UMS6HIO5:00000001",
+    "error_type": "invalid_request",
+    "error_codes": [
+        "back_required"
+    ]
+}
+```
+
+<Accordion isBoldTitle={true} title='Possible error codes'>
+
+<Table>
+<TableHead headers={['Name','Description']}></TableHead>
+<TableBody>
+<TableRow>
+<TableCell>
+
+`<field_name>_invalid`
+For example, `purpose_invalid`.
+
+</TableCell>
+<TableCell>
+
+The specified field does not match the validation policies for minimum or maximum length, or formatting.
+
+The only two exceptions to this are `sub_entity_invalid` and `existing_sub_entity_type_invalid`, which have different causes. See the two rows directly above.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`<field_name>_required`
+
+For example, `legal_name_required` or `representatives_0_first_name_required`.
+
+</TableCell>
+<TableCell>
+
+The specified field is mandatory but was not provided in the request. For example, the field is `null`, contains empty strings, or contains white spaces.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`<side>_file_size_invalid`
+For example, `back_file_size_invalid`.
+
+</TableCell>
+<TableCell>
+
+Files must be less than 4Mb in size.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`<side>_file_content_type_invalid`
+For example, `front_file_contents_invalid`.
+
+</TableCell>
+<TableCell>
+
+Files must be of type PNG or JPG/JPEG.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`<side>_file_contents_type_invalid`
+For example, `back_file_contents_invalid`.
+
+</TableCell>
+<TableCell>
+
+The contents of the file are not valid. For example, the extension is PNG, but the contents aren't.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`back_not_required`
+
+</TableCell>
+<TableCell>
+
+A back file is not required for the type of document in your request. This currently only applies to the type `passport`.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+</Accordion>
+
+</tab>
+</tabs>
+
+## Example notifications for bank account verification
+
+<tabs>
+<tab title="Verification passed">
+
+```json
+{
+  "id": "evt_htielsmgcwgejgqaunl4yb2pou",
+  "type": "payment_instrument_verification_passed",
+  "version": "1.0.0",
+  "created_on": "2020-08-20T15:24:13.8431084Z",
+  "data": {
+    "sub_entity_id": "ent_wxglze3wwywujg4nna5fb7ldli",
+    "reference": "123456789101112",
+    "legal_name": "The Cake Shop Inc.",
+    "payment_instrument": {
+      "id": "src_h5qk7lfsp3ludfjxba256lduju",
+      "label": "The Cake Shop Barclays"
+    }
+  },
+  "_links": {
+    "self": {
+      "href": "https://api.sandbox.checkout.com/workflows/events/evt_htielsmgcwgejgqaunl4yb2pou"
+    }
+  }
+}
+```
+</tab>
+<tab title="Verification failed">
+
+```json
+{
+  "id": "evt_htielsmgcwgejgqaunl4yb2pou",
+  "type": "payment_instrument_verification_failed",
+  "version": "1.0.0",
+  "created_on": "2020-08-20T15:24:13.8431084Z",
+  "data": {
+    "sub_entity_id": "ent_wxglze3wwywujg4nna5fb7ldli",
+    "reference": "123456789101112",
+    "legal_name": "The Cake Shop Inc.",
+	"reason_codes": [
+		"document_unreadable"
+	]
+    "payment_instrument": {
+      "id": "src_h5qk7lfsp3ludfjxba256lduju",
+      "label": "The Cake Shop Barclays"
+    }
+  },
+  "_links": {
+    "self": {
+      "href": "https://api.sandbox.checkout.com/workflows/events/evt_htielsmgcwgejgqaunl4yb2pou"
+    }
+  }
+}
+```
+</tab>
+</tabs>
+
+## Where to next?
+
+---
+
+<ContentPanel title="Update a sub-entity" imgSrc="/NAS/Marketplaces/onboard-sub-entities.svg">
+
+Use the file `id` returned by the Files API to attach identity documentation required for `full` due diligence.
+
+[Learn more](/marketplaces/onboarding/api/full)
+
+</ContentPanel>
+
+<ContentPanel title="Make a payout" imgSrc="/NAS/Marketplaces/about-making-payouts.svg" withBorder={false}>
+
+`Full` accounts on our Marketplace solution have payout capability. If you’re unsure, take a look at our [account structure page](/marketplaces/account-structure).
+
+[Learn more](/marketplaces/payouts/make-a-payout)
+
+</ContentPanel>

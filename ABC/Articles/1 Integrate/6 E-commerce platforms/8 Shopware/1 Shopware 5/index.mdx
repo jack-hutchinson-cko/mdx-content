@@ -1,0 +1,65 @@
+--- 
+title: Shopware 5
+account: ABC
+description: ' '
+---
+
+Follow the steps below so you can start using your Shopware 5 plugin.
+
+---
+
+## Install the plugin
+
+There are two ways to install the plugin you need:
+
+- [Install using Composer](#Install_using_Composer)
+- <ExternalLink href="https://docs.shopware.com/en/shopware-5-en/plugins" >Download from the Shopware Store</ExternalLink>
+
+---
+
+## Install using Composer
+
+### For basic settings
+
+1.  Install and activate the plugin with the plugin manager.
+2.  Reload the backend.
+3.  Go to _Configuration > Payment methods_. Additional payment methods have been added with the prefix “cko” and you can now find the Checkout.com _Setup menu_ point.
+
+If you want to see the activated payment methods in the frontend, you need to add your public and private key from <ExternalLink href="https://checkout.com">Checkout.com</ExternalLink> to the configuration.
+
+<TipBox variant="note">
+
+In order to show Apple Pay, Google Pay, SEPA, credit card and PayPal in the front-end you need to configure the according payment method in the Checkout Setup.
+
+</TipBox>
+
+### For Apple Pay
+
+<TipBox variant="info">
+
+See our [Apple Pay documentation](/payments/payment-methods/wallets/apple-pay) for more information.
+
+</TipBox>
+
+### Checkout setup
+
+1. Navigate to [Set up Apple Pay](/payments/payment-methods/wallets/apple-pay/set-up-apple-pay) and complete steps 1 and 2.
+2. Under the Shopware plugin configuration, navigate to the _Apple Pay_ tab
+3. Fill out the required _Certificate Configuration_ fields and select _Save_. Note that _Country Name_ should be set to an [ISO2 country code](/resources/codes/country-codes), and _Common Name_ should be set to a store domain.
+
+### Domain verification
+
+1. Under your Apple Developer account, add your _Merchant Domain_ and download the resulting `.txt` file.
+2. Under the Shopware plugin configuration, navigate to the _Domain Verify_ tab.
+3. Upload the verification `.txt` file.
+4. Verify the upload by selecting _Verify_ from your Apple Developer account.
+
+### Certification upload
+
+1. Under the Shopware plugin configuration, navigate to _Merchant Identify Certificate_ to generate a `.csr` file.
+2. Navigate to _Apple Pay Merchant Identity Certificate > Create Certificate_ in your Apple Developer account. 
+3. Upload the `.csr` file, and then download the resulting `.cer` file.
+4. Navigate to _Apple Pay Certificate File_ and upload the `.cer` file to Shopware.
+5. Select _Generate PEM Certificate_. Once complete, this certificate will be automatically saved to Shopware and you will be provided with the .pem file for backup purposes.
+
+With these steps complete, your storoe will have the necessary certification to validate your merchant identity and offer Apple Pay payments.

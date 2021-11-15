@@ -1,0 +1,226 @@
+---
+title: 3D Secure payments with a third-party provider
+account: ABC
+---
+
+To benefit from a streamlined integration process, we recommend using Checkout.com to authenticate 3D Secure payments. If you wish you to use a third-party provider, you will need to include additional fields in your request.
+
+---
+
+## The request
+
+Use the details below to set up your request.
+
+### Endpoints
+
+For the full specification, as well as complete request and response examples, see our <ExternalLink href="https://api-reference.checkout.com" >API reference</ExternalLink>.
+
+<tabs>
+<tab title="Live" active>
+<LineCodeWrapper type="post">
+
+`https://api.checkout.com/payments`
+
+</LineCodeWrapper>
+</tab>
+<tab title="Sandbox">
+<LineCodeWrapper type="post">
+
+`https://api.sandbox.checkout.com/payments`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+### Header parameters
+
+<Table>
+<TableHead headers={['Header', 'Value']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`Authorization`
+
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+`secret key`
+
+<InfoBox>
+
+Use the valid secret key of your Checkout.com account. You can find this in the <ExternalLink href="https://hub.checkout.com/v2" >Hub</ExternalLink>.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`Content-Type`
+
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+`application/json`
+
+</TableCell>
+</TableRow>
+
+</TableBody>
+</Table>
+
+### Additional body parameters
+
+<Table>
+<TableHead headers={['Parameter', 'Description']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`3ds`
+
+<StatusTag type="required" />
+<TypeTag type="object" />
+</TableCell>
+<TableCell>
+
+Information required for 3D Secure payments.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`3ds.enabled`
+
+<StatusTag type="required" />
+<TypeTag type="string" />
+</TableCell>
+<TableCell>
+
+Information required for 3D Secure payments.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`3ds.enabled`
+
+<StatusTag type="required" />
+<TypeTag type="string" />
+</TableCell>
+<TableCell>
+
+Whether to process this payment as a 3D Secure. Set this to `true`.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`3ds.eci`
+
+<StatusTag type="required" />
+<TypeTag type="string" />
+</TableCell>
+<TableCell>
+
+The Electronic Commerce Indicator security level associated with the token. Required unless the `previous_payment_id` is specified. For 3D Secure payments the ECI must be provided in the `3ds` payment field.
+
+<InfoBox>
+
+For more information, see [stored card details](/payments/store-payment-details/requirements-for-stored-payment-details).
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`3ds.cryptogram`
+
+<StatusTag type="required" />
+<TypeTag type="string" />
+</TableCell>
+<TableCell>
+
+Base-64 cryptographic identifier used by card schemes to validate the token verification result. Required unless the `previous_payment_id` is specified.
+
+<InfoBox>
+
+For more information, see [stored card details](/payments/store-payment-details/requirements-for-stored-payment-details).
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`3ds.xid`
+
+<StatusTag type="required" /> (for 3DS1 requests, and 3DS2 requests for Mastercard and Amex)
+<StatusTag type="optional" /> (for 3DS2 Visa requests)
+<TypeTag type="string" />
+</TableCell>
+<TableCell>
+
+The 3D Secure transaction identifier. In 3DS2 with Mastercard, the value is the directory server transaction ID.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`3ds.version`
+
+<StatusTag type="required" />
+<TypeTag type="string" />
+</TableCell>
+<TableCell>
+
+Indicates the version of 3D Secure used for authentication. Defaults to `1.0.0` if not provided.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+### Request example
+
+```json
+    {
+      "source": {
+        "type": "card",
+        "number": "5436031030606378",
+        "expiry_month": 12,
+        "expiry_year": 2025,
+      },
+      "amount": 257,
+      "currency": "USD",
+      "3ds": {
+        "enabled": true,
+        "eci": "06",
+        "cryptogram": "123feb70-d16b-4da6-b07f-98c0",
+        "xid": "79f6205c-ff5c-4a4c-8fca-90f67f3a6470",
+        "version": "2.0.1"
+      }
+    }
+```
+
+---
+
+## The response
+
+If the `approved` field is `true`, your authorization was successful. If unsuccessful, the card used for the payment may be invalid/expired or the account has an insufficient available balance.
+
+If you received a `202` response, the payment requires a redirect.
+
+<TipBox variant="info">
+
+If the card scheme provided us with an `eci` value, it will be included in the response. The value indicates the security level that the card scheme decided to authorize the payment with.
+
+</TipBox>

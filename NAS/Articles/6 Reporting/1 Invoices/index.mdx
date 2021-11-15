@@ -1,0 +1,202 @@
+---
+title: Invoices
+account: NAS
+description: Find out everything you need to know about how our invoices work, and how often you'll receive them.
+---
+
+Your invoices outline the total fees applied for processing your payments or payouts over a month.
+
+You will receive invoices for each of your active entities and each invoice will be in a given holding currency. This means that for each entity you have set up with us, you will receive n number of invoices for _n_ number of holding currencies you have set up.
+
+<TipBox variant="info">
+
+   All monetary values in the invoice are displayed in a single major currency unit rounded to two decimal points. For example, a total card scheme fee of $33.33333 will be displayed as $33.33 on your invoice. This makes invoices unsuitable for reconciliation.
+
+</TipBox>
+
+---
+
+## Invoice structure
+
+Your invoice includes the following pages:
+
+- A **summary page** showing transaction fees, account level fees, and any taxes applied for the previous month's processing.
+
+- **Breakdown pages** showing tables for calculated amounts.
+
+### Invoice summary page
+
+The _total amount due_ may be positive or negative or zero and you can find the Checkout.com bank account information needed to make a payment to settle any positive amounts. If the _total amount due_ is negative, this will be carried over to the following month.
+
+### Invoice breakdown pages
+
+These pages contain tables showing how the totals on the summary page are calculated. For acquiring transactions, these calculated amounts are split by payment method.
+
+<Accordion title="Learn about the fee categories and the fees comprising them">
+
+<Table>
+<TableBody>
+<TableRow>
+
+### Card fees
+
+The processing fees applied for processing card payments.
+
+**Fees**
+
+- Interchange fees
+- Scheme and network fees
+- Acquiring premiums
+- Gateway fees
+- Blended fees
+
+
+</TableRow>
+</TableBody>
+</Table>  
+
+<Table>
+<TableBody>
+<TableRow>
+
+
+### Refund fees
+
+The card processing fees applied for processing refunds.
+
+**Fees**
+
+- Interchange fees
+- Scheme and network fees
+- Gateway fees
+
+
+</TableRow>
+</TableBody>
+</Table>  
+
+<Table>
+<TableBody>
+<TableRow>
+
+
+### Chargeback fees
+
+The chargeback fees applied for processing chargebacks as part of the disputes process.
+
+**Fees**
+
+- Chargeback fees
+
+
+</TableRow>
+</TableBody>
+</Table> 
+
+<Table>
+<TableBody>
+<TableRow>
+
+
+### Pay to Bank fees
+
+The number of Bank Payouts, the total value of the payouts, and the fees applied for processing Bank Payouts.
+
+**Fees**
+
+- Pay to Bank fees
+- Payout returned fees
+
+
+</TableRow>
+</TableBody>
+</Table> 
+
+<Table>
+<TableBody>
+<TableRow>
+
+
+### Other fees and adjustments
+
+The fees and adjustments that are applied at an account level. For each of these fees, the total number applied and the total amount of fees is shown.
+
+**Fees**
+
+- Account Updater fees (coming soon)
+- Merchant payout fees (coming soon)
+- Representment fees
+- Retrieval fees
+- Adjustments
+
+
+</TableRow>
+</TableBody>
+</Table> 
+
+</Accordion>
+
+---
+
+## Funds settlement
+
+We offer both **gross** and **net** settlement. The accompanying [payouts](/reporting/reconciliation-reports/payouts-reports) and [financial actions reports by payout ID](/reporting/reconciliation-reports/financial-actions-reports) contain a detailed calculation and justification.
+
+- For **net settlement** all fees are deducted from your currency account balances on a transaction basis and your settlements will reflect this. On your invoice the _total amount due_ will be zero.
+
+- For **gross settlement** all fees are invoiced to you for the previous month’s processing and no fees are deducted from your settlements in that period. On your invoice the _total amount due_ may be positive or negative. When making a payment to settle your invoice, please include the _invoice no_. in the payment reference so we can identify the related invoice to settle.
+
+<TipBox variant="info">
+
+If you opt for **gross settlement**, you can track the outstanding fees total intra-month using our [balance reports](/reporting/reconciliation-reports/balance-reports), and view the detailed fees applied using the [financial actions by date range reports](/reporting/reconciliation-reports/financial-actions-reports).
+
+</TipBox>
+
+---
+
+## When are invoices available?
+
+Your invoices are delivered to you via email on the first business day after the end of your invoice period. Invoices are also made available to you via Secure File Transfer Protocol (SFTP) from 12:00:00 UTC the following day after the end of your invoice period.
+
+For example, for an invoice period ending on Friday 31 July 2020, your invoice will be delivered to you via email on the next business day, Monday 3 August 2020. Your invoice will also be made available on Saturday 1 August 2020 by 12:00:00 UTC via SFTP.
+
+<TipBox variant="success">
+
+Past invoices remain available by SFTP.
+
+</TipBox>
+
+---
+
+## Invoice format
+
+Invoices come in `.pdf` format with the file name following this template:
+
+`invoice_{Your Entity-Id}_{Currency}_{Start Date:YYYYMMDD}_{End Date:YYYYMMDD}.pdf`
+
+---
+
+## Tax on invoices
+
+Invoices for entities that are based in regions where taxes are applied to fees on payments processed (for example, the goods and services tax (GST) in Australia) will have an additional column within the summary and breakdown sections showing the amount of tax applied in fees in the currency of the invoice.
+
+If your invoice is in a different currency to your local tax currency, an exchange rate between the two currencies is provided at the end of the summary section. This exchange rate is determined by the average point-in-time exchange rate between your holding currency and tax currency for given financial actions within the invoice period.
+
+You can find the exact amount of tax applied in your local tax currency in the Tax Currency Amount column in your financial actions report.
+
+For entities in regions where tax is not applicable, this additional tax column is not shown.
+
+---
+
+## Sample invoices
+
+If you opted for **net settlement**, <ExternalLink href="https://assets.checkout.com/docs/downloads/sample_invoice_net.pdf" >download this sample invoice</ExternalLink>.
+
+If you opted for **gross settlement**, <ExternalLink href="https://assets.checkout.com/docs/downloads/sample_invoice.pdf" >download this sample invoice</ExternalLink>.
+
+<TipBox variant="info">
+
+If you're using Safari, hold the _Option_ key when you select _download_.
+
+</TipBox>
+

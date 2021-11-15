@@ -1,0 +1,194 @@
+---
+title: E-commerce platforms
+account: ABC
+previewIcon: /faq/category-ecom.svg
+previewIconDark: /faq/category-ecom-light.svg
+description: Integration, configuration, and troubleshooting.
+---
+
+<FAQItem title="Can I still integrate with Magento 1?" popularity={21}>
+
+No. Official support ended for all versions of Magento 1 on 30 June 2020, and we stopped supporting it on 28 August 2020. 
+
+You can find more information in our [Magento 1 end of life guide](/integrate/e-commerce-platforms/magento-1-end-of-life).
+
+</FAQItem>
+
+<FAQItem title="Magento 2: Does the plugin work with other One Step Checkout plugins?" popularity={21}>
+
+Our plugin is built following Magento's standards. So, if the One Step Checkout plugin you use follows the standards as well, they should be compatible. If you’re having an issue, please contact the support team of the plugin you use in the first instance. If you’re still experiencing difficulties, get in touch with our Support team at <ExternalLink href="mailto:support@checkout.com">support@checkout.com</ExternalLink>.
+
+</FAQItem>
+
+<FAQItem title="Magento 2: I don’t see Apple Pay as a payment option after I enabled it. Why?" popularity={21}>
+
+Apple Pay only works on Safari on compatible Apple devices. Also, make sure you have a card configured in your Apple Pay wallet.
+
+</FAQItem>
+
+<FAQItem title="Magento 2: I’ve enabled all alternative payment methods, but I can't see them on the checkout page. Why?" popularity={21}>
+
+If you want to use alternative payment methods, we first need to enable them on your account. Please email our Support team at <ExternalLink href="mailto:support@checkout.com">support@checkout.com</ExternalLink> for this. In addition, some local payment methods only work in certain currencies, so they won't be displayed if you use a different currency in your store. For example, for Sofort, you need to use EUR to see it as a payment option on your checkout page.
+
+</FAQItem>
+
+<FAQItem title="Magento 2: I’ve installed the plugin, but I get this error in the apache logs: “Class Checkout\Library\HttpHandler does not exist”. Why?" popularity={21}>
+
+The plugin depends on our PHP software development kit (SDK). Make sure you [use composer to install the plugin](/integrate/e-commerce-platforms/magento-2#Using_Composer), so it can also install the SDK.
+
+</FAQItem>
+
+<FAQItem title="Magento 2: Where do I get the configuration details for Apple Pay?" popularity={21}>
+
+Create an Apple Developer account and then follow the [guide on our docs site](/payments/payment-methods/wallets/apple-pay/set-up-apple-pay) to get the necessary merchant ID and certificates.
+
+</FAQItem>
+
+<FAQItem title="Magento 2: Why am I getting a “class or interceptor does not exist” error message?" popularity={21}>
+
+A likely fix for this issue is to enter the following CLI commands into your terminal:
+
+**bin/magento setup:upgrade && bin/magento setup:di:compile**
+
+</FAQItem>
+
+<FAQItem title="Magento 2: Why am I getting a “class or interceptor does not exist” error message?" popularity={21}>
+
+To ensure your payments work in the live environment, follow the checklist below when moving from sandbox to live:
+
+- Update the environment to live/production.
+- Update your secret key in the plugin settings.
+- Update your public key in the plugin settings.
+- Update your private shared key in the plugin settings. (You’ll need to configure the webhook URL in the live environment to get this.)
+- Configure your webhooks for the live environment.
+- If you use wallets, like Apple Pay and Google Pay, make sure you update the IDs and certificates with the live/production details.
+
+</FAQItem>
+
+<FAQItem title="Magento 2: Why are the Frames fields not showing or not clickable?" popularity={21}>
+
+This is likely because Checkout.com has not been set as the default payment method. Set Checkout.com as the default method and see if the issue persists.
+
+</FAQItem>
+
+<FAQItem title="Magento 2: Why is Frames not showing?" popularity={21}>
+
+Your API keys may be incorrect, or you may be in the wrong environment. Check that your API keys (public, secret and private shared keys) are correct, and check that you are using the right environment (sandbox or live/production).
+
+</FAQItem>
+
+<FAQItem title="Magento 2: Why is the transaction status still 'pending'?" popularity={21}>
+
+If a transaction is stuck with a "pending" status after the transaction is completed, first check that your API keys (private, public and private shared keys) are correct, and that your webhooks are configured correctly. If they are, check that you have selected the correct API version (v2.0) for your webhooks, and that (if you have it set) auto capture / capture delay is set to at least 0.02.
+
+</FAQItem>
+
+<FAQItem title="PrestaShop: How do I install the plugin with the drag-and-drop feature?" popularity={21}>
+
+Go to <ExternalLink href="https://github.com/checkout/checkout-prestashop1.7-plugin/blob/drag-drop/checkoutcom.zip" >GitHub</ExternalLink> and click **Download** to download our plugin. Log in to your PrestaShop admin dashboard and go to _Modules > Module Manager_. Click **Upload a module** and drop the downloaded .zip file into the window that pops up. This will install the plugin.
+
+</FAQItem>
+
+<FAQItem title="SFCC: What version do I need to integrate with Checkout.com?" popularity={21}>
+
+Our extension is compatible with Salesforce Commerce Cloud version 16.2 and above.
+
+</FAQItem>
+
+<FAQItem title="SFCC: Why am I getting a 'server_api_not_allowed' error?" popularity={21}>
+
+For Salesforce Commerce Cloud, we need to enable the full API at our end. For the live/production environment, please email our Support team at <ExternalLink href="mailto:support@checkout.com">support@checkout.com</ExternalLink> and ask for the full API to be enabled. For the sandbox/test environment, contact our Integration team at <ExternalLink href="mailto:integration@checkout.com">integration@checkout.com</ExternalLink>.
+
+</FAQItem>
+
+<FAQItem title="Shopify: Can I accept 3D Secure transactions?" popularity={21}>
+
+If you use our onsite Shopify integration and want to use 3D Secure (3DS) authentication, Shopify requires you to use Cardinal Commerce as a third-party 3DS provider.
+
+If you use the offsite Shopify integration, we can activate 3DS for you for all your transactions, or you can enable risk rules that only trigger 3DS for certain cases. Please email our Support team at <ExternalLink href="mailto:support@checkout.com">support@checkout.com</ExternalLink> for help.
+
+</FAQItem>
+
+<FAQItem title="Shopify: Can I let customers save their cards?" popularity={21}>
+
+By default, our plugin does not offer this functionality. However, as we follow Shopify’s standards, you may be able to use third-party plugins to achieve this with our onsite integration.
+
+</FAQItem>
+
+<FAQItem title="Shopify: Can I use alternative payment methods?" popularity={21}>
+
+You can accept alternative payment methods through our offsite integration. Our integration supports the following: PayPal, Poli, Sofort, Alipay, Boleto, and iDEAL.
+
+</FAQItem>
+
+<FAQItem title="Shopify: Can I use Apple Pay and Google Pay?" popularity={21}>
+
+Shopify limits third-party payment providers from offering features like Apple Pay and Google Pay, so you can't use them with our plugin. However, if you are using Shopify Plus, you can build the integration with us and add Apple Pay and Google Pay. You will need a Shopify developer to set this up.
+
+</FAQItem>
+
+<FAQItem title="Shopify: How do I enable three-digit currencies?" popularity={21}>
+
+These cannot be enabled; three-digit currencies are not supported by our onsite Shopify integration.
+
+</FAQItem>
+
+<FAQItem title="Shopify: How do I start accepting Mada cards?" popularity={21}>
+
+Mada cards are only supported on our offsite Shopify integration. If you want to accept Mada cards, you will need to contact our Support team at <ExternalLink href="mailto:support@checkout.com">support@checkout.com</ExternalLink> so we can enforce 3D Secure authentication, which is required for all Mada card payments. You will also need a Mada-capable payment processor to process Mada cards locally.
+
+</FAQItem>
+
+<FAQItem title="Shopify: Why am I getting a 'payment_method_invalid' error?" popularity={21}>
+
+You either used a card scheme that is not enabled for your account, or used a currency that is not enabled on your account. Please email our Support team at <ExternalLink href="mailto:support@checkout.com">support@checkout.com</ExternalLink> for help.
+
+</FAQItem>
+
+<FAQItem title="Shopify: Why am I getting a “server_api_not_allowed” error?" popularity={21}>
+
+You are using our onsite Shopify integration, and for it to work we need to enable it at our end. Please email our Support team at <ExternalLink href="mailto:support@checkout.com">support@checkout.com</ExternalLink> and ask them to enable the full API.
+
+</FAQItem>
+
+<FAQItem title="Shopify: Why is my order status not updating?" popularity={21}>
+
+For the offsite integration, you need to configure the following URLs and webhooks in your <ExternalLink href="https://hub.checkout.com" >Hub</ExternalLink> account. Go to **Settings > Channels** to set them up. When setting up the webhook URL, select API - v1.0.
+
+For the **sandbox environment:**
+
+- Redirection success: https://sandbox/checkout.com/integration.app/shopify/paymentcomplete
+- Redirection fail: https://sandbox/checkout.com/integration.app/shopify/paymentcomplete
+- Webhook: https://sandbox/checkout.com/integration.app/shopify/webhook
+
+For the **live environment:**
+
+- Redirection success: https://api2/checkout.com/integration.app/shopify/paymentcomplete
+- Redirection fail: https://api2/checkout.com/integration.app/shopify/paymentcomplete
+- Webhook: https://api2/checkout.com/integration.app/shopify/webhook
+
+</FAQItem>
+
+<FAQItem title="WooCommerce: How do I keep 3D Secure transactions and order statuses in sync?" popularity={21}>
+
+For plugin versions 4.X or later, you need to set the following URLs in your <ExternalLink href="https://sandbox.checkout.com/login">>Hub</ExternalLink> account (replacing example.com with your site’s URL):
+
+- Redirection (success/failure): example.com/?wc-api=wc_checkoutcom_callback
+- Webhook: example.com/?wc-api=wc_checkoutcom_webhook
+- See <ExternalLink href="https://github.com/checkout/checkout-woocommerce-plugin/wiki/URLs--2.x" >GitHub</ExternalLink> for the URLs required for older plugin versions
+
+</FAQItem>
+
+<FAQItem title="WooCommerce: Why am I getting an error when I create a payment token?" popularity={21}>
+
+Your API keys may be incorrect or you may be in the wrong environment. Check that your API keys (public, secret, and private shared keys) are correct and that you are in the right environment (sandbox or production/live).
+
+</FAQItem>
+
+<FAQItem title="WooCommerce: Why am I not getting 'payment declined' webhooks?" popularity={21}>
+
+You need plugin version 4.1.12 or later for this functionality, so make sure you have the latest versi <ExternalLink href="https://wordpress.org/plugins/checkout-com-unified-payments-api/#developers" >WordPress Plugin Directory</ExternalLink> or as a .zip file from <ExternalLink href="https://github.com/checkout/checkout-woocommerce-plugin" >GitHub</ExternalLink> on of our plugin. This can be downloaded from the .
+
+Also, make sure that you've [deactivated/deleted any previous versions of the plugin](/integrate/e-commerce-platforms/woo-commerce#Check_you_have_no_previous_version_of_the_plugin) you may have installed.
+
+</FAQItem>

@@ -1,0 +1,1090 @@
+---
+title: Sender data for Card Payouts
+account: ABC
+---
+
+If you're sending a card payout on behalf of another person (a money transfer), or a business/government entity (a third-party funds disbursement), you must include the details of that person or entity in the `processing.senderInformation` object in your payout request. You can see example payout requests with sender data on our [Card Payouts page](/preview/drafts/abc/card-payouts).
+
+The data you need to provide depends on the card scheme:
+
+- [Visa](/card-payouts/sender-data-for-card-payouts#Visa)
+- [Mastercard](/card-payouts/sender-data-for-card-payouts#Mastercard)
+
+<TipBox variant="note">
+
+If you don't provide sender data when it's required, your transaction will be declined.
+
+</TipBox>
+<TipBox variant="info">
+
+For more details about sender data requirements, please contact your implementation manager.
+
+</TipBox>
+
+---
+
+## Visa
+
+### Sender data for Visa money transfers
+
+Fund transfer type = AA, PP, FT
+
+The following table outlines the fields which should be included in the `processing.senderInformation` object.
+
+<Table>
+<TableHead headers={['Field name', 'UK/EU domestic', 'Cross-border', 'Notes']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`reference`
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+
+(if `accountNumber` not available)
+
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+
+(if `accountNumber` not available)
+
+</TableCell>
+<TableCell>
+
+The merchant's unique customer ID.
+
+<InfoBox>
+
+Up to 16 alphanumeric characters.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`accountNumber`
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+
+(if available)
+
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+
+(if available)
+
+</TableCell>
+<TableCell>
+<InfoBox>
+
+Up to 19 characters.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`firstName`
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+
+</TableCell>
+<TableCell>
+
+The full name must be provided. This information will show on the cardholder's statement.
+
+<InfoBox>
+
+Up to 15 characters.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`lastName`
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+
+</TableCell>
+<TableCell>
+
+The full name must be provided. This information will show on the cardholder's statement.
+
+<InfoBox>
+
+Up to 15 characters.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`address`
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+
+</TableCell>
+<TableCell>
+
+Required under UK law.
+
+<InfoBox>
+
+Up to 35 characters.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`city`
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+
+</TableCell>
+<TableCell>
+<InfoBox>
+
+Up to 25 characters.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`state`
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+n/a
+
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+
+</TableCell>
+<TableCell>
+<InfoBox>
+
+Up to 3 characters.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`country`
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+
+(if applicable)
+
+</TableCell>
+<TableCell>
+<InfoBox>
+
+Up to 2 characters.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`sourceOfFunds`
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+<StatusTag type="recommended" />
+
+</TableCell>
+<TableCell>
+
+<StatusTag type="recommended" />
+
+</TableCell>
+<TableCell>
+
+
+Possible values:
+
+- `Credit`
+- `Debit`
+- `Prepaid`
+- `DepositAccount`
+- `MobileMoneyAccount`
+- `Cash`
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+### Sender data for Visa third-party funds disbursements
+
+Fund transfer type = FD
+
+The following table outlines the fields which should be included in the `processing.senderInformation` object.
+
+<Table>
+<TableHead headers={['Field name', 'UK/EU domestic', 'Cross-border', 'Notes']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`reference`
+
+<TypeTag type="string" />
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+The merchant's unique customer ID.
+
+<InfoBox>
+
+Up to 16 alphanumeric characters.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`accountNumber`
+
+<TypeTag type="string" />
+</TableCell>
+<TableCell>
+
+<StatusTag type="optional" />
+</TableCell>
+<TableCell>
+
+<StatusTag type="optional" />
+</TableCell>
+<TableCell>
+<InfoBox>
+
+Up to 19 characters.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`firstName`
+
+<TypeTag type="string" />
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+Merchant or government entity name. This information will show on the cardholder's statement.
+
+<InfoBox>
+
+Up to 15 characters.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`lastName`
+
+<TypeTag type="string" />
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+Merchant or government entity name. This information will show on the cardholder's statement.
+
+<InfoBox>
+
+Up to 15 characters.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`address`
+
+<TypeTag type="string" />
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+Required under UK law.
+
+<InfoBox>
+
+Up to 35 characters.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`city`
+
+<TypeTag type="string" />
+</TableCell>
+<TableCell>
+
+<StatusTag type="recommended" />
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+<InfoBox>
+
+Up to 25 characters.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`state`
+
+<TypeTag type="string" />
+</TableCell>
+<TableCell>
+
+n/a
+
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+
+(if applicable)
+
+</TableCell>
+<TableCell>
+<InfoBox>
+
+Up to 3 characters.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`country`
+
+<TypeTag type="string" />
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+<InfoBox>
+
+Up to 2 characters.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`sourceOfFunds`
+
+<TypeTag type="string" />
+</TableCell>
+<TableCell>
+
+<StatusTag type="recommended" />
+</TableCell>
+<TableCell>
+
+<StatusTag type="recommended" />
+</TableCell>
+<TableCell>
+
+Possible values:
+
+- `Credit`
+- `Debit`
+- `Prepaid`
+- `DepositAccount`
+- `MobileMoneyAccount`
+- `Cash`
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+<TipBox variant="note" title="Non-Visa products">
+
+Merchants are responsible for identifying the source of funds for non-Visa products and correctly populating the `sourceOfFunds` field.
+
+</TipBox>
+
+---
+
+## Mastercard
+
+### Sender data for Mastercard money transfers
+
+Fund transfer type = AA, PP, FT
+
+The following table outlines the fields which should be included in the `processing.senderInformation` object.
+
+<Table>
+<TableHead headers={['Field name', 'UK/EU domestic', 'Cross-border', 'Notes']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`firstName`
+
+<TypeTag type="string" />
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+Legal first name of sender. Do not use processor or intermediary name. This information will show on the cardholder's statement.
+
+<InfoBox>
+
+Up to 15 characters. Alphanumeric characters only; no spaces.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`lastName`
+
+<TypeTag type="string" />
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+Legal last name of sender. Do not use processor or intermediary name. This information will show on the cardholder's statement.
+
+<InfoBox>
+
+Up to 15 characters. Alphanumeric characters only; no spaces.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`address`
+
+<TypeTag type="string" />
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+<InfoBox>
+
+Up to 35 characters.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`city`
+
+<TypeTag type="string" />
+</TableCell>
+<TableCell>
+
+<StatusTag type="optional" />
+</TableCell>
+<TableCell>
+
+<StatusTag type="optional" />
+</TableCell>
+<TableCell>
+<InfoBox>
+
+Up to 25 characters.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`state`
+
+<TypeTag type="string" />
+</TableCell>
+<TableCell>
+
+<StatusTag type="optional" />
+</TableCell>
+<TableCell>
+
+<StatusTag type="optional" />
+</TableCell>
+<TableCell>
+<InfoBox>
+
+Up to 3 characters.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`country`
+
+<TypeTag type="string" />
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+Two-letter ISO country code.
+
+<InfoBox>
+
+Up to 2 characters.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`postalCode`
+
+<TypeTag type="string" />
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+<InfoBox>
+
+Up to 10 characters.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`accountNumber`
+
+<TypeTag type="string" />
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+
+(if `reference` not available)
+
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+
+(if `reference` not available)
+
+</TableCell>
+<TableCell>
+<InfoBox>
+
+Up to 19 characters.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`reference`
+
+<TypeTag type="string" />
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+
+(if `accountNumber` not available)
+
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+
+(if `accountNumber` not available)
+
+</TableCell>
+<TableCell>
+<InfoBox>
+
+Up to 16 alphanumeric characters.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`sourceOfFunds`
+
+<TypeTag type="string" />
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+Possible values:
+
+- `Credit`
+- `Debit`
+- `Prepaid`
+- `DepositAccount`
+- `MobileMoneyAccount`
+- `Cash`
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+### Sender data for Mastercard third-party funds disbursements
+
+Fund transfer type = FD
+
+The following table outlines the fields which should be included in the `processing.senderInformation` object.
+
+<Table>
+<TableHead headers={['Field name', 'UK/EU domestic', 'Cross-border', 'Notes']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`firstName`
+
+<TypeTag type="string" />
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+Legal first name of sender. Do not use processor or intermediary name. This information will show on the cardholder's statement.
+
+<InfoBox>
+
+Up to 15 characters. Alphanumeric characters only; no spaces.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`lastName`
+
+<TypeTag type="string" />
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+Legal last name of sender. Do not use processor or intermediary name. This information will show on the cardholder's statement.
+
+<InfoBox>
+
+Up to 15 characters. Alphanumeric characters only; no spaces.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`address`
+
+<TypeTag type="string" />
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+<InfoBox>
+
+Up to 35 characters.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`city`
+
+<TypeTag type="string" />
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+<InfoBox>
+
+Up to 25 characters.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`state`
+
+<TypeTag type="string" />
+</TableCell>
+<TableCell>
+
+<StatusTag type="optional" />
+</TableCell>
+<TableCell>
+
+<StatusTag type="optional" />
+</TableCell>
+<TableCell>
+<InfoBox>
+
+Up to 3 characters.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`country`
+
+<TypeTag type="string" />
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+Two-letter ISO country code.
+
+<InfoBox>
+
+Up to 2 characters.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`postalCode`
+
+<TypeTag type="string" />
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+<InfoBox>
+
+Up to 10 characters.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`accountNumber`
+
+<TypeTag type="string" />
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+
+(if `reference` not available)
+
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+
+(if `reference` not available)
+
+</TableCell>
+<TableCell>
+<InfoBox>
+
+Up to 19 characters.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`reference`
+
+<TypeTag type="string" />
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+
+(if `accountNumber` not available)
+
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+
+(if `accountNumber` not available)
+
+</TableCell>
+<TableCell>
+<InfoBox>
+
+Up to 16 alphanumeric characters.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`sourceOfFunds`
+
+<TypeTag type="string" />
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+Possible values:
+
+- `Credit`
+- `Debit`
+- `Prepaid`
+- `DepositAccount`
+- `MobileMoneyAccount`
+- `Cash`
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+
+
+

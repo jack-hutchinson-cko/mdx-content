@@ -1,0 +1,633 @@
+---
+title: Balance reports
+account: NAS
+---
+
+Balance reports provide you with a view of monetary inflows and outflows across your currency accounts, as well as the opening and closing available balances over a specified period of time.
+
+This allows you to determine any actions you need to take on your currency accounts. For example, the transfer of funds between your currency accounts or balance top-ups.
+
+Your balance report also provides a breakdown of total payment-related fees and account-level fees applied to your currency accounts, allowing you to see the net revenue paid out to you over a specified period of time across each of your entities.
+
+---
+
+## Understanding your balance report
+
+Balance reports are available by entity and structured by currency account. For each of your currency accounts, the report features the following types of rows:
+
+- **Balances & Payouts**: shows your currency account opening and closing balance, and financial activity not resulting from payments, such as account-level fees, adjustments, transfers and payouts.
+
+- **Breakdown**: subsequent rows show a breakdown by payment method, including the total payment amount, total payment-related fees and tax. The number of rows depends on the number of payment methods processed to a currency account during the reporting period.
+
+---
+
+## Report format
+
+Balance reports come in .csv format with the file name following this template: 
+
+`statement_{Entity Id}_{Currency}_{Start Date:YYYYMMDD}_{End Date:YYYYMMDD}.csv`
+
+---
+
+## When are the reports available?
+
+The balance report will be available from 12:00:00 UTC each day, and includes any fund movements across your currency accounts that took place between 00:00:00 UTC and 23:59:59 UTC the previous day.
+
+For example, all fund movements on 3 August 2020 (from 00:00:00 to 23:59:59 UTC) will be included in a daily balance report generated and available by 4 August 2020 at 12:00:00 UTC.
+
+Your balance report can be made available on a daily, weekly or monthly basis.
+
+---
+
+## Report fields
+
+<Accordion title="See full list of field names and descriptions">
+
+<TipBox variant="info">
+
+Fields with monetary amounts are expressed in their major currency unit up to eight decimal places. For example, an opening balance of $500 will be expressed as 500.00.
+
+</TipBox>
+
+<Table>
+<TableHead headers={['Field name', 'Description']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+Report ID
+
+</TableCell>
+<TableCell>
+
+The unique report Identifier.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Entity ID
+
+</TableCell>
+<TableCell>
+
+The unique ID of the entity for which the payment was processed.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Entity Name
+
+</TableCell>
+<TableCell>
+
+The name of the entity for which the financial movement was processed.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Currency Account ID
+
+</TableCell>
+<TableCell>
+
+The unique ID of the currency account where a balance change has occurred.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Currency Account Name
+
+</TableCell>
+<TableCell>
+
+The name of the currency account to which the payment action amount was charged.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Holding Currency
+
+</TableCell>
+<TableCell>
+
+Three-digit ISO currency code of the currency account.
+
+<InfoBox>
+
+Learn more about [ISO currency codes](/resources/codes/currency-codes).
+
+</InfoBox>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Report Date
+
+</TableCell>
+<TableCell>
+
+The date on which the report was generated expressed in ISO format in UTC (YYYY-MM-DD THH:MM:SS).
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Reporting Start Date
+
+</TableCell>
+<TableCell>
+
+The start date of all fund movements across your currency accounts that are included in the report expressed in ISO format in UTC (YYYY-MM-DD THH:MM:SS:sss).
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Reporting End Date
+
+</TableCell>
+<TableCell>
+
+The end date of all fund movements across your currency accounts that are included in the report expressed in ISO format in UTC (YYYY-MM-DD THH:MM:SS:sss).
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Description
+
+</TableCell>
+<TableCell>
+
+Used to identify whether a row relates to the Balances & Payouts or the Breakdown sections of the balance report for a currency account.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Opening Available Balance
+
+</TableCell>
+<TableCell>
+
+Funds that had been made available to you for settlement at the start of the reporting period.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Opening Pending Balance
+
+</TableCell>
+<TableCell>
+
+The funds that had not yet been made available to you at the start of the reporting period.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Opening Payable Balance
+
+</TableCell>
+<TableCell>
+
+The funds that had been set aside for a settlement at the start of the reporting period.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Opening Collateral Balance
+
+</TableCell>
+<TableCell>
+
+The collateral balance held at the start of the reporting period. For example, security deposits.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Payment Method
+
+</TableCell>
+<TableCell>
+
+The payment method that was used to process the associated transactions. For example, Visa or Mastercard.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Payments
+
+</TableCell>
+<TableCell>
+
+The total gross value of your payments processed over the scheduled period.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Refunds
+
+</TableCell>
+<TableCell>
+
+The total gross value of Refunds (including partial refunds) processed in this period.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Chargebacks
+
+</TableCell>
+<TableCell>
+
+The total gross value of chargebacks (including partial chargebacks) processed in this period.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Pay To Cards (coming soon)
+
+</TableCell>
+<TableCell>
+
+Placeholder field for the total value paid out to cards.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Card Payment Interchange Fees
+
+</TableCell>
+<TableCell>
+
+The total interchange fees charged by issuing banks for card payments.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Card Payment Scheme Fees
+
+</TableCell>
+<TableCell>
+
+The total amount of scheme fees charged for card payments by a card scheme such as Visa or Mastercard.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Acquiring Premiums
+
+</TableCell>
+<TableCell>
+
+The total amount of CKO Premium fees applied in each successful Capture for Card Processing payments.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Card Payment Gateway Fees
+
+</TableCell>
+<TableCell>
+
+The total gateway fees charged for card payments when payment actions occur. These fees associated with authorization, verification and void actions whilst using Checkout.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Card Payment Blended Fees
+
+</TableCell>
+<TableCell>
+
+The total scheme related agreed on card payment blended fees applied to captured payments if applicable.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Refunded Interchange Fees
+
+</TableCell>
+<TableCell>
+
+The total interchange fees charged by issuing banks refunded.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Refund Scheme Fees
+
+</TableCell>
+<TableCell>
+
+The total scheme fees charged by a card scheme for refunds.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Refund Gateway Fees
+
+</TableCell>
+<TableCell>
+
+The total amount of gateway fees charged for refund actions whilst using Checkout.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Chargeback Fees
+
+</TableCell>
+<TableCell>
+
+The total fees charged for processing chargebacks as part of the disputes process.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Retrieval Fees
+
+</TableCell>
+<TableCell>
+
+The total fees charged for retrieval actions as part of the disputes process.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Representment Fee
+
+</TableCell>
+<TableCell>
+
+The total fees charged for representment actions as part of the disputes process.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Pay To Card Interchange Fees (coming soon)
+
+</TableCell>
+<TableCell>
+
+Placeholder field for the total interchange fees charged by an issuing bank for processing Card Payouts.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Pay To Card Scheme Fees (coming soon)
+
+</TableCell>
+<TableCell>
+
+Placeholder field for the total scheme fees charged by a card scheme for processing Card Payouts.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Pay To Card Fees (coming soon)
+
+</TableCell>
+<TableCell>
+
+Placeholder field for the total fee charged for Card Payouts.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Alternative Payment Method Fees (coming soon)
+
+</TableCell>
+<TableCell>
+
+Placeholder field for the total fees charged for accepting local payment methods, such as Sofort or Klarna.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Adjustments
+
+</TableCell>
+<TableCell>
+
+Placeholder field for the total amount of adjustments applied to your currency account.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Tax
+
+</TableCell>
+<TableCell>
+
+The total local value-added tax applied to your fees if applicable.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Account Updater Fees
+
+</TableCell>
+<TableCell>
+
+The total fees charged for the Account Updater service.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Merchant Payout Fees (coming soon)
+
+</TableCell>
+<TableCell>
+
+Placeholder field for the total fees charged for payouts paid to your bank account.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Pay to Bank Fees
+
+</TableCell>
+<TableCell>
+
+The total fees charged for processing bank payouts. This includes bank payout fees as well as bank payout returned fees.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Pay to Bank Payouts
+
+</TableCell>
+<TableCell>
+
+The total value of funds paid out to banks.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Transfers In (coming soon)
+
+</TableCell>
+<TableCell>
+
+Placeholder field for the total value of transfers into the currency account.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Transfers Out (coming soon)
+
+</TableCell>
+<TableCell>
+
+Placeholder field for the total value of transfers out of the currency account.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Merchant Payouts
+
+</TableCell>
+<TableCell>
+
+The total value of funds paid to you as part of your scheduled settlements.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Closing Available Balance
+
+</TableCell>
+<TableCell>
+
+The cleared funds to a currency account available to you at the end of the reporting period.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Closing Pending Balance
+
+</TableCell>
+<TableCell>
+
+The funds yet to be cleared to a currency account at the end of the reporting period.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Closing Payable Balance
+
+</TableCell>
+<TableCell>
+
+The funds that have been set aside for a settlement or transfer at the end of the reporting period.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Closing Collateral Balance
+
+</TableCell>
+<TableCell>
+
+The collateral balance held at the end of the reporting period, such as security deposits.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+</Accordion>
+
+---
+
+## Sample report
+
+<ExternalLink href="https://assets.checkout.com/docs/downloads/sample_balance_report.csv" >Download a sample balance report</ExternalLink>. If you're using Safari, hold down the _Option_ key when you download. (.csv file)

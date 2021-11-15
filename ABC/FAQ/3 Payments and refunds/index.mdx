@@ -1,0 +1,171 @@
+---
+title: Payments and refunds
+account: ABC
+previewIcon: /faq/category-payments.svg
+previewIconDark: /faq/category-payments-light.svg
+description: Charges, refunds, payouts to cards, and error codes.
+---
+
+<FAQItem title="How do I check the status of a payment?" popularity={21}>
+
+If you want to check the status of a payment on the Hub, log in to your account and then go to the Payments screen, where you'll find the full payment activity for your business. Read our guide on [managing payments from the Hub](/the-hub/manage-hub-payments) for more details.
+
+Alternatively, use the [get payment details endpoint](/payments/manage-payments/get-payment-details) to check the status of a specific payment.
+
+</FAQItem>
+
+
+<FAQItem title="What do the payment statuses in the Hub mean?" popularity={22}>
+
+Payment statuses (also called payment actions) refer to the various statuses that a given payment goes through. For example, a card payment might go from being authorized (AUTH) to captured (CAPTURE) before finally being refunded (REFUND). Each of these statuses will be displayed in the **Action** column of the <ExternalLink href="https://hub.checkout.com/login" >Hub</ExternalLink>'s Payments screen, as well as in the payment details.
+
+To view a list of all possible statuses and what they mean, take a look at our [payment actions guide](/the-hub/manage-hub-payments/about-payment-actions).
+
+</FAQItem>
+
+<FAQItem title="How do I issue a refund?" popularity={23}>
+
+You can issue a refund (either full or partial) through the <ExternalLink href="https://hub.checkout.com/login" >Hub</ExternalLink>, or by calling the [refund endpoint](/payments/manage-payments/refund-a-payment) by <ExternalLink href="https://docs.ckotech.co/the-hub/manage-payments#Managepayments-Capture,void,orrefundapayment">following these steps</ExternalLink>.
+
+</FAQItem>
+
+<FAQItem title="How long do I have to process a refund?" popularity={24}>
+
+Typically, you have up to six months to process a refund from the date the transaction was captured. Have a look at our [refund guide](/payments/manage-payments/refund-a-payment) to learn more about refunding a payment.
+
+</FAQItem>
+
+<FAQItem title="Can I cancel or void a refund?" popularity={25}>
+
+You cannot cancel or void a refund. However, you can charge the customer a new payment on the same card.
+
+You can do this by:
+
+- using the <ExternalLink href="https://hub.checkout.com/login" >Hub</ExternalLink>. To do so, simply open the customer details page and click the **Create payment** button.
+- using the [Unified Payments API](/payments/accept-payments/request-a-card-payment)
+
+Be sure to tell the customer beforehand.
+
+</FAQItem>
+
+<FAQItem title="My customer hasn't received the refund I processed. What should I do?" popularity={26}>
+
+You should provide your customer with the Acquirer Reference Number (ARN) of the refund. Your customer can then use this number to track the funds with their issuing bank.
+
+</FAQItem>
+
+
+<FAQItem title="Where can I find the Acquirer Reference Number (ARN)?" popularity={37}>
+
+You can find the Acquirer Reference Number (ARN) for a payment in the _Payments_ section of the <ExternalLink href="https://hub.checkout.com/login" >Hub</ExternalLink>. Just click on the relevant payment action to open up the summary, and you'll find the ARN under the **Action details** heading.
+
+Alternatively, you can find the ARN in the response of the [get payment actions endpoint](/payments/manage-payments/get-payment-actions), as well as in the payment_captured and payment_refunded webhook notifications.
+
+</FAQItem>
+
+<FAQItem title="I accidentally processed a full refund instead of a partial one. What should I do?" popularity={28}>
+
+You cannot cancel a refund. However, you can charge the customer a new transaction.
+
+To do so, go to the _Customers_ section of your <ExternalLink href="https://hub.checkout.com/login" >Hub</ExternalLink> account, select the customer you want to charge and click **Create payment**.
+
+You should tell the customer before doing this, to avoid confusion.
+
+</FAQItem>
+
+<FAQItem title="Can I process a refund for a card not processed on Checkout.com?" popularity={30}>
+
+No. To process a refund, the original transaction must have been be processed with us and be visible in your <ExternalLink href="https://hub.checkout.com/login" >Hub</ExternalLink> account.
+
+</FAQItem>
+
+<FAQItem title="Can I process a refund for an amount larger than the initial transaction?" popularity={31}>
+
+No. The refund must be for an amount equal to, or lower than, the initial transaction.
+
+</FAQItem>
+
+<FAQItem title="Can I process a refund on a different card than the one used for the initial payment?" popularity={32}>
+
+No, as per best practices, you should always process a refund on the card used for the initial payment.
+
+</FAQItem>
+
+<FAQItem title="Can I issue a refund to an expired/canceled card or closed account?" popularity={33}>
+
+If the cardholder has simply changed cards, you can refund to the expired or canceled card. The issuing bank has an obligation to honor the transaction.
+
+If the cardholder has not only changed cards, but also closed their bank account and moved to another bank, you should not attempt to process a refund. Instead, you should liaise with the customer to find an alternative solution.
+
+</FAQItem>
+
+<FAQItem title="Can I perform refunds through the Unified Payments API on payments created using the Classic API?" popularity={34}>
+
+Yes. To do so, call the [/refunds endpoint](/payments/manage-payments/refund-a-payment) in the Unified Payments API with the charge ID of your captured payment.
+
+If you rely on webhooks, you will need to maintain your Classic API webhook handler to perform refunds like this, because we will send you Classic API event types for this particular scenario.
+
+</FAQItem>
+
+<FAQItem title="Why are Apple Pay and Google Pay card numbers different on the Hub?" popularity={35}>
+
+Apple Pay and Google Pay enforce using virtual card numbers, so that your physical card details are never exposed. The last few digits will therefore always appear to be different on the Hub, as these correspond to the virtual card's last digits and not the physical one's.
+
+If you need to find a specific Apple Pay or Google Pay transaction on the Hub, we recommend performing a search using other details such as the payment ID or reference.
+
+</FAQItem>
+
+<FAQItem title="How can I verify if a card linked to a source ID is expired?" popularity={36}>
+
+There are two different ways to do this:
+
+- Perform a [card verification](/risk-management/card-verification).
+- Store the expiry date in your database, then carry out a date verification before processing the charge.
+
+</FAQItem>
+
+<FAQItem title="How do I set a dynamic billing descriptor?" popularity={36}>
+
+In order to enable dynamic billing descriptors on your account, please contact your customer success manager.
+
+Once they are enabled, simply follow the instructions in [this guide](/resources/dynamic-billing-descriptor). Note that you can currently only set billing descriptors for payment requests.
+
+</FAQItem>
+
+<FAQItem title="What does the response code of my transaction mean?" popularity={20}>
+
+The response_code is a five-digit numeric code that indicates the status of the payment request. Additional information may be found in the response_summary and status fields of the response.
+
+The statuses fall within one of four categories:
+
+- APPROVED (10000 codes). The request was successful.
+- SOFT DECLINE (20000 codes). The request was declined, though subsequent attempts may be successful.
+- HARD DECLINE (30000 codes). The request was declined. Most hard declines require the issuer or cardholder to fix the outstanding issue(s) before trying again.
+- RISK RESPONSE (40000 codes). The request triggered a risk response. The status of the response (response_code and status) will depend on the action specified in your risk settings.
+
+Please refer to our [response code guide](/resources/codes/response-codes) to learn about specific codes.
+
+</FAQItem>
+
+<FAQItem title="What should I do when a payment’s status is: Authorization: Flagged?" popularity={16}>
+
+This means that the payment triggered a risk scenario. You will need to review it manually and decide whether to capture or void the payment.
+
+**Please note that the system holds the authorization status for a period of 7 days. It will be auto-voided after this period.**
+
+</FAQItem>
+
+<FAQItem title="What does the error code of my request mean?" popularity={12}>
+
+If you receive an error code, it means something has gone wrong with your request. The code will tell you the nature of the problem, with the usual issues being invalid formatting (like an invalid shipping address) and processing errors (like a payment method not being supported). Please refer to our [error codes guide](/resources/codes/error-codes) to learn about specific codes.
+
+</FAQItem>
+
+<FAQItem title="What does the Do Not Honour (20005) response code mean?" popularity={37}>
+
+Typically, this means that the customer's card issuing bank (or the acquirer) has declined the transaction. For example, if the CVV is incorrect or the card cannot be used for online transactions. The cardholder should contact their issuing bank to understand what has happened.
+
+You can find out about the other response codes [here](/resources/codes/response-codes).
+
+</FAQItem>
+

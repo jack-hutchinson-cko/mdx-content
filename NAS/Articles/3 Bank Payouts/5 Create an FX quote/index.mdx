@@ -1,0 +1,217 @@
+---
+title: Create an FX quote
+account: NAS
+description: With our Foreign Exchange API, you can generate an FX quote to use in your payout request.
+---
+
+Our Foreign Exchange (FX) API allows you to request FX quotes, so you can make international transfers in the way that suits your business needs.
+
+The quotes endpoint returns an exchange rate in your preferred operating currency, allowing you to assess the rate, before making the transfer.
+
+---
+
+## Create a quote
+
+Generate an FX quote with the following endpoint. You can then use the unique quote `id` you get in the response to make a payout at the quoted rate. To get a detailed view of all required and optional fields, see our <ExternalLink href="https://api-reference.checkout.com/preview/crusoe" >API reference</ExternalLink>.
+
+### Endpoints
+
+<tabs>
+<tab title="Live">
+<LineCodeWrapper type="post">
+
+`https://api.checkout.com/forex/quotes`
+
+</LineCodeWrapper>
+</tab>
+<tab title="Sandbox">
+<LineCodeWrapper type="post">
+
+`https://api.sandbox.checkout.com/forex/quotes`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+### Header parameters
+
+<Table>
+<TableHead headers={["Header", "Value"]} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`Authorization`
+
+<StatusTag type="required"/>
+
+</TableCell>
+<TableCell>
+
+`Bearer {OAuth Bearer access token}`
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`Content-Type`
+
+<StatusTag type="required"/>
+
+</TableCell>
+<TableCell>
+
+`application/json`
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+### Body parameters
+
+<Table>
+<TableHead headers={["Field name", "Description"]} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`source.currency`
+
+<StatusTag type="required" />
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+The three-letter ISO code of the debiting currency of your chosen currency account.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`source.amount`
+
+<StatusTag type="optional" />
+<TypeTag type="integer" />
+
+</TableCell>
+<TableCell>
+
+The amount to be converted from the source currency.
+
+<InfoBox>
+
+The exact format [depends on the currency](/resources/calculating-the-amount).
+
+</InfoBox>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`destination.currency`
+
+<StatusTag type="required" />
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+The destination three-letter [ISO currency code](/resources/codes/currency-codes).
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`destination.amount`
+
+<StatusTag type="optional" />
+<TypeTag type="integer" />
+
+</TableCell>
+<TableCell>
+
+The amount to be converted to the destination currency.
+
+<InfoBox>
+
+The exact format [depends on the currency](/resources/calculating-the-amount).
+
+</InfoBox>
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+### Request examples
+
+<tabs>
+<tab title="Destination amount specified">
+
+```json
+{
+  "source_currency": "EUR",
+  "destination_currency": "USD",
+  "destination_amount": 100
+}
+```
+
+</tab>
+<tab title="Source amount specified">
+
+```json
+{
+  "source_currency": "EUR",
+  "source_amount": 100,
+  "destination_currency": "USD"
+}
+```
+
+</tab>
+</tabs>
+
+### Response example
+
+You will receive a response containing the quote `id`, the exchange rate, and the date and time the quoted rate is valid until.
+
+<tabs>
+<tab title="Destination amount specified">
+
+```json
+{
+  "id": "qte_4cupy6wqbvbereowvw4mjcb2qi",
+  "expires_on": "2020-12-04T11:14:09.1599802Z",
+  "source_amount": 84,
+  "source_currency": "EUR",
+  "destination_amount": 100,
+  "destination_currency": "USD",
+  "rate": 1.19287971,
+  "is_single_use": false
+}
+```
+
+</tab>
+<tab title="Source amount specified">
+
+```json
+{
+  "id": "qte_z2bbe3wte6huzpazztmzjzhjhq",
+  "expires_on": "2020-12-04T11:14:41.7886337Z",
+  "source_amount": 100,
+  "source_currency": "EUR",
+  "destination_amount": 119,
+  "destination_currency": "USD",
+  "rate": 1.19307573,
+  "is_single_use": false
+}
+```
+
+</tab>
+</tabs>
+

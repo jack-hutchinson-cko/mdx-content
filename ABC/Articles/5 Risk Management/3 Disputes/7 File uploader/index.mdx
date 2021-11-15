@@ -1,0 +1,146 @@
+---
+title: File uploader
+account: ABC
+---
+
+Our file uploader allows you to upload files to Checkout.com. You can then use these to [provide evidence in a dispute](/risk-management/disputes/disputes-api).
+
+---
+
+## Upload a file
+
+Upload a file to use as evidence in a dispute. Your request must be multipart/form-data and the file must be in either JPEG/JPG, PNG or PDF format, and no larger than 4MB.
+
+### Endpoints
+
+For the full specification, as well as complete request and response examples, see our <ExternalLink href="https://api-reference.checkout.com" >API reference</ExternalLink>.
+
+<tabs>
+<tab title="Live">
+<LineCodeWrapper type="post">
+
+`https://api.checkout.com/files`
+
+</LineCodeWrapper>
+</tab>
+<tab title="Sandbox">
+<LineCodeWrapper type="post">
+
+`https://api.sandbox.checkout.com/files`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+### Request example
+
+<tabs>
+<tab title="cURL">
+
+```
+      curl https://api.sandbox.checkout.com/files
+      -H "Authorization: sk_11111111-2222-3333-4444-555555555555"
+      -F "file=@/path/receipt.png;type=image/png"
+      -F "purpose=dispute_evidence"
+```
+
+</tab>
+<tab title="C#">
+
+``` json
+  public static async Task Main(string[] args)
+  {
+    using (var httpClient = new HttpClient())
+      {
+        httpClient.DefaultRequestHeaders.Add("Authorization", "sk_11111111-2222-3333-4444-555555555555");
+        using (var form = new MultipartFormDataContent())
+          {
+            using (var fileStream = new FileStream("test.png", FileMode.Open))
+            {
+              var streamContent = new StreamContent(fileStream);
+              streamContent.Headers.ContentType = new MediaTypeHeaderValue("image/png");
+              form.Add(streamContent, "File", "test.png");
+              form.Add(new StringContent("dispute_evidence"), "purpose");
+              var response = await httpClient.PostAsync("https://api.sandbox.checkout.com/files", form);
+              Console.WriteLine(response.StatusCode);
+              string responseContent = await response.Content.ReadAsStringAsync();
+              Console.WriteLine(responseContent);
+            }
+          }
+      }
+  }
+```
+
+</tab>
+</tabs>
+
+### Response example
+
+If the response returns a file `id`, your request was successful. Take a look at the example response below.
+
+```json
+    {
+      "id": "file_6lbss42ezvoufcb2beo76rvwly",
+      "_links": {
+        "self": {
+          "href": "https://api.sandbox.checkout.com/files/file_6lbss42ezvoufcb2beo76rvwly"
+        }
+      }
+    }
+```
+
+---
+
+## Get file information
+
+Use the following endpoint to retrieve information about a file that you've uploaded.
+
+### Endpoints
+
+For the full specification, as well as complete request and response examples, see our <ExternalLink href="https://api-reference.checkout.com" >API reference</ExternalLink>.
+
+<tabs>
+<tab title="Live">
+<LineCodeWrapper type="get">
+
+`https://api.checkout.com/files/{file_id}`
+
+</LineCodeWrapper>
+</tab>
+<tab title="Sandbox">
+<LineCodeWrapper type="get">
+
+`https://api.sandbox.checkout.com/files/{file_id}`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+### Request example
+
+```
+    curl https://api.sandbox.checkout.com/files/file_6lbss42ezvoufcb2beo76rvwly
+        -H "Authorization: sk_11111111-2222-3333-4444-555555555555"
+```
+
+### Response example
+
+If the response returns a file `id`, your request was successful.
+
+```json
+    {
+      "id": "file_6lbss42ezvoufcb2beo76rvwly",
+      "filename": "receipt.png",
+      "purpose": "dispute_evidence",
+      "size": 1024,
+      "uploaded_on": "2016-05-17T16:48:52.000Z",
+      "_links": {
+        "self": {
+          "href": "https://api.sandbox.checkout.com/files/file_6lbss42ezvoufcb2beo76rvwly"
+        },
+        "download": {
+          "href": "https://checkout-file-upload.s3.eu-west-2.amazonaws.com/ucdac/ucdac/6lbss42ezvoufcb2beo76rvwly?X-Amz-Expires=3600&x-amz-security-token=FQoDYXdzENL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEa"
+        }
+      }
+    }
+```

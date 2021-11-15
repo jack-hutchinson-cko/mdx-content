@@ -1,0 +1,30 @@
+<IBuilderDescriptionCard title="Install our Node SDK" tab="node/server.js" lines={[7, 8]}>
+
+To access everything in our Node SDK, install the `checkout-sdk-node` package into your codebase. We’re using <ExternalLink href="https://www.npmjs.com/package/frames-react" >npm</ExternalLink> as our package manager in this example.
+
+`npm install checkout-sdk-node`
+
+
+</IBuilderDescriptionCard>
+<IBuilderDescriptionCard title="Import our Node SDK into your server file" tab="node/server.js" lines={[7, 8]}>
+
+Import `checkout-sdk-node` at the top of your server file, so you have access to the whole package. Before you can use the SDK’s functions, you need to initialize it (similar to what we did with `Frames.init`). 
+
+Create a new instance of the Node SDK with your secret key as the first argument, and store it in a variable, so you can use it later on. In our example, we store it in a variable called `cko`.
+
+
+</IBuilderDescriptionCard>
+
+<IBuilderDescriptionCard title="Create a payment request" tab="node/server.js" lines={[20, 29]}>
+
+Your back end securely sends a payment request with the payment token it receives from the front end in the body of the request.
+
+To do this, you need to access the `payments` object of the Node SDK by using the variable you stored the SDK instance in. In our example, we used `cko`, so we send a payment request by calling `cko.payments.request`. 
+
+<TipBox variant="tip">
+
+Remember that `cko` here represents all pre-built functions from the Node SDK.
+
+</TipBox>
+
+</IBuilderDescriptionCard>

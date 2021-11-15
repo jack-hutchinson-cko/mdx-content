@@ -1,0 +1,1076 @@
+--- 
+title: Frames reference
+account: ABC
+---
+
+Our Frames reference is here to help you find those hard-to-find bits of information all in one place.
+
+---
+
+## Supported browsers
+
+Frames is a critical payment service, which requires up-to-date security. For this reason, we support all major browsers that are still officially maintained and receiving security updates.
+
+We support:
+
+- Internet Explorer (IE11+) and Edge
+- Chrome, Safari and Firefox on all devices
+
+If you discover any issues with the supported browsers, or would like to report a bug, please <ExternalLink href="https://www.checkout.com/contact-us" >get in touch</ExternalLink>
+
+---
+
+## Configuration options
+
+Here's a complete list of Frames configuration options.
+
+### Required
+
+<TipBox variant="info">
+
+You can only create charges in currencies that have been enabled for your account. Please contact your Customer Success manager if you need to process payments in additional currencies.
+
+</TipBox>
+
+<Table>
+<TableHead headers={['Javascript key', 'Description']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`publicKey`
+
+</TableCell>
+<TableCell>
+
+Your public key.
+
+<InfoBox>
+
+You can find it in the <ExternalLink href="https://hub.checkout.com/login" >Hub</ExternalLink>.
+
+</InfoBox>
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+### Optional
+
+<Table>
+<TableHead headers={['Javascript key', 'Description', 'Default']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`debug`
+
+</TableCell>
+<TableCell>
+
+Set to `true` to view console messages.
+
+</TableCell>
+<TableCell>
+
+`false`
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`frameSelector`
+
+</TableCell>
+<TableCell>
+
+The .class or #id of the parent elements in the Frames payment form.
+
+</TableCell>
+<TableCell>
+
+none
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`localization`
+
+</TableCell>
+<TableCell>
+
+Allows you to use one of the supported languages or a custom object. Refer to the [Frames customization guide](/integrate/frames/frames-customization-guide) for more information.
+
+</TableCell>
+<TableCell>
+
+`EN-GB`
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`namespace`
+
+</TableCell>
+<TableCell>
+
+Customize the default Frames namespace.
+
+</TableCell>
+<TableCell>
+
+`Frames`
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`style`
+
+</TableCell>
+<TableCell>
+
+Allows you to customize the look and feel of Frames' controlled fields. Refer to the [Frames customization guide](/integrate/frames/frames-customization-guide) for more information.
+
+</TableCell>
+<TableCell>
+
+`{}`
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+--- 
+
+## Hide the CVV field
+
+When paying out to a card, the [CVV field](/risk-management/cvv-check) is not mandatory, so you can initialize Frames with `CVV_HIDDEN` **or** `CVV_OPTIONAL`. 
+
+<tabs>
+<tab title="CVV_HIDDEN">
+
+```javascript
+Frames.init({
+  publicKey: "pk_test_8ac41c0d-fbcc-4ae3-a771-31ea533a2beb",
+  modes: [ Frames.modes.CVV_HIDDEN]
+});
+```
+
+</tab>
+<tab title="CVV_OPTIONAL">
+
+```javascript
+Frames.init({
+  publicKey: "pk_test_8ac41c0d-fbcc-4ae3-a771-31ea533a2beb",
+  modes: [ Frames.modes.CVV_OPTIONAL]
+});
+```
+
+</tab>
+</tabs>
+
+<TipBox variant="info">
+
+Please note that either the `CVV_HIDDEN` or `CVV_OPTIONAL` can be used. You cannot incorporate both.
+
+</TipBox>
+
+### Additional security
+
+To prevent copy pasting of card details within the iframe, you can use `DISABLE_COPY_PASTE`.
+
+```javascript
+Frames.init({
+  publicKey: "pk_test_8ac41c0d-fbcc-4ae3-a771-31ea533a2beb",
+  modes: [ Frames.modes.DISABLE_COPY_PASTE ]
+});
+```
+
+---
+
+## Customer details
+
+<Table>
+<TableHead headers={['Javascript key', 'Description', 'Default']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`name`
+
+</TableCell>
+<TableCell>
+
+The customer's name.
+
+</TableCell>
+<TableCell>
+
+none
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`billingAddress`
+
+</TableCell>
+<TableCell>
+
+Transaction billing address:
+
+```json
+{
+ addressLine1,
+ addressLine2,
+ zip,
+ city,
+ state,
+ country,
+}
+```
+
+<InfoBox>
+
+The country field only accepts two-letter ISO country codes. You can find a full list of these [here](/resources/codes/currency-codes).
+
+</InfoBox>
+
+</TableCell>
+<TableCell>
+
+none
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`phone`
+
+</TableCell>
+<TableCell>
+
+The customer's phone number.
+
+</TableCell>
+<TableCell>
+
+none
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+## Localization options
+
+<Table>
+<TableHead headers={['Javascript key', 'Description', 'Default']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`localization`
+
+</TableCell>
+<TableCell>
+
+Sets the language of the text used.
+
+The available options are:
+
+- EN-GB (English)
+- ES-ES (Spanish)
+- DE-DE (German)
+- KR-KR (Korean)
+- FR-FR (French)
+- IT-IT (Italian)
+- NL-NL (Dutch)
+
+</TableCell>
+<TableCell>
+
+`EN-GB`
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+## Events
+
+<Table>
+<TableHead headers={['Event name', 'Javascript constant', 'Description']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`ready`
+
+</TableCell>
+<TableCell>
+
+`READY`
+
+</TableCell>
+<TableCell>
+
+Triggered when Frames is registered on the global namespace and safe to use.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`frameActivated`
+
+</TableCell>
+<TableCell>
+
+`FRAME_ACTIVATED`
+
+</TableCell>
+<TableCell>
+
+Triggered when the form is rendered.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`frameFocus`
+
+</TableCell>
+<TableCell>
+
+`FRAME_FOCUS`
+
+</TableCell>
+<TableCell>
+
+Triggered when an input field receives focus. Use it to check the validation status and apply the wanted UI changes.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`frameBlur`
+
+</TableCell>
+<TableCell>
+
+`FRAME_BLUR`
+
+</TableCell>
+<TableCell>
+
+Triggered after an input field loses focus. Use it to check the validation status and apply the wanted UI changes.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`frameValidationChanged`
+
+</TableCell>
+<TableCell>
+
+`FRAME_VALIDATION_CHANGED`
+
+</TableCell>
+<TableCell>
+
+Triggered when a field's validation status has changed. Use it to show error messages or update the UI.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`paymentMethodChanged`
+
+</TableCell>
+<TableCell>
+
+`PAYMENT_METHOD_CHANGED`
+
+</TableCell>
+<TableCell>
+
+Triggered when a valid payment method is detected based on the card number being entered. Use this event to change the card icon.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`cardValidationChanged`
+
+</TableCell>
+<TableCell>
+
+`CARD_VALIDATION_CHANGED`
+
+</TableCell>
+<TableCell>
+
+Triggered when the state of the card validation changes. This will return: `isValid: true / false`.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`cardSubmitted`
+
+</TableCell>
+<TableCell>
+
+`CARD_SUBMITTED`
+
+</TableCell>
+<TableCell>
+
+Triggered when the card form has been submitted.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`cardTokenized`
+
+</TableCell>
+<TableCell>
+
+`CARD_TOKENIZED`
+
+</TableCell>
+<TableCell>
+
+Triggered after a card is tokenized. The event will contain data following this example:
+
+```json 
+{
+  type: card,
+  token: tok_ubfj2q76miwundwlk72vxt2i7q,
+  expires_on: 2019-10-07T16:54:21Z,
+  expiry_month: 6,
+  expiry_year: 2025,
+  scheme: VISA,
+  last4: 9996,
+  bin: 454347,
+  card_type: Credit,
+  card_category: Consumer,
+  issuer: GOTHAM STATE BANK,
+  issuer_country: US,
+  product_id: F,
+  product_type: CLASSIC,
+  billing_address: [...],
+  phone: [...],
+  name: Bruce Wayne
+}
+```
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`cardTokenizationFailed`
+
+</TableCell>
+<TableCell>
+
+`CARD_TOKENIZATION_FAILED`
+
+</TableCell>
+<TableCell>
+
+Triggered if the card tokenization fails.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`cardBinChanged`
+
+</TableCell>
+<TableCell>
+
+`CARD_BIN_CHANGED`
+
+</TableCell>
+<TableCell>
+
+Triggered when the user inputs or changes the first 8 digits of a card.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+## Adding an event handler
+
+There are two ways to add an event handler: using the standard approach or using configuration options.
+
+<tabs>
+<tab title="Method 1: Standard approach">
+
+```javascript
+Frames.addEventHandler(Frames.Events., handler);
+```
+
+</tab>
+<tab title="Method 2: Configuration options">
+
+```javascript
+Frames.init({
+  publicKey: 'pk_test_6ff46046-30af-41d9-bf58-929022d2cd14',
+  : handler
+});
+```
+
+</tab>
+</tabs>
+
+---
+
+## Actions
+
+<Table>
+<TableHead headers={['Signature', 'Description', 'Returns']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`init(object)`
+
+</TableCell>
+<TableCell>
+
+Initializes (or re-initializes) Frames.
+Examples:
+
+- `init({ publicKey: '...' })` initializes with your configuration
+- `init()` reinitializes Frames with the current configuration (if there is one) and empties the fields. This is useful, for example, in single page apps where you want to reinitialize with a clean slate without reloading
+- `init({...})` reinitializes Frames with another configuration
+
+</TableCell>
+<TableCell>
+
+`undefined`
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`isCardValid()`
+
+</TableCell>
+<TableCell>
+
+Returns the state of the card form validation.
+Example:
+`Frames.isCardValid()`
+
+</TableCell>
+<TableCell>
+
+boolean
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`submitCard()`
+
+</TableCell>
+<TableCell>
+
+Submits the card form if all form values are valid.
+Example:
+`Frames.submitCard()`
+
+</TableCell>
+<TableCell>
+
+Promise
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`addEventHandler(event, handler)`
+
+</TableCell>
+<TableCell>
+
+Adds a handler that is called when the specified event is triggered. Call the `Frames.Events` object to retrieve the list of accepted events.
+Example:
+`event: Events.CARD_TOKENIZED handler: function(event){}`
+
+</TableCell>
+<TableCell>
+
+`undefined`
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`removeEventHandler(event, handler)`
+
+</TableCell>
+<TableCell>
+
+Removes a previously added handler from an event by providing the event name and handler as arguments in the method.
+Example:
+e`vent: Events.CARD_TOKENIZED handler: function(event){}`
+
+</TableCell>
+<TableCell>
+
+`boolean`
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+<inlineCode wordBreak="break-word">removeAllEventHandlers(event)</inlineCode>
+
+</TableCell>
+<TableCell>
+
+Removes all handlers added to the event specified.
+Example:
+`event: Events.CARD_TOKENIZED`
+
+</TableCell>
+<TableCell>
+
+`boolean`
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`enableSubmitForm()`
+
+</TableCell>
+<TableCell>
+
+Retains the entered card details and allows you to resubmit the payment form.
+
+</TableCell>
+<TableCell>
+
+`undefined`
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+---
+
+## Functions
+
+<Table>
+<TableHead headers={['Getter', 'Setter', 'Description']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`publicKey`
+
+</TableCell>
+<TableCell>
+
+`publicKey = value `
+
+</TableCell>
+<TableCell>
+
+Your public key.
+
+<InfoBox>
+
+You can find it in the <ExternalLink href="https://hub.checkout.com/login" >Hub</ExternalLink>.
+
+</InfoBox>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`debugMode`
+
+</TableCell>
+<TableCell>
+
+N/A
+
+</TableCell>
+<TableCell>
+
+Returns `true` if in debug mode.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`namespace`
+
+</TableCell>
+<TableCell>
+
+N/A
+
+</TableCell>
+<TableCell>
+
+Returns `Frames` or a custom namespace.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`version`
+
+</TableCell>
+<TableCell>
+
+N/A
+
+</TableCell>
+<TableCell>
+
+Returns the Frames version number.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`cardholder`
+
+</TableCell>
+<TableCell>
+
+`cardholder = value`
+
+</TableCell>
+<TableCell>
+
+The customer's name, billing details and phone number.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`localization`
+
+</TableCell>
+<TableCell>
+
+N/A
+
+</TableCell>
+<TableCell>
+
+Returns the selected language or the path to the localization file.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`config`
+
+</TableCell>
+<TableCell>
+
+N/A
+
+</TableCell>
+<TableCell>
+
+Returns the configuration of Frames.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+---
+
+## Examples
+
+### Using the submitCard Promise
+
+This example uses a JavaScript Promise to tokenize a customer's payment details. The card token will be posted via the URL specified in the form's `action` attribute.
+
+```javascript
+<body>
+  <!-- add frames script -->
+  <script src="https://cdn.checkout.com/js/framesv2.min.js"></script>
+
+  <form id="payment-form" method="POST" action="https://merchant.com/charge-card">
+    <div class="card-frame">
+      <!-- form will be added here -->
+    </div>
+    <!-- add submit button -->
+    <button id="pay-button" disabled>
+      PAY GBP 24.99
+    </button>
+  </form>
+
+  <script>
+    var payButton = document.getElementById("pay-button");
+    var form = document.getElementById("payment-form");
+
+    Frames.init("pk_test_6ff46046-30af-41d9-bf58-929022d2cd14");
+
+    Frames.addEventHandler(
+      Frames.Events.CARD_VALIDATION_CHANGED,
+      function (event) {
+        console.log("CARD_VALIDATION_CHANGED: %o", event);
+
+        payButton.disabled = !Frames.isCardValid();
+      }
+    );
+
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+      Frames.submitCard()
+        .then(function (data) {
+          Frames.addCardToken(form, data.token);
+          form.submit();
+        })
+        .catch(function (error) {
+          // handle error
+        });
+    });
+  </script>
+</body>
+```
+
+### Using the cardTokenized handler
+
+This example uses `cardTokenized` handler to gain a payment token for your customers' card details.
+
+```javascript
+<body>
+  <!-- add frames script -->
+  <script src="https://cdn.checkout.com/js/framesv2.min.js"></script>
+
+  <form id="payment-form" method="POST" action="https://merchant.com/charge-card">
+    <div class="card-frame">
+      <!-- form will be added here -->
+    </div>
+    <!-- add submit button -->
+    <button id="pay-button" disabled>
+      PAY GBP 24.99
+    </button>
+  </form>
+
+  <script>
+    var payButton = document.getElementById("pay-button");
+    var form = document.getElementById("payment-form");
+
+    Frames.init({
+      publicKey: 'pk_test_6ff46046-30af-41d9-bf58-929022d2cd14',
+      cardValidationChanged: function () {
+        // if all fields contain valid information, the Pay now
+        // button will be enabled and the form can be submitted
+        payButton.disabled = !Frames.isCardValid();
+      },
+      cardSubmitted: function () {
+        form.disabled = true;
+        // display loader
+      },
+      cardTokenized: function (data) {
+        Frames.addCardToken(form, data.token)
+        form.submit()
+      },
+      cardTokenizationFailed: function (event) {
+        // catch the error
+      }
+    });
+
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      Frames.submitCard();
+    });
+  </script>
+</body>
+```
+
+### Loading Frames asynchronously
+
+If you load Frames asynchronously, you can change the namespace to a name other than `Frames`. The example below uses `Checkout` as the namespace.
+
+<TipBox variant="success">
+
+Use `window.CKOConfig` to change the namespace, or to load Frames asynchronously.
+
+</TipBox>
+
+```javascript
+<body>
+
+  <!-- add frames script -->
+  <script async src="https://cdn.checkout.com/js/framesv2.min.js"></script>
+
+  <form id="payment-form" method="POST" action="https://merchant.com/charge-card">
+    <div class="card-frame">
+      <!-- form will be added here -->
+    </div>
+    <!-- add submit button -->
+    <button id="pay-button" disabled>
+      PAY GBP 24.99
+    </button>
+  </form>
+
+  <script>
+    var payButton = document.getElementById("pay-button");
+    var form = document.getElementById("payment-form");
+
+    window.CKOConfig = {
+      publicKey: "pk_test_6ff46046-30af-41d9-bf58-929022d2cd14",
+      namespace: "Checkout",
+      ready: function () {
+        // Frames is registered on the global namespace and safe to use
+        form.addEventListener("submit", function (event) {
+          event.preventDefault();
+          Checkout.submitCard();
+        });
+      },
+      cardValidationChanged: function (event) {
+        console.log("CARD_VALIDATION_CHANGED: %o", event);
+        // if all fields contain valid information, the Pay now
+        // button will be enabled and the form can be submitted
+        payButton.disabled = !Checkout.isCardValid();
+      },
+      cardSubmitted: function () {
+        payButton.disabled = true;
+        // display loader
+      },
+      cardTokenized: function (data) {
+        console.log("CARD_TOKENIZED: %o", event);
+        // add card token to the form
+        Checkout.addCardToken(form, data.token);
+        // submit the form
+        form.submit();
+      }
+    };
+  </script>
+
+</body>
+```
+### Including billing details
+
+Use cardholder and `billingAddress` attributes to send the customer's details. In the example, we have added the customer's billing details to a Frames form.
+
+```json
+<body>
+
+  <!-- add frames script -->
+  <script src="https://cdn.checkout.com/js/framesv2.min.js"></script>
+
+  <form id="payment-form" method="POST" action="https://merchant.com/charge-card">
+    <div class="card-frame">
+      <!-- form will be added here -->
+    </div>
+    <!-- add submit button -->
+    <button id="pay-button" disabled>
+      PAY GBP 24.99
+    </button>
+  </form>
+
+  <script>
+    var payButton = document.getElementById("pay-button");
+    var form = document.getElementById("payment-form");
+
+    Frames.init("pk_test_6ff46046-30af-41d9-bf58-929022d2cd14");
+
+    Frames.addEventHandler(
+      Frames.Events.CARD_VALIDATION_CHANGED,
+      function (event) {
+        console.log("CARD_VALIDATION_CHANGED: %o", event);
+
+        payButton.disabled = !Frames.isCardValid();
+      }
+    );
+
+    Frames.addEventHandler(
+      Frames.Events.CARD_SUBMITTED,
+      function () {
+        payButton.disabled = true;
+        // display loader
+      }
+    );
+
+    Frames.addEventHandler(
+      Frames.Events.CARD_TOKENIZED,
+      function (data) {
+        Frames.addCardToken(form, data.token);
+        form.submit();
+      }
+    );
+
+    Frames.addEventHandler(
+      Frames.Events.CARD_TOKENIZATION_FAILED,
+      function (error) {
+        // catch the error
+      }
+    );
+
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      Frames.cardholder = {
+        name: "John Smith",
+        billingAddress: {
+          addressLine1: "623 Slade Street",
+          addressLine2: "Apartment 8",
+          zip: "31313",
+          city: "Hinesville",
+          state: "Georgia",
+          country: "US",
+        },
+        phone: "9125084652"
+      };
+
+      Frames.submitCard();
+    });
+  </script>
+
+</body>
+```

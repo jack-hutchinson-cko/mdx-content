@@ -1,0 +1,32 @@
+<IBuilderDescriptionCard title="Include our script tag in your project" tab="html/payment-form.html" lines={[8, 8]}>
+
+Include our script tag into the head of your payment HTML page. This is how you will be able to access Frames features.  
+
+```html
+<script src="https://cdn.checkout.com/js/framesv2.min.js"></script>
+```
+
+<br />
+
+</IBuilderDescriptionCard>
+
+<IBuilderDescriptionCard title="Create the form" tab="html/payment-form.html" lines={[15, 64]}>
+
+Frames is a collection of iframes that we host. When a customer enters payment details into these iframes, we handle this sensitive information and take the responsibility away from you. We insert an iframe between each placeholder `div`. 
+
+- Card number: `<div class="card-number-frame"></div>`
+- Expiry date: `<div class="expiry-date-frame"></div>`
+- CVV frame: `<div class="cvv-frame"></div>`
+
+</IBuilderDescriptionCard>
+
+<IBuilderDescriptionCard title="Initialize Frames" tab="html/app.js" lines={[6, 8]}>
+
+Before the input fields appear on your website and app, you need to initialize Frames. To do this, call the init (short for initialize) action on the Frames object and include your public API key within the brackets. Think of this process as similar to entering a password to be able to access a specific website.
+
+`Frames.init("pk_test_XXXX");`
+
+</IBuilderDescriptionCard>
+
+
+

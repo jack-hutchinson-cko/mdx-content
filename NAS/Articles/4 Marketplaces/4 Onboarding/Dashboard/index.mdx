@@ -1,0 +1,166 @@
+---
+title: Use the Dashboard to onboard sub-entities
+account: NAS
+---
+
+Use our Dashboard's friendly UI to onboard your sub-entities. On this page, we will walk through: 
+
+* [Onboarding a sub-entity](#Onboard_a_sub-entity)
+* [Understanding sub-entity statuses](#Sub-entity_statuses)
+* [How to edit a sub-entity](#Edit_a_sub-entity)
+
+There are currently two different account types available on Marketplaces. Depending on your account type, you will see different required and optional fields. Your account type will be determined during onboarding and depends on whether you require payment capabilities (lite), or payment **and** payout capabilities (full). For more information, see our [account structure](/marketplaces/account-structure) page.
+
+
+## Onboard a sub-entity
+
+1. When you log in to the Dashboard, navigate to _Sub-entities_ and then select _+ Onboard a sub-entity_ at the top of the page. This will bring you to a new screen.
+2. Select which type of sub-entity you are onboarding. Read more about sub-entity types on our [onboarding page](/marketplaces/onboarding#Sub-entity_types).
+3. Select _Proceed with onboarding_. This will take you to a new screen where you provide details about the sub-entity. 
+4. Once you have completed the form, select _Create_. If the form had no errors, you'll be taken to the detail page of this sub-entity. 
+
+---
+
+### Next steps 
+
+The sub-entity does not have its payments and/or payouts capabilities yet. Creating a sub-entity starts the due diligence process. During due diligence, sub-entities will have a status of `PENDING`. We indicate what stage of the onboarding process your sub-entity is on through these statuses, which we will walk through in the [next section](#Sub-entity_statuses). 
+
+Read more about the information required for each type of sub-entity on our [onboarding information page](/marketplaces/onboarding). 
+
+<TipBox title="Making the most of the form">
+
+* Use the navigation panel to see where you are in the form. 
+* Each field is required **unless** its label includes _(optional)_. 
+* Each field has additional text underneath to support your process. Some fields also provide additional information and links. You can dismiss these using the 'x'. 
+* Fields that haven't been filled out correctly will display an error message below, and both the field and the message will be red. This includes if you exit a required field without entering any information.
+
+</TipBox>
+
+## Sub-entity statuses
+
+To provide you with visibility to what's going on with your sub-entities, we show the status of your sub-entity in the Dashboard. 
+
+You can also subscribe to the status [webhook notification](/workflows) to keep up to date with any asynchronous changes even when you aren't logged in.
+
+<tabs>
+<tab title='Requirements due' active>
+
+If we're expecting you to provide us with more information, your sub-entity will have a status of `REQUIREMENTS_DUE`. 
+
+With this status, check you have provided all information that is stated as required for due diligence on our [onboarding page](/marketplaces/onboarding). If there is information missing, you need to [edit the sub-entity's information](#Edit_a_sub-entity)
+
+</tab>
+<tab title='Pending'>
+
+We will only trigger due diligence checks when we have all the [information required](/marketplaces/onboarding). Once the checks are triggered, the sub-entity's status will be `PENDING`.
+
+We may make changes to this sub-entity's capabilities based on the outcome of these checks.
+
+</tab>
+<tab title='Active'>
+
+If the due diligence checks have passed, we will enable the sub-entity's payments and/or payouts capabilities, which will give that sub-entity a status of `ACTIVE`. This means there are no outstanding requirements at this time.
+
+<TipBox variant="info">
+
+- This status change is asynchronous (happening behind the scenes), so you can optionally subscribe to the `status_changed` [webhook notification](/workflows/webhook-event-types) to keep up to date or see the status by retrieving the sub-entity.
+- If you update information after this point, new checks will be triggered and the status of this sub-entity will go back to `PENDING`.
+
+</TipBox>
+
+---
+
+### Example webhook notification
+
+```json withBorder=false
+{
+   "id": "evt_htielsmgcwgejgqaunl4yb2pou",
+   "type": "status_changed",
+   "version": "1.0.0",
+   "created_on": "2020-08-20T15:24:13.8431084Z",
+   "data": {
+     "sub_entity_id": "ent_vjmdzvijizs7o26kiuiakywvyi",
+     "status": "active"
+     "reference": "tmvhWvvZfFSkJy4",
+     "legal_name": "Super Hero Masks Inc."
+   },
+   "_links": {
+       "self": {
+          "href": "https://api.checkout.com/workflows/events/evt_htielsmgcwgejgqaunl4yb2pou"
+        }
+    }
+}
+```
+</tab>
+<tab title='Rejected'>
+
+If due diligence checks do not pass, we will disable the sub-entity's payment and/or payouts capabilities. This status will change from `PENDING` to `REJECTED`. A sub-entity is rejected if we have identified reasons during our due diligence checks – this decision is final and you will not be able to resume onboarding.
+
+To challenge the direction, please contact us directly.
+
+<TipBox variant="info">
+
+- This status change is asynchronous (happening behind the scenes), so you can optionally subscribe to the `status_changed` [webhook notification](/workflows/webhook-event-types) to keep up to date or see the status by retrieving the sub-entity.
+- An attempt to update a rejected sub-entity will return a 442 response with the error code `status_invalid`.
+
+</TipBox>
+
+---
+
+### Example webhook notification
+
+```json withBorder=false
+{
+   "id": "evt_htielsmgcwgejgqaunl4yb2pou",
+   "type": "status_changed",
+   "version": "1.0.0",
+   "created_on": "2020-08-20T15:24:13.8431084Z",
+   "data": {
+     "sub_entity_id": "ent_vjmdzvijizs7o26kiuiakywvyi",
+     "status": "rejected"
+     "reference": "tmvhWvvZfFSkJy4",
+     "legal_name": "Super Hero Masks Inc."
+   },
+   "_links": {
+       "self": {
+          "href": "https://api.checkout.com/workflows/events/evt_htielsmgcwgejgqaunl4yb2pou"
+        }
+    }
+}
+```
+
+</tab>
+</tabs>
+
+## Edit a sub-entity
+
+You may need to update a sub-entity because some of their details have changed, or to fulfill specific [due diligence requirements](/marketplaces/onboarding#Information_required). 
+
+To edit a sub-entity: 
+
+1. Navigate to _Sub-entities_ and select the sub-entity to edit. 
+2. Select _Edit_. You will be taken to a new screen.
+3. Edit the required details and select _Update_. 
+
+When you update a sub-entity, we may conduct further due-diligence checks when necessary. During these checks, your sub-entity's payment capabilities will remain unchanged.
+
+
+## Find out more
+
+---
+
+<ContentPanel variant="heading" title="Understand your account structure" imgSrc="/NAS/Marketplaces/understand-your-account-structure.svg">
+
+For a more guided look into our integrated solutions platform.
+
+[Learn more](/marketplaces/account-structure)
+
+</ContentPanel>
+
+<ContentPanel variant="heading" title="Marketplaces" imgSrc="/NAS/Marketplaces/understand-your-account-structure.svg" withBorder={false}>
+
+Create rich and flexible payment programs suited to the needs of you and your customers.
+
+[Learn more](/marketplaces)
+
+</ContentPanel>

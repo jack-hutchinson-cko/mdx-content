@@ -1,0 +1,206 @@
+---
+title: Sessions
+account: NAS
+description: Authenticate online transactions with the EMV 3D Secure (3DS) protocol.
+---
+
+The Sessions API is a standalone solution to authenticate online transactions with the EMV 3D Secure (3DS) protocol, allowing you to implement smarter 3DS authentication flows.
+
+It gives you greater visibility of the issuers' authentication decisions and provides a smoother experience for your customers, while helping you to fulfil the Strong Customer Authentication (SCA) requirements of the second Payment Services Directive (PSD2). And if the issuer does not support the latest version of 3DS, Sessions allows you to fallback to 3DS version 1.0 instead.
+
+Once you have completed the authentication via Sessions, you can then authorize the payment through our payment gateway or another payment services provider (PSP).
+
+You can choose from two solutions: **non-hosted** or **hosted**.
+
+<TipBox variant="info" title="Supported card schemes">
+
+Sessions currently supports Visa (Verified by Visa / Visa Secure) and Mastercard (Identity Check). We will soon add support for additional schemes, including American Express (SafeKey).
+
+</TipBox>
+
+---
+
+## Non-hosted and hosted sessions
+
+### Non-hosted
+
+Non-hosted sessions are designed for those who want full control over their authentication flow.
+
+Initiate an authentication through the Sessions API using a card or a network token, set `completion.type` to `non-hosted` and provide `completion.callback_url` to receive the authentication result.
+
+You will then need to collect channel (either browser or mobile app) and additional authentication data, perform a challenge (if required), and handle the authentication result. You can then proceed to authorize the payment, either through our payment gateway or another PSP.
+
+[Get started with non-hosted sessions](/risk-management/sessions/non-hosted-sessions).
+
+### Hosted
+
+This is the simplest solution, where we manage the authentication flow for you.
+
+Initiate an authentication through the Sessions API, set `completion.type` to `hosted`, provide `completion.success_url` and `completion.failure_url`, and redirect the customer using the link in the response. We'll then gather the necessary payment, device and cardholder data and take care of the rest.
+
+[Get started with hosted sessions](/risk-management/sessions/hosted-sessions).
+
+---
+
+## Authorization
+
+When creating a session, you will need to authorize your request with access key authorization.
+
+Use the following endpoint to generate an `access_token`, and use it to authorize your create session request.
+
+### The request
+
+<tabs>
+<tab title="Live">
+<LineCodeWrapper type="post">
+
+`https://access.checkout.com/connect/token`
+
+</LineCodeWrapper>
+</tab>
+<tab title="Sandbox">
+<LineCodeWrapper type="post">
+
+`https://access.sandbox.checkout.com/connect/token`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+### Header and path parameters
+
+<Table>
+<TableHead headers={['Header', 'Value']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`Authorization`
+
+<StatusTag type="optional" />
+
+</TableCell>
+<TableCell>
+
+`basic`
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`Content-Type`
+
+<StatusTag type="required" />
+
+</TableCell>
+<TableCell>
+
+`application/x-www-form-urlencoded`
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+### Body parameters
+
+<Table>
+<TableHead headers={['Field name', 'Description']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`grant_type`
+
+<StatusTag type="required" />
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+Set this to `client_credentials`.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`client_id`
+
+<StatusTag type="required" />
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+Your Checkout.com access key ID.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`client_secret`
+
+<StatusTag type="required" />
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+Your Checkout.com access key secret.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+### Request example
+
+<tabs>
+<tab title="Payload">
+
+```json
+grant_type=client_credentials&client_id= ack_3kgxgdj773yubf4sfmiht3r4h4
+&client_secret=PddTMk1FBjk1MDQHtBt1U8cHjZvS+Guc80NmcUHp3pHevOpt7EgYkT/DWae7gnOTlF6kPCPo+RZEu9xut/5VVA==
+```
+
+</tab>
+<tab title="cURL">
+
+```json
+curl --location --request POST 'https://access.sandbox.checkout.com/connect/token' \
+--header 'Content-Type: application/x-www-form-urlencoded' \
+--data-urlencode 'grant_type=client_credentials' \
+--data-urlencode 'client_id=ack_3kgxgdj773yubf4sfmiht3r4h4' \
+--data-urlencode 'client_secret=PddTMk1FBjk1MDQHtBt1U8cHjZvS+Guc80NmcUHp3pHevOpt7EgYkT/DWae7gnOTlF6kPCPo+RZEu9xut/5VWA=='
+```
+
+</tab>
+</tabs>
+
+### The response
+
+### Response example
+
+The token server will return a Bearer `access_token` in JSON Web Token (JWT) format.
+
+Your access token is valid for the length of time (in seconds) indicated by the `expires_in` field. When it expires, you'll need to request a new one.
+
+```json
+{
+  "access_token": "eyJhb6sqaQ",
+  "expires_in": 3600,
+  "token_type": "Bearer",
+  "scope":"flow fx gateway"
+}
+```
+
+
+
+
+

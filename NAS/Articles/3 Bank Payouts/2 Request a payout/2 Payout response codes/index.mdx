@@ -1,0 +1,668 @@
+---
+title: Payout response codes
+account: NAS
+---
+
+After you've sent your payout request and got a successful response, you will receive a webhook notification that will tell you the status of your payout and include a response code and summary:
+
+- If your payout is **successful**, you will receive a `payment_paid` webhook, with a `10000` response code and the `Approved` summary.
+- If your payout is **declined**, you will receive a `payment_declined` webhook with a `50001-50399` response code and a summary explaining the reason for the decline.
+- If your payout is **returned**, you will receive a `payment_returned` webhook with `50401-50599` response code and a summary explaining the reason for the return.
+
+Below, you'll find all the response codes you could receive and their summaries.
+
+---
+
+## Payment paid
+
+<Table>
+<TableHead headers={['Code', 'Summary']} />
+<TableBody>
+<TableSubhead colspan="2" color="grey">
+
+**Approval response**
+
+</TableSubhead>
+<TableRow>
+<TableCell>
+
+10000
+
+</TableCell>
+<TableCell>
+
+Approved
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+## Payment declined
+
+<Table>
+<TableHead headers={['Code', 'Summary']} />
+<TableBody>
+<TableSubhead colspan="2" color="grey">
+
+**Decline responses**
+
+</TableSubhead>
+<TableRow>
+<TableCell>
+
+50001
+
+</TableCell>
+<TableCell>
+
+**Compliance error**
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+50002
+
+</TableCell>
+<TableCell>
+
+Sanctions screening rejected error
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+50020
+
+</TableCell>
+<TableCell>
+
+**Recipient error**
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+50021
+
+</TableCell>
+<TableCell>
+
+Invalid recipient error
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+50022
+
+</TableCell>
+<TableCell>
+
+Unsupported recipient error
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+50023
+
+</TableCell>
+<TableCell>
+
+Recipient limit error
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+50070
+
+</TableCell>
+<TableCell>
+
+**Sender error**
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+50100
+
+</TableCell>
+<TableCell>
+
+**Instruction error**
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+50101
+
+</TableCell>
+<TableCell>
+
+Instruction amount limit error
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+50102
+
+</TableCell>
+<TableCell>
+
+Instruction amount limit sender error
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+50103
+
+</TableCell>
+<TableCell>
+
+Instruction amount limit recipient error
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+50104
+
+</TableCell>
+<TableCell>
+
+Velocity limit
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+50105
+
+</TableCell>
+<TableCell>
+
+Velocity limit sender error
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+50106
+
+</TableCell>
+<TableCell>
+
+Velocity limit recipient limit error
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+50150
+
+</TableCell>
+<TableCell>
+
+**Processing error**
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+50180
+
+</TableCell>
+<TableCell>
+
+**Validation error**
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+50200
+
+</TableCell>
+<TableCell>
+
+**Configuration error**
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+50240
+
+</TableCell>
+<TableCell>
+
+Cancellation error
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+50260
+
+</TableCell>
+<TableCell>
+
+**Returned error**
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+50399
+
+</TableCell>
+<TableCell>
+
+**Unmapped response**
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+---
+
+## Payment returned
+
+<Table>
+<TableHead headers={['Code', 'Summary']} />
+<TableBody>
+<TableSubhead colspan="2" color="grey">
+
+**Return responses**
+
+</TableSubhead>
+<TableRow>
+<TableCell>
+
+50401
+
+</TableCell>
+<TableCell>
+
+**Bank details invalid**
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+50402
+
+</TableCell>
+<TableCell>
+
+Account not found
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+50403
+
+</TableCell>
+<TableCell>
+
+Account inactive
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+50404
+
+</TableCell>
+<TableCell>
+
+Account dormant
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+50405
+
+</TableCell>
+<TableCell>
+
+Account number invalid
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+50406
+
+</TableCell>
+<TableCell>
+
+Branch not found
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+50407
+
+</TableCell>
+<TableCell>
+
+Branch code invalid
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+50408
+
+</TableCell>
+<TableCell>
+
+Branch code required
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+50409
+
+</TableCell>
+<TableCell>
+
+Bank code invalid
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+50410
+
+</TableCell>
+<TableCell>
+
+Bank code required
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+50441
+
+</TableCell>
+<TableCell>
+
+**Account type required**
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+50451
+
+</TableCell>
+<TableCell>
+
+**Account holder details invalid**
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+50452
+
+</TableCell>
+<TableCell>
+
+Account holder identification number required
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+50453
+
+</TableCell>
+<TableCell>
+
+Account holder type not supported
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+50454
+
+</TableCell>
+<TableCell>
+
+Account holder type not allowed
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+50466
+
+</TableCell>
+<TableCell>
+
+**Account closed**
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+50471
+
+</TableCell>
+<TableCell>
+
+**Account blocked**
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+50481
+
+</TableCell>
+<TableCell>
+
+**Invalid debtor account type**
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+50491
+
+</TableCell>
+<TableCell>
+
+**Account holder billing address details incorrect**
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+50492
+
+</TableCell>
+<TableCell>
+
+Account holder billing address details required
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+50494
+
+</TableCell>
+<TableCell>
+
+Account holder billing address can not be PO box
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+50501
+
+</TableCell>
+<TableCell>
+
+**Unsupported characters**
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+50511
+
+</TableCell>
+<TableCell>
+
+**Invalid amount**
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+50512
+
+</TableCell>
+<TableCell>
+
+Minimum amount not met
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+50513
+
+</TableCell>
+<TableCell>
+
+Exceeded transaction value
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+50514
+
+</TableCell>
+<TableCell>
+
+Exceeded daily limit
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+50515
+
+</TableCell>
+<TableCell>
+
+Exceeded weekly limit
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+50517
+
+</TableCell>
+<TableCell>
+
+Exceeded monthly limit
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+50531
+
+</TableCell>
+<TableCell>
+
+**Recalled**
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+50599
+
+</TableCell>
+<TableCell>
+
+**Unknown reason**
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+

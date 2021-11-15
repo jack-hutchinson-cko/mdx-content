@@ -1,0 +1,317 @@
+---
+title: About onboarding sub-entities
+account: NAS
+---
+
+Vendors, retailers and service providers on your platform are represented by sub-entities in our solution. A sub-entity is used to collect the information we require to perform due diligence checks, as well as capture certain preferences.
+
+On this page, we'll discuss what information you need to start onboarding sub-entities to your platform and the difference between account types.
+
+## Account types
+
+Your platform's account type will determine:
+
+- The due diligence checks performed on your sub-entities.
+- The capabilities available to your sub-entities (and enabled once checks are passed).
+
+Unless otherwise agreed during your onboarding, the table below explains what is included.
+
+<Table>
+<TableHead headers={['Account type', 'Due diligence checks', 'Capabilities enabled if passed']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+Lite
+
+</TableCell>
+<TableCell>
+
+- Card scheme screening (CSS)
+
+</TableCell>
+<TableCell>
+
+- Payments
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Full
+
+</TableCell>
+<TableCell>
+
+- Card scheme screening (CSS)
+- Politically exposed persons (PEP) and sanctions
+- Know your customer (KYC)
+- Know your business (KYB)
+
+</TableCell>
+<TableCell>
+
+- Payments
+- Payouts
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+## Sub-entity types
+
+There are two sub-entity types to choose from: individual or company. When onboarding, you need to provide information about that sub-entity. 
+
+- **Individual:**This sub-entity type represents a person running their own business as an individual – sometimes referred to as a sole proprietor or trader. 
+- **Company:**This sub-entity type represents a legal entity formed by a group of individuals that engage in and operate a business. Some of these individuals can be representatives of the company – shareholders or ultimate beneficial owners (UBOs) who own ≥25% of the company or voting rights. If there are no UBOs who own ≥25% of the company, the representative(s) should be an individual with the right to sign on behalf of the company. We require information about these representatives during onboarding.
+
+## Information required
+
+To provide greater flexibility, we don’t need you to provide all the data required for due diligence checks upfront; you can onboard a sub-entity with the minimum required information and then enrich it later through updates.
+
+We will trigger our checks only when we have all the information required to conduct them. This is why in the table below you will see 'To onboard' and 'To trigger checks'.
+<InfoBox>
+
+Click the tabs below to find out what is required for your onboarding type.
+
+</InfoBox>
+
+<tabs>
+<tab title="Lite" active>
+<TipBox variant="info">
+
+- Unless otherwise agreed during your onboarding, this sub-entity will have the **Payments** capability available.
+- Although not mentioned in the table below, `reference`, `contact_details` and `profile` are always required. See the <ExternalLink href="https://api-reference.checkout.com/preview/crusoe/#tag/Marketplace) for more information." >API reference</ExternalLink>.
+
+</TipBox>
+<Table>
+<TableHead headers={['Information', 'To onboard', 'Ready for checks to be triggered']} />
+<TableBody>
+<TableRow>
+<TableCell withBackground>
+
+**Individual**
+
+<InfoBox>
+
+If 'Individual' is selected during onboarding with Checkout.com.
+</InfoBox>
+</TableCell>
+<TableCell>
+
+- First name
+- Last name
+- Trading name
+- Registered address
+
+</TableCell>
+<TableCell>
+
+- First name
+- Last name
+- Trading name
+- Registered address
+
+<TipBox variant="note">
+
+All the information required to trigger due diligence checks for a Lite individual is needed upfront to onboard.
+
+</TipBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell withBackground>
+
+**Company**
+
+<InfoBox>
+
+If 'Company' is selected during onboarding with Checkout.com.
+
+</InfoBox>
+</TableCell>
+<TableCell>
+
+- Legal name
+- Trading name
+- Principal (main) address
+
+</TableCell>
+<TableCell>
+
+- Legal name
+- Trading name
+- Principal address
+- Registered address
+- All representative(s) ready to onboard
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell withBackground>
+
+**Company representative(s)**
+
+<InfoBox>
+
+If 'Company' is selected during onboarding with Checkout.com.
+
+</InfoBox>
+
+</TableCell>
+<TableCell>
+
+- First name
+- Last name
+
+</TableCell>
+<TableCell>
+
+- First name
+- Last name
+- Address country
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+---
+
+### Manual reviews
+
+On occasion, our team will need to manually review a sub-entity before the result of our due diligence checks can be confirmed. Manual reviews can take a little longer to complete and may delay the check result and capability update notifications that you should expect to receive. If you have provided all the required sub-entity information and have left sufficient time to receive notifications regarding the outcome, then it’s likely that the sub-entity is being manually reviewed. However, if you have any concerns, please contact us.
+
+We are working hard on creating a notification to inform you on manual reviews to provide more visibility.
+</tab>
+<tab title="Full">
+<TipBox variant="info">
+
+- Unless otherwise agreed during your onboarding, this sub-entity will have the **Payments** and **Payouts** capabilities available.
+- Although not mentioned in the table below, `reference`, `contact_details` and `profile` are always required. See the <ExternalLink href="https://api-reference.checkout.com/preview/crusoe/#tag/Marketplace) for more information." >API reference</ExternalLink>.
+
+</TipBox>
+<Table>
+<TableHead headers={['Information', 'To onboard', 'Ready for checks to be triggered']} />
+<TableBody> 
+<TableRow>
+<TableCell>
+
+**Individual**
+
+<InfoBox>
+
+If 'Individual' is selected during onboarding with Checkout.com.
+
+</InfoBox>
+</TableCell>
+<TableCell>
+
+- First name
+- Last name
+- Trading name
+- Registered address
+
+</TableCell>
+<TableCell>
+
+- First name
+- Last name
+- Trading name
+- Registered address
+- Date of birth
+- Authentication document
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+**Company**
+
+<InfoBox>
+
+If 'Company' is selected during onboarding with Checkout.com.
+
+</InfoBox>
+
+</TableCell>
+<TableCell>
+
+- Legal name
+- Trading name
+- Principal (main) address
+
+</TableCell>
+<TableCell>
+
+- Legal name
+- Trading name
+- Principal address
+- Registered address
+- All representative(s) ready to onboard
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+**Company representative(s)**
+
+<InfoBox>
+
+If 'Company' is selected during onboarding with Checkout.com.
+
+</InfoBox>
+
+</TableCell>
+<TableCell>
+
+- First name
+- Last name
+
+</TableCell>
+<TableCell>
+
+- First name
+- Last name
+- Date of birth
+- Address
+- Identification document
+
+<InfoBox>
+
+Read about [uploading a file](/marketplaces/about-onboarding/upload-a-file).
+
+</InfoBox>
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+---
+
+### Manual reviews
+
+On occasion, our team will need to manually review a sub-entity before the result of our due diligence checks can be confirmed. Manual reviews can take a little longer to complete and may delay the check result and capability update notifications that you should expect to receive. If you have provided all the required sub-entity information and have left sufficient time to receive notifications regarding the outcome, then it’s likely that the sub-entity is being manually reviewed. However, if you have any concerns, please contact us.
+
+We are working hard on creating a notification to inform you on manual reviews to provide more visibility.
+</tab>
+</tabs>
+
+## Where to next?
+
+---
+
+<ContentPanel title="Onboard a sub-entity" imgSrc="/NAS/Marketplaces/onboard-sub-entities.svg" withBorder={false}>
+
+We'll walk you through the entire process for onboarding a sub-entity onto your platform by using our Marketplace API, or our friendly user interface.
+
+[Marketplace API](/marketplaces/onboarding/api)
+
+[Dashboard](/marketplaces/onboarding/dashboard)
+
+</ContentPanel>

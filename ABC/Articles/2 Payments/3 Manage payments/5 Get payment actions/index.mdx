@@ -1,0 +1,173 @@
+---
+title: Get payment actions
+account: ABC
+description: Retrieve the full history of a payment
+---
+
+Find out all you need to know about history of a payment. This API provides details about each step of the payment lifecycle.
+
+Use the details below to set up your request. In the URI, replace `{id}` with the `payment_id`.
+
+### Endpoints
+
+For the full API specification, see the <ExternalLink href="https://api-reference.checkout.com/#tag/Payments/paths/~1payments/post" >API reference</ExternalLink>.
+
+<tabs>
+<tab title="Live">
+<LineCodeWrapper type="get">
+
+`https://api.checkout.com/payments/{id}/actions`
+
+</LineCodeWrapper>
+</tab>
+<tab title="Sandbox">
+<LineCodeWrapper type="get">
+
+`https://api.sandbox.checkout.com/payments/{id}/actions`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+### Response example
+
+If successful, you should get a `200 Success` response returning a list of data relating to the payment.
+
+```json
+[
+  {
+    "id": "act_gefycn3jcvuupboxfmqrhk2aym",
+    "type": "Refund",
+    "processed_on": "2018-01-20T10:30:48Z",
+    "amount": 6540,
+    "approved": true,
+    "response_code": "10000",
+    "response_summary": "Approved",
+    "_links": {
+      "response-code": {
+        "href": "https://api.checkout.com/refs/response-codes/10000"
+      }
+    }
+  },
+  {
+    "id": "act_gefycn3jcvuupboxfmqrhk2aym",
+    "type": "Capture",
+    "processed_on": "2018-01-17T10:30:48Z",
+    "amount": 6540,
+    "approved": true,
+    "response_code": "10000",
+    "response_summary": "Approved",
+    "metadata": {
+      "shipping_ref": "MQIBN2"
+    },
+    "_links": {
+      "response-code": {
+        "href": "https://api.checkout.com/refs/response-codes/10000"
+      }
+    }
+  },
+  {
+    "id": "act_y3oqhf46pyzuxjbcn2giaqnb44",
+    "type": "Authorization",
+    "processed_on": "2018-01-17T09:30:48Z",
+    "amount": 6540,
+    "approved": true,
+    "auth_code": "643381",
+    "response_code": "10000",
+    "response_summary": "Approved",
+    "reference": "ORD-5023-4E89",
+    "_links": {
+      "response-code": {
+        "href": "https://api.checkout.com/refs/response-codes/10000"
+      }
+    }
+  }
+]
+```
+
+<TipBox variant="info">
+
+If your request is unsuccessful, you may receive a `404 – Payment not found` error.
+
+</TipBox>
+
+### Payment actions
+
+The table below outlines the different payment actions and their meanings.
+
+<Table>
+<TableBody>
+<TableRow>
+<TableCell>
+
+`Authorization`
+
+</TableCell>
+<TableCell>
+
+The payment request was sent successfully.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`Capture`
+
+</TableCell>
+<TableCell>
+
+The authorized payment was captured in full.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`Refund`
+
+</TableCell>
+<TableCell>
+
+Part or all of the captured amount was refunded.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`Void`
+
+</TableCell>
+<TableCell>
+
+The payment was voided and never captured; the funds were returned to the customer.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`Card Verification`
+
+</TableCell>
+<TableCell>
+
+The card verification request has been approved and the cardholder’s details have been saved to their account.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`Payout`
+
+</TableCell>
+<TableCell>
+
+The card payout was processed successfully.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>

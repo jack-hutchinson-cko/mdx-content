@@ -1,0 +1,511 @@
+---
+title: Payouts reports
+account: NAS
+---
+
+Payouts reports provide an overview of payouts paid to you along with a breakdown of the associated fees over a specific period of time. This allows you to reconcile payouts with amounts paid out to your bank account and shown on bank statements.
+
+Using the payouts and the financial actions reports together, you can reconcile payouts with the associated payments and fees by using the payout ID on both reports.
+
+---
+
+## Understanding your payouts reports
+
+Payouts reports are available for each entity. Each row on the report shows a payout from a currency account, and for each payout the total amount paid out to you, aggregated fees applied to payments processed (for example, interchange fees), and any account level fees applied to the payout (for example, merchant payout fees) are shown.
+
+---
+
+## Report format
+
+Payouts reports come in .csv format with the file name following this template:
+
+`payouts_{Entity ID}_{Start Date:YYYYMMDD}_{End Date:YYYYMMDD}_1.csv`
+
+---
+
+## When are the reports available?
+
+These reports are available from 12:00:00 UTC each day, and the data includes any payouts from your currency accounts that took place between 12:00:00 UTC and 23:59:59 UTC the previous day.
+
+For example, all payouts paid out to you on 3 August 2020 (from 00:00:00 to 23:59:59 UTC) will be included in a daily payouts report generated and available by 4 August 2020 at 12:00:00 UTC.
+
+Your payouts reports can be made available on a daily, weekly, or monthly basis.
+
+---
+
+## Report fields
+
+<Accordion title="See full list of field names and descriptions">
+
+<TipBox variant="info">
+
+Fields with monetary amounts are expressed in their major currency unit up to eight decimal places. For example, a payout of $50 will be expressed as 50.00.
+
+</TipBox>
+
+<Table>
+<TableHead headers={['Field name', 'Description']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+Client Entity ID
+
+</TableCell>
+<TableCell>
+
+The unique ID of the entity for which the payment was processed.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Client Entity Name
+
+</TableCell>
+<TableCell>
+
+The designated name of the entity for which the payment was processed.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Sub Entity ID
+
+</TableCell>
+<TableCell>
+
+The unique ID of the sub entity for which the payment was processed.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Sub Entity Name
+
+</TableCell>
+<TableCell>
+
+The name of the sub entity for which the payment was processed.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Currency Account ID
+
+</TableCell>
+<TableCell>
+
+The unique ID of the currency account a payout is settled from.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Currency Account Name
+
+</TableCell>
+<TableCell>
+
+The custom descriptor of the associated currency account a payout is settled from.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Holding Currency
+
+</TableCell>
+<TableCell>
+
+Three-digit ISO currency code of the currency account. For example, USD for dollars.
+
+<InfoBox>
+
+Learn more about [ISO currency codes](/resources/codes/currency-codes).
+
+</InfoBox>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Payout ID
+
+</TableCell>
+<TableCell>
+
+The unique ID of the payout settled from your currency account to your bank account.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Payout Date
+
+</TableCell>
+<TableCell>
+
+The date on which the payout was settled to your account expressed in ISO format in UTC (YYYY-MM-DD THH:MM:SS:sss).
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Reporting Start Date
+
+</TableCell>
+<TableCell>
+
+The start date of all payouts included in the report expressed in ISO format in UTC (YYYY-MM-DD THH:MM:SS:sss).
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Reporting End Date
+
+</TableCell>
+<TableCell>
+
+The end date of all payouts included in the report expressed in ISO format in UTC (YYYY-MM-DD THH:MM:SS:sss).
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Payout Amount
+
+</TableCell>
+<TableCell>
+
+The total value of funds settled to your bank account.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Merchant Payout Fees
+
+</TableCell>
+<TableCell>
+
+Placeholder field for the total fees charged for payouts paid to your bank account.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Payments
+
+</TableCell>
+<TableCell>
+
+The total gross value of your payments processed in this period.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Refunds
+
+</TableCell>
+<TableCell>
+
+The total gross value of refunds (including partial refunds) processed in this period.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Chargebacks
+
+</TableCell>
+<TableCell>
+
+The total net amount of chargeback transactions processed.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Pay To Cards (coming soon)
+
+</TableCell>
+<TableCell>
+
+Placeholder field for the total value of funds paid out to cards.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Card Payment Interchange Fees
+
+</TableCell>
+<TableCell>
+
+The total interchange fees charged by issuing banks for card payments.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Card Payment Scheme Fees
+
+</TableCell>
+<TableCell>
+
+The total amount of scheme fees charged for card payments by payment schemes, such as Visa or Mastercard.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Acquiring Premiums
+
+</TableCell>
+<TableCell>
+
+The total amount of CKO Premium fees applied in each successful capture for card processing payments.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Card Payment Gateway Fees
+
+</TableCell>
+<TableCell>
+
+The total gateway fees charged for card payments when payment actions (for example, authorization, verification, voiding) occur.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Card Payment Blended Fees
+
+</TableCell>
+<TableCell>
+
+The total scheme related agreed on card payment blended fees applied to captured payments if applicable.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Refunded Interchange Fees
+
+</TableCell>
+<TableCell>
+
+The total interchange fees charged by issuing banks refunded.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Refund Scheme Fees
+
+</TableCell>
+<TableCell>
+
+The total scheme fees charged by a card scheme for refunds.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Refund Gateway Fees
+
+</TableCell>
+<TableCell>
+
+The total amount of gateway fees charged for refund actions.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Chargeback Fees
+
+</TableCell>
+<TableCell>
+
+The total fees charged for processing chargebacks as part of the disputes process.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Retrieval Fees
+
+</TableCell>
+<TableCell>
+
+The total fees charged for retrieval actions as part of the disputes process.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Representment Fees
+
+</TableCell>
+<TableCell>
+
+The total fees charged for representment actions as part of the disputes process.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Pay To Card Interchange Fees (coming soon)
+
+</TableCell>
+<TableCell>
+
+Placeholder field for the total interchange fees charged by an issuing bank for processing card payouts.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Pay To Card Scheme Fees (coming soon)
+
+</TableCell>
+<TableCell>
+
+Placeholder field for the total scheme fees charged by a card scheme for processing card payouts.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Pay To Card Fees (coming soon)
+
+</TableCell>
+<TableCell>
+
+Placeholder field for the total fees charged for card payouts.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Alternative Payment Method Fees (coming soon)
+
+</TableCell>
+<TableCell>
+
+The total fees charged for accepting local payment methods, such as Sofort or Klarna.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Adjustments
+
+</TableCell>
+<TableCell>
+
+Placeholder field for the total amount of adjustments applied to you currency account.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Tax
+
+</TableCell>
+<TableCell>
+
+The total local value-added tax applied to your fees if applicable.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Account Updater Fees (coming soon)
+
+</TableCell>
+<TableCell>
+
+The total fees charged for the Account Updater service.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Transfers In (coming soon)
+
+</TableCell>
+<TableCell>
+
+Placeholder field for the total value of transfers into the currency account.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Transfers Out (coming soon)
+
+</TableCell>
+<TableCell>
+
+Placeholder field for the total value of transfers out of the currency account.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+</Accordion>
+
+---
+
+## Sample report
+
+<ExternalLink href="https://assets.checkout.com/docs/downloads/SAMPLE-payouts_ent_zxmc2csd961nfd2mcwzkvdgmpb_20210114_20210115_1.csv" >Download a sample payout report</ExternalLink>. If you're using Safari, hold the Option key when you download. (.csv file)
+
+
+
+

@@ -1,0 +1,475 @@
+---
+title: Get payout details
+account: NAS
+description: Find out everything there is to know about a specific payout, from its status to the type of sender.
+---
+
+Fetch and view relevant information and parameters related to a specific payout. Before you start, make sure you have the payment identifier (prefixed by `pay_`). To get a detailed view of all required and optional fields, see our <ExternalLink href="https://api-reference.checkout.com/preview/crusoe" >API reference</ExternalLink>.
+
+---
+
+Use the details below to set up your request.
+
+### Endpoints
+
+<tabs>
+<tab title="Live">
+<LineCodeWrapper type="get">
+
+`https://api.checkout.com/payments/{id}`
+
+</LineCodeWrapper>
+</tab>
+<tab title="Sandbox">
+<LineCodeWrapper type="get">
+
+`https://api.sandbox.checkout.com/payments/{id}`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+### Header parameters
+
+<Table>
+<TableHead headers={["Header", "Value"]} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`Authorization`
+
+<StatusTag type="required"/>
+
+</TableCell>
+<TableCell>
+
+`Bearer {OAuth Bearer access token}`
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`Content-Type`
+
+<StatusTag type="required"/>
+
+</TableCell>
+<TableCell>
+
+`application/json`
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+### Path parameters
+
+<Table>
+<TableHead headers={["Path", "Value"]} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`id`
+
+<StatusTag type="required"/>
+
+</TableCell>
+<TableCell>
+
+The payment identifier (prefixed with `pay_`).
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+### Response example
+
+If your request is successful, the response will return information about the payout.
+
+```json
+{
+  "id": "pay_gwlowf7eap7uzm4cyaaqoq62au",
+  "requested_on": "2020-06-12T13:49:19.085546Z",
+  "source": {
+    "id": "ca_y3oqhf46pyzuxjbcn2giaqnb44",
+    "type": "currency_account"
+  },
+  "destination": {
+    "id": "src_4pakgjwmv5re5m5ivqohsqpxnm",
+    "type": "bank_account"
+  },
+  "amount": 1000,
+  "currency": "GBP",
+  "reference": "PO-215-5721",
+  "billing_descriptor": {
+    "reference": "Withdrawal"
+  },
+  "status": "Returned",
+  "approved": true,
+  "sender": {
+    "type": "instrument",
+    "reference": "8285282045818"
+  },
+  "instruction": {
+    "value_date": "2020-06-13T01:49:19.1864428Z",
+    "purpose": "Wallet withdrawal",
+    "quote_id": "qte_xrhaw53z5m6ehbbxz2n6n5lk74"
+  },
+  "_links": {
+    "self": {
+      "href": "https://api.sandbox.checkout.com/payments/pay_gwlowf7eap7uzm4cyaaqoq62au"
+    },
+    "actions": {
+      "href": "https://api.sandbox.checkout.com/payments/pay_gwlowf7eap7uzm4cyaaqoq62au/actions"
+    }
+  }
+}
+```
+
+<TipBox variant="info">
+
+If unsuccessful, you may get a `404 – Payment not found` error.
+
+</TipBox>
+
+### Response parameters
+
+Find out what the different fields in your successful response mean.
+
+<Table>
+<TableHead headers={["Field name", "Description"]} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`id`
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+The unique identifier of the payout action.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`requested_on`
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+The date and time the payout was requested.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`source`
+
+<TypeTag type="object" />
+
+</TableCell>
+<TableCell>
+
+Details about the payout source.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`source.id`
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+The payment source identifier, which can be used for subsequent payments.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`source.type`
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+The payment source type. This is always set to `currency_account` for payouts.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`destination`
+
+<TypeTag type="object" />
+
+</TableCell>
+<TableCell>
+
+Details about destination of the payout.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`destination.id`
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+The payment instrument identifier.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`destination.type`
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+The payout destination.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`amount`
+
+<TypeTag type="integer" />
+
+</TableCell>
+<TableCell>
+
+The original payout amount.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`currency`
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+The three-letter ISO [currency code](/resources/codes/currency-codes) of the payment.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`reference`
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+Your reference for the payout.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`billing_descriptor`
+
+<TypeTag type="object" />
+
+</TableCell>
+<TableCell>
+
+Details about the billing descriptor.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`billing_descriptor.reference`
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+The reference that is displayed on the account holder's statement.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`status`
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+The status of the payout.
+
+This can be one of:
+* `Pending`
+* `Paid`
+* `Declined`
+* `Returned`
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`approved`
+
+<TypeTag type="boolean" />
+
+</TableCell>
+<TableCell>
+
+Whether the authorization was successful.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`sender`
+
+<TypeTag type="object" />
+
+</TableCell>
+<TableCell>
+
+Details about the sender of the payout's funds.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`sender.type`
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+The type of sender.
+
+This can be one of:
+* `instrument`
+* `individual`
+* `corporate`
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`sender.reference`
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+The payout sender's unique identifier.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`instruction`
+
+<TypeTag type="object" />
+
+</TableCell>
+<TableCell>
+
+Details about the instruction for payouts to bank accounts.
+
+Depending on the initial request, this can contain the following strings:
+* `instruction.value_date`
+* `instruction.purpose`
+* `instruction.charge_bearer`
+* `instruction.repair`
+* `instruction.scheme`
+* `instruction.quote_id`
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`links`
+
+<TypeTag type="object" />
+
+</TableCell>
+<TableCell>
+
+Links related to the payout.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`links.self`
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+The direct link to the payout.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`links.actions`
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+The link to the list of actions related to this payout.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>

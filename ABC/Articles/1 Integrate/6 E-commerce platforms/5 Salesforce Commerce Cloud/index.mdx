@@ -1,0 +1,207 @@
+--- 
+title: Salesforce Commerce Cloud
+account: ABC
+---
+
+Get started with our Salesforce Commerce Cloud (SFCC) integration, from installing the LINK cartridges to making your first test payment.
+
+<TipBox variant="info">
+
+You can use our LINK cartridges with Storefront Reference Architecture (SFRA) or controller-based SiteGenesis.
+
+</TipBox>
+
+---
+
+## Before you start
+
+### Create a test account
+
+If you haven't already, <ExternalLink href="https://www.checkout.com/get-test-account" >create a test Checkout.com account</ExternalLink>.
+
+### Get your API keys
+
+To set up our SFCC integration, you'll need three API keys: a secret one, a public one, and a private shared one. The first two are generated automatically upon account creation. The last one is generated when you create a webhook for your business.
+
+<TipBox variant="info">
+
+Webhooks are notifications that we send when an event occurs on your account. For example, when a payment is captured. These are used by the SFCC plugin to update the status of an order. [Read more about webhooks](/reporting-and-insights/webhooks).
+
+</TipBox>
+
+1.  Log in to your test account on the <ExternalLink href="https://sandbox.checkout.com/" >Hub sandbox</ExternalLink>.
+2.  In the left menu, go to _Settings > Channels_, and make a note of your secret and public API keys.
+
+<img maxWidth={800} src="/docs/Integrate/channel_settings.png" title="Channel settings"  />
+
+3.  Scroll down to the Webhooks section of the page and select _New webhook_.
+4.  Enter the following URL, replacing `example.com` with the URL of your shop: `example.com/CKOMain-HandleWebhook`.
+
+<TipBox variant="note">
+
+Correctly configuring your webhooks is important; if they're incorrectly formatted, the plugin will not work.
+
+</TipBox>
+
+5.  Select _API - v2.0_.
+6.  Tick _Select all_, then select _Create webhook_.
+
+<img
+  maxWidth={300}
+  src="/docs/Integrate/Salesforce/sfcc-create_webhook.png"
+  alt="SFCC Create Webhook"
+  
+/>
+
+7. Click on the webhook you just created, and make a note of the private shared API key.
+
+<img maxWidth={400} src="/docs/Integrate/Salesforce/sfcc-webhook.png" alt="SFCC Webhook"  />
+
+---
+
+## Install the LINK cartridges
+
+### Upload the cartridges
+
+1.  Download our <ExternalLink href="https://github.com/checkout/link_checkoutcom">installation package from GitHub</ExternalLink>. This package includes the frontend cartridges for SFRA (`int_checkoutcom_sfra`) and SiteGenesis (`int_checkoutcom`), as well as the backend cartridge (`bm_checkoutcom`), which is compatible with both SFRA and SiteGenesis.
+2.  Upload the relevant <ExternalLink href="https://github.com/checkout/link_checkoutcom/tree/master/Cartridges" >cartridges</ExternalLink> to your server, using a tool like UX Studio:
+    - If you're using SFRA, install `int_checkoutcom_sfra` and `bm_checkoutcom`.
+    - If you're using SiteGenesis, install `int_checkoutcom` and `bm_checkoutcom`.
+3.  Log in to your Business Manager account, and go to _Administration > Sites > Manage Sites > \[your site\] > Settings_.
+4.  In the Cartridges field, add one of the following to the front of the cartridge path and select _Apply_:
+    - For SFRA, add `int_checkoutcom_sfra:bm_checkoutcom:`.
+    - For SiteGenesis, add `int_checkoutcom:bm_checkoutcom:`.
+
+SFRA example:
+
+<img maxWidth={700} src="/docs/Integrate/Salesforce/Frame+2366.png"  />
+
+### Import the metadata
+
+1.  In a file browser, open the `metadata` folder in the installation package you downloaded earlier, then go into the `sites` subfolder.
+2.  Rename the default named folder to the name of the site for which you want to import the cartridge:
+    - For SFRA, rename the `RefArchGlobal` folder to the name of your site.
+    - For SiteGenesis, rename the `SiteGenesisGlobal` folder to the name of your site.
+3.  Navigate back to the package's root folder, and zip the `metadata` folder.
+4.  Next, log in to Business Manager and go to _Administration > Site Development > Site Import & Export_.
+5.  Under _Upload Archive_, select _Local_ and then _Choose file_.
+6.  Find the `metadata.zip` you just created, select _Open_ and then _Upload_.
+
+<img
+  maxWidth={700}
+  src="/docs/Integrate/Salesforce/sfcc-site_import_export.png"
+  alt="SFCC Site Import Export"
+  
+/>
+
+### Edit the template file (SiteGenesis only)
+
+If you use SiteGenesis, you also need to edit the payment methods template in order to show the Checkout.com payment option on the billing page.
+
+To do so, add the following code snippet to the `/app_storefront_core/cartridge/templates/default/checkout/billing/paymentmethods.isml` file:
+
+```html
+<iscomment>
+  Checkout.com - Integration example Add this code to your paymentmethods.isml file
+  --------------------------------------------------------------
+</iscomment>
+<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue("ckoEnabled"))}">
+
+<isinclude template="ckoPayments" />
+
+<iselse>
+  <iscomment>
+    Site Genesis - Default Credit card block Add the default SiteGenesis credit card form code here.
+    --------------------------------------------------------------
+  </iscomment></iselse
+>
+```
+
+<TipBox variant="info">
+
+If your site is also using the default SiteGenesis credit card form, place the code of the form (found in the core `paymentmethods.isml` template file) after the `<iselse>` block in the snippet shown above.
+
+</TipBox>
+
+This will display the Checkout.com credit card form if enabled in the custom preferences, and display the default Site Genesis credit card form if not.
+
+<TipBox variant="note">
+
+The Checkout.com credit card form is not compatible with the default SiteGenesis credit card form. Please disable the default credit card form if using the Checkout.com credit card form, and vice versa.
+
+</TipBox>
+
+---
+
+## Configure the cartridges
+
+1.  Log in to Business Manager, and go to _Merchant Tools > Site Preferences > Custom Preferences > Checkout.com Sandbox API_.
+2.  Enter the public key, secret key, and private shared key from your sandbox Hub account, and select _Save_.
+3.  Go back to the custom site preferences page and select _Checkout.com Global Settings_.
+
+<img
+  maxWidth={700}
+  src="/docs/Integrate/Salesforce/sfcc-account_settings.png"
+  alt="SFCC Account settings"
+  
+/>
+
+4.  Make sure _Enable_ is set to _Yes_, to enable the Checkout.com card payment form.
+5.  Set _Mode_ to _Sandbox_, so you can start testing card payments.
+6.  Enter your business name (the name of your shop), and fill in the business address, city and country fields.
+7.  Choose whether or not you want to _Auto capture_ your payment. Set to _Yes_ if you want your payment to be captured (i.e., the money due from the customer's account is moved into your account) immediately after being authorized. Set to _No_ if you want to capture the payment manually.
+8.  If you set _Auto capture_ to _Yes_, you can specify the delay (in hours) before the payment is captured. For example, entering `1.5` would capture the payment one hour and 30 minutes after authorization. The default is `0`.
+9.  Select _Save_.
+
+That's it! You're ready to start testing card payments.
+
+---
+
+## Test your integration 
+
+1.  Go to your storefront and add a product to your cart.
+2.  Go to your cart and proceed to the checkout.
+3.  Enter the required billing details. You can put anything here, though we recommend using a real email address so you can receive the order confirmation.
+4.  Select the _Pay by Card with Checkout.com_ method.
+5.  Enter [test card details](/testing/test-card-numbers) (you can use any future expiry date).
+6.  Select _Place order_, and you will be redirected to the order confirmation page. If you entered a real email address in the billing details, you'll also receive an order confirmation email.
+7.  Log in to Business Manager.
+8.  Go to _Merchant Tools > Ordering > Orders_ and select _Find_ to show your orders. Your test order will be displayed there with a `Created` status. This indicates that the payment has been successfully authorized and captured. The transaction will also appear in the _Payments_ section of your sandbox Hub account.
+
+<TipBox variant="tip">
+
+You can now either [go live](#Go_live) as-is or [extend your configuration](/integrate/e-commerce-platforms/salesforce-commerce-cloud/go-further).
+
+</TipBox>
+<TipBox variant="note" title="Troubleshooting">
+
+If this test does not work, first check you have configured your webhooks correctly. For the plugin to work, they must be formatted correctly. If you have configured them properly, check your server; if it's password-protected or it restricts unfamiliar IP addresses, it may be blocking webhook notifications. Contact our Integration team at <ExternalLink href="mailto:integration@checkout.com">Integration team</ExternalLink> if you need help.
+
+</TipBox>
+<TipBox variant="info" title="Further testing">
+
+You'll find more test cards and a range of scenarios to trigger in our [testing guide](/testing).
+
+</TipBox>
+
+---
+
+## Go live
+
+If you're happy with the outcome of your testing and want to start taking payments right away, please <ExternalLink href="https://www.checkout.com/contact-sales" >contact our Sales team</ExternalLink> in order to move to a live account.
+
+<TipBox variant="note">
+
+Before you go live, remember to:
+
+- Switch the cartridge Mode from Sandbox to Live in Business Manager.
+- Enter your live public, secret and private shared API keys in the Checkout.com Live API section of Custom Site Preferences.
+- Configure the webhook URLs in your live Hub account.
+
+</TipBox>
+
+---
+
+## Extend your configuration
+
+You can extend your integration to [add more payment methods](/integrate/e-commerce-platforms/salesforce-commerce-cloud/go-further), use [3D Secure payments](/integrate/e-commerce-platforms/salesforce-commerce-cloud/go-further), and more.

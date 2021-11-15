@@ -1,0 +1,129 @@
+---
+title: Capture a payment
+account: ABC
+description: Manually capture an authorized payment.
+---
+
+Our two-step authorization and capture process enables you to capture payments either automatically or manually.
+
+When a payment is authorized, the funds are held for seven days. By default, payments are automatically captured. If you wish to manually capture, set the capture field to `false` when [requesting a payment](/payments/accept-payments/request-a-card-payment). You can capture an authorized payment either in full or partially. If you don't capture it within seven days, the payment is voided.
+
+<TipBox variant="tip">
+
+You can [void](/payments/manage-payments/void-a-payment) an authorized payment at any time. However, captured payments can only be [refunded](/payments/manage-payments/refund-a-payment).
+
+</TipBox>
+
+---
+
+## Overview
+
+If a payment is created with `"capture": "false"`, you can either use this endpoint to capture the payment or capture it from the <ExternalLink href="https://hub.checkout.com/v2" >Hub</ExternalLink>. Manual capture is not allowed if `capture` is set to `true`.
+
+<TipBox variant="info" title="Partial captures">
+
+Any capture amount less than the original payment will be treated as a partial capture. You can only make one partial capture per payment.
+
+</TipBox>
+
+---
+
+## Capture a payment
+
+Use the endpoint below to capture a payment.
+
+### Endpoints
+
+For the full API specification, see the <ExternalLink href="https://api-reference.checkout.com" >API reference</ExternalLink>.
+
+<tabs>
+<tab title="Live">
+<LineCodeWrapper type="post">
+
+`https://api.checkout.com/payments/{id}/captures`
+
+</LineCodeWrapper>
+</tab>
+<tab title="Sandbox">
+<LineCodeWrapper type="post">
+
+`https://api.sandbox.checkout.com/payments/{id}/captures`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+### Request examples
+
+<tabs>
+<tab title="Full capture">
+
+```json
+{
+  "reference": "ORD-5023-4E88",
+  "metadata": {
+    "coupon_code": "NY2018",
+    "partner_id": 123989
+  }
+}
+```
+
+</tab>
+<tab title="Partial capture">
+
+```json
+{
+  "amount": 3500,
+  "reference": "ORD-5023-4E89",
+  "metadata": {
+    "coupon_code": "NY2018",
+    "partner_id": 123989
+  }
+}
+```
+
+</tab>
+</tabs>
+
+### Response examples
+
+If you receive a `202 Capture accepted` response, your capture request has been accepted for processing. To get the full capture response, you will need to subscribe to the `payment_captured` webhook.
+
+If there was a problem with your request, you'll receive an error response such as `422 Invalid data was sent`. You can view examples of each type of response below.
+
+<tabs>
+<tab title="202 Capture accepted">
+
+```json
+{
+  "action_id": "act_3kfr4betasbelhjdk346yutxvu",
+  "reference": "ORD-5023-4E89",
+  "_links": {
+    "payment": {
+      "href": "https://api.sandbox.checkout.com/payments/pay_kladqdb6hm5ebggtq45rtzjati"
+    }
+  }
+}
+```
+
+</tab>
+<tab title="422 Invalid data was sent">
+
+```json
+{
+  "request_id": "0HL80RJLS76I7",
+  "error_type": "request_invalid",
+  "error_codes": [
+    "payment_source_required"
+  ]
+}
+```
+
+</tab>
+</tabs>
+
+<TipBox variant="info">
+
+If unsuccessful, you may also get a `403 Capture not allowed` or `404 Payment not found` error.
+
+</TipBox>

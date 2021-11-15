@@ -1,0 +1,329 @@
+---
+title: Manage disputes
+account: ABC
+description: Handle and monitor chargebacks from within your Hub account.
+---
+
+Disputes (also known as chargebacks) are a challenging but inevitable part of e-commerce. They arise when a customer queries a transaction with their card issuer. The issuer creates a formal dispute which immediately reverses the payment, debiting your account for both the payment amount and a dispute fee.
+
+It's important for you to monitor such disputes and respond to them as quickly as possible—thankfully, we've made the workflow simple.
+
+<TipBox variant="note">
+
+Only administrator owners and administrators can respond to a dispute (e.g., accept a dispute or submit evidence). Users can view disputes and the dispute details but cannot respond.
+
+</TipBox>
+<TipBox variant="tip">
+
+This page explains how to manage disputes in the Hub, but you can also use our [Disputes API](/risk-management/disputes/disputes-api).
+
+</TipBox>
+
+---
+
+## About the dispute lifecycle and dispute statuses
+
+<img src="/docs/TheHub/ManageDisputes/1-Disputes+flow.png"  />
+
+<Table>
+<TableHead headers={['Step', 'Status', 'description', 'Possible actions in the Hub']} />
+<TableBody>
+
+<TableRow>
+<TableCell>
+
+1
+
+</TableCell>
+<TableCell>
+
+Payment disputed
+
+</TableCell>
+<TableCell>
+
+Your customer disputes the payment. This status does not show in the Dashboard but is the starting point of all disputes. The only financial repercussion at this stage is a fee being applied.
+
+</TableCell>
+<TableCell>
+
+-
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+2a
+
+</TableCell>
+<TableCell>
+
+Evidence required
+
+</TableCell>
+<TableCell>
+
+An action on your side is required (you need to respond to the dispute). At this stage, your account gets debited the disputed amount.
+
+</TableCell>
+<TableCell>
+
+- Blacklist
+- Accept dispute
+- Submit evidence
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+2b
+
+</TableCell>
+<TableCell>
+
+Resolved
+
+</TableCell>
+<TableCell>
+
+We automatically resolve the dispute because it had already been refunded previously. There are no further financial implications.
+
+</TableCell>
+<TableCell>
+
+- Blacklist
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+3a
+
+</TableCell>
+<TableCell>
+
+Evidence under review
+
+</TableCell>
+<TableCell>
+
+You have submitted evidence to defend against the dispute. Your evidence is now under review by our Disputes team. Once reviewed, the team will send it to the card scheme for review. No further action is required on your side.
+
+</TableCell>
+<TableCell>
+
+- Blacklist
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+3b
+
+</TableCell>
+<TableCell>
+
+Expired
+
+</TableCell>
+<TableCell>
+
+The time limit to take action is met. There is no further implication and you can’t respond to the dispute anymore.
+
+</TableCell>
+<TableCell>
+
+- Blacklist
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+3c
+
+</TableCell>
+<TableCell>
+
+Accepted
+
+</TableCell>
+<TableCell>
+
+You have accepted the dispute. There is no further implication or action required.
+
+</TableCell>
+<TableCell>
+
+- Blacklist
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+3d
+
+</TableCell>
+<TableCell>
+
+Canceled
+
+</TableCell>
+<TableCell>
+
+The dispute is canceled by the issuing bank and your account is credited back the amount of the dispute. You don’t need to take any further action.
+
+</TableCell>
+<TableCell>
+
+- Blacklist
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+4a
+
+</TableCell>
+<TableCell>
+
+Lost
+
+</TableCell>
+<TableCell>
+
+The issuing bank has rejected your evidence and you have lost the dispute. There are no further financial implications.
+
+</TableCell>
+<TableCell>
+
+- Blacklist
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+4b
+
+</TableCell>
+<TableCell>
+
+Won
+
+</TableCell>
+<TableCell>
+
+The issuing bank has accepted your evidence and you have won the dispute. Your account has been credited back of the amount of the dispute.
+
+</TableCell>
+<TableCell>
+
+- Blacklist
+
+</TableCell>
+</TableRow>
+
+</TableBody>
+</Table>
+
+---
+
+## View disputes
+
+### In the _Disputes_ screen
+
+<img maxWidth={428} src="/docs/TheHub/ManageDisputes/2-view-disputes.png"  />
+
+<TipBox variant="info">
+
+You can only view disputes at a business level, not at an account level.
+
+</TipBox>
+
+The Disputes screen contains two tabs:
+
+*   **Unanswered:** this tab contains all payments for which an action is required
+*   **All disputes:** this tab contains all payments that have been disputed, including unanswered ones
+
+<img maxWidth={641} src="/docs/TheHub/ManageDisputes/3-disputes-screen.png"  />
+
+Each tab shows the following information:
+
+*   disputed amount
+*   currency (as a 3-letter ISO code)
+*   status ([see above](#Managedisputes-lifecycleandstatuses) for more information)
+*   reason for the dispute
+*   payment ID
+*   reference
+*   initiated on
+
+Additionally, the Unanswered tab shows the dispute expiry date while the All disputes tab shows the date the dispute was last updated on.
+
+<TipBox variant="tip">
+
+In the _All disputes_ tab, you can:
+
+*   filter by date range based on the Updated on date
+*   filter by Payment ID, Dispute ID, ARN, Reference (exact match)
+
+</TipBox>
+
+<img maxWidth={641} src="/docs/TheHub/ManageDisputes/4-all-disputes.png"  />
+
+### In the Payments screen
+
+In the Action column, disputed payments have a `DISPUTED` label next to the payment action.  
+The `DISPUTED` label will appear on all rows relevant to that payment (e.g., auth, capture) and for any stage of the disputed payment (e.g., evidence required, evidence under review, won, lost).
+
+<TipBox variant="tip">
+
+You can search for a dispute using its payment ID, dispute ID, or any other filter relevant in the page, such as reference or customer email.
+
+</TipBox>
+
+---
+
+## View payment details
+
+Select any disputed payment in the _Disputes_ or _Payments_ screens to bring up the _Payment details_. You can view the dispute details, as well as the latest status of the payment.
+
+<img maxWidth={641} src="/docs/TheHub/ManageDisputes/5-view-payment-details.png"  />
+
+<TipBox variant="tip">
+
+If a dispute has a status of `EVIDENCE REQUIRED`, you can perform one of the following actions:
+
+*   accept dispute
+*   submit evidence (see below for more information)
+
+</TipBox>
+
+---
+
+## Submit evidence
+
+<img maxWidth={641} src="/docs/TheHub/ManageDisputes/6-submit-evidence.png"  />
+
+1.  In the Payment details screen, review the dispute reason and details.
+2.  Select _Submit evidence_.
+3.  Select a tab:
+    *   _General:_ here you can upload all 7 different types of evidence (one file maximum per evidence type).
+    *   _Recommended:_ here you can upload the recommended types of evidence, according to the dispute reason.
+4.  Attach the relevant evidence, then:
+    *   If you've finished, select _Submit evidence_. The dispute has been answered and its status changes to `EVIDENCE UNDER REVIEW`. It will no longer appear in the _Unanswered_ tab anymore, only in the _All disputes_ tab.
+    *   If you would like to come back and complete your submission later, select _Save and continue later_. The dispute status remains `EVIDENCE REQUIRED`.

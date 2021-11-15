@@ -1,0 +1,765 @@
+---
+title: Hosted sessions
+account: NAS
+---
+
+Hosted sessions are the simplest solution for authenticating transactions with 3D Secure.
+
+Start a session and then redirect the customer using the link in the response. We'll gather the necessary payment, device and cardholder data and take care of the rest.
+
+<TipBox variant="info">
+
+Hosted sessions are suitable for authentications initiated from **browsers only**.
+
+</TipBox>
+
+<List>
+<ListNumberItem number={1}>
+
+[Request a session](#Step_1:_Request_a_session)
+
+</ListNumberItem>
+<ListNumberItem number={2}>
+
+[Redirect the customer](/#Step_2:_Redirect_the_customer)
+
+</ListNumberItem>
+</List>
+
+---
+
+## Step 1: Request a session
+
+To begin, make a session request.
+
+### Endpoints
+
+For the full API specification, see the <ExternalLink href="https://api-reference.checkout.com/preview/crusoe/" >API reference</ExternalLink>.
+
+<tabs>
+<tab title="Live">
+<LineCodeWrapper type="post">
+
+`https://api.checkout.com/sessions`
+
+</LineCodeWrapper>
+</tab>
+<tab title="Sandbox">
+<LineCodeWrapper type="post">
+
+`https://api.sandbox.checkout.com/sessions`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+<TipBox variant="success" title="Additional parameters">
+
+To increase the likelihood of frictionless authentication, [add additional data fields](#Additional_authentication_data) when requesting a session.
+
+</TipBox>
+
+### Request example
+
+```json
+{
+  "source": {
+    "type": "card",
+    "number": "4485040371536584",
+    "expiry_month": 1,
+    "expiry_year": 2030
+  },
+  "amount": 100,
+  "currency": "USD",
+  "authentication_type": "regular",
+  "authentication_category": "payment",
+  "challenge_indicator": "no_preference",
+  "reference": "ORD-5023-4E89",
+  "transaction_type": "goods_service",
+  "shipping_address": {
+    "address_line1": "Checkout.com",
+    "address_line2": "90 Tottenham Court Road",
+    "city": "London",
+    "state": "London",
+    "zip": "W1T 4TJ",
+    "country": "GB"
+  },
+  "completion": {
+    "type": "hosted",
+    "success_url": "http://example.com/sessions/success",
+    "failure_url": "http://example.com/sessions/fail"
+  }
+}
+```
+
+### The response
+
+You should receive a `202 - Accepted` response with a `_links.redirect` link. For the full API specification, see the <ExternalLink href="https://api-reference.checkout.com/preview/crusoe/" >API reference</ExternalLink>.
+
+
+<Table>
+<TableHead headers={['Field name', 'Description']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`id`
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+The unique session identifier.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`transaction_id`
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+The transaction identifier. This needs to be provided when communicating directly with the issuing bank's access control server (ACS).
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`amount`
+
+<TypeTag type="integer" />
+
+</TableCell>
+<TableCell>
+
+The payment amount.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`currency`
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+The three-letter ISO currency code.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`authentication_type`
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+Indicates the type of payment this session is for.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`authentication_category`
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+Indicates the category of the authentication request.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`status`
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+The status of the session. Should be `pending`.
+
+<InfoBox>
+
+[See below for all possible statuses and their meanings](#Session_statuses).
+
+</InfoBox>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`next_actions`
+
+<TypeTag type="array" />
+
+</TableCell>
+<TableCell>
+
+Specifies what action to take to complete the session. For example: `redirect_cardholder`.
+
+<InfoBox>
+
+[See below for all possible actions and their meanings](#Next_actions).
+
+</InfoBox>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`protocol_version`
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+The 3DS version used for authentication.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`reference`
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+A reference you can later use to identify this payment, such as an order number.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`_links`
+
+<TypeTag type="object" />
+
+</TableCell>
+<TableCell>
+
+The links related to the session.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`_links.redirect`
+
+<TypeTag type="object" />
+
+</TableCell>
+<TableCell>
+
+The link where the cardholder should be redirected to after authentication.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`_links.self`
+
+<TypeTag type="object" />
+
+</TableCell>
+<TableCell>
+
+The URL of the session.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+### Response example
+
+```json
+{
+  "id": "sid_y3oqhf46pyzuxjbcn2giaqnb441",
+  "transaction_id": "9aea641d-0549-4222-9ca9-d90b43a4f38c",
+  "amount": 120,
+  "currency": "USD",
+  "authentication_type": "regular",
+  "authentication_category": "payment",
+  "status": "pending",
+  "next_actions": [
+    "redirect_cardholder"
+  ],
+  "protocol_version": "2.2.0",
+  "reference": "ORD-5023-4E89",
+  "_links": {
+    "redirect": {
+      "href": "http://3ds2.checkout.com/interceptor/sid_y3oqhf46pyzuxjbcn2giaqnb44"
+    },
+    "self": {
+      "href": "https://api.checkout.com/sessions/sid_y3oqhf46pyzuxjbcn2giaqnb441"
+    }
+  }
+}
+```
+
+---
+
+## Step 2: Redirect the customer
+
+Redirect the customer using the `_links.redirect` URL you received in the response.
+
+In the background, our Sessions API will then gather the device data, perform a challenge (if required), and authenticate the payment. After authentication is completed, your customer will be redirected to your `success_url` or `failure_url`. You can now continue to authorize the payment via our Payments API.
+
+<TipBox variant="info">
+
+If the authentication is approved or attempted, the customer will be redirected to your success URL. All other authentication results will redirect the customer to your failure URL.
+
+</TipBox>
+
+### Session properties
+
+### Session statuses
+
+Below are the possible values of the `status` field, which tell you the current status of the session.
+
+<Table>
+<TableHead headers={['Status', 'Description']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`pending`
+
+</TableCell>
+<TableCell>
+
+Authentication has been requested and the session has been started. The session `id` is passed back to your server and can be shared with the mobile app (iOS or Android) SDK.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`processing`
+
+</TableCell>
+<TableCell>
+
+The 3DS server has updated the authentication with channel data collected by the SDKs and has created and sent an authentication request to the directory server. The access control server is now evaluating the data to decide whether to authenticate the transaction (frictionless) or challenge it.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`approved`
+
+</TableCell>
+<TableCell>
+
+The payment has been successfully authenticated (frictionless or challenged).
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`attempted`
+
+</TableCell>
+<TableCell>
+
+The payment has not been successfully authenticated, because the access control server could not be reached, but proof of the attempted authentication is provided (frictionless).
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`unavailable`
+
+</TableCell>
+<TableCell>
+
+Authentication failed because of technical problems with the directory server or the issuer's access control server.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`declined`
+
+</TableCell>
+<TableCell>
+
+The transaction was not authenticated. The issuer denied the transaction.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`rejected`
+
+</TableCell>
+<TableCell>
+
+The transaction was rejected. The issuer is rejecting the authentication and requests that authorisation not be attempted.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`challenged`
+
+</TableCell>
+<TableCell>
+
+Authentication has been requested but the issuer requires that the cardholder be presented with a challenge.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`challenge_abandoned`
+
+</TableCell>
+<TableCell>
+
+Authentication has been started and challenged, but the cardholder did not complete the challenge.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`expired`
+
+</TableCell>
+<TableCell>
+
+Authentication has been started but the channel data could not be collected, meaning an authentication request was not created.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+### Next actions
+
+Below are the possible values for the `next_actions` field. When present, they identify what action to take in order to complete the session.
+
+<Table>
+<TableHead headers={['Session type', 'Action', 'Description', 'Channel']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+Hosted
+
+</TableCell>
+<TableCell>
+
+`redirect_cardholder`
+
+</TableCell>
+<TableCell>
+
+Redirect the customer so we can handle all the other necessary actions (collect channel data, issuer fingerprint, and challenge) for you.
+
+</TableCell>
+<TableCell>
+
+Browser only
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Hosted and non-hosted
+
+</TableCell>
+<TableCell>
+
+`complete`
+
+</TableCell>
+<TableCell>
+
+No further actions are required. You can complete the session.
+
+</TableCell>
+<TableCell>
+
+Browser and app
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+---
+
+## Additional authentication data
+
+When requesting a session, you can add additional data fields to increase the chances of a frictionless authentication. Below is a summary of the optional data you can add to your request.
+
+<Table>
+<TableHead headers={['Type of data', 'Description and examples']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+Client user data
+
+</TableCell>
+<TableCell>
+
+Data that supports the specific authentication and information about the authentication method used.
+
+<InfoBox>
+
+For example, your own credentials, and the issuer's credentials.
+
+</InfoBox>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Prior transaction information
+
+</TableCell>
+<TableCell>
+
+For returning users and recurring transactions, gather and submit data with each following transaction.
+
+<InfoBox>
+
+For example, when the recurring payment plan expires, payment references, and the authentication method used.
+
+</InfoBox>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Account type
+
+</TableCell>
+<TableCell>
+
+The account type used in your request. Issuer's attach different risk profiles to different accounts.
+
+<InfoBox>
+
+For example, credit or debit.
+
+</InfoBox>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Address match
+
+</TableCell>
+<TableCell>
+
+Indicates whether the cardholder's shipping and billing address are the same.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Cardholder account / user information
+
+</TableCell>
+<TableCell>
+
+Information about the cardholder and their account on your platform.
+
+<InfoBox>
+
+For example, how long they've had an account with you, and the number of purchases they've made in the last six months.
+
+</InfoBox>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+User purchase history
+
+</TableCell>
+<TableCell>
+
+Details of the cardholder's purchase history.
+
+<InfoBox>
+
+For example, the number of purchases in the last six months, and the number of card attempts in the last 24 hours.
+
+</InfoBox>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Shipping address usage
+
+</TableCell>
+<TableCell>
+
+Information about the use of the shipping address.
+
+<InfoBox>
+
+For example, when the shipping address was first used, and whether the address name matches the cardholder's name.
+
+</InfoBox>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Suspicious account activity
+
+</TableCell>
+<TableCell>
+
+Indicates whether you've experienced any suspicious activity on the cardholder's account.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Cardholder information
+
+</TableCell>
+<TableCell>
+
+Additional information you want to provide about the cardholder and their account with you.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Cardholder email address
+
+</TableCell>
+<TableCell>
+
+The email address associated with the cardholder's account.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Cardholder shipping address
+
+</TableCell>
+<TableCell>
+
+The cardholder's full shipping address.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Installment payment data
+
+</TableCell>
+<TableCell>
+
+For transactions that are being paid in installments, you can provide information about the maximum number of authorizations permitted within that payment plan.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Pre-paid and gift card transactions
+
+</TableCell>
+<TableCell>
+
+Information about pre-paid or gift card transactions.
+
+<InfoBox>
+
+For example, the gift card amount, and whether or not the cardholder is pre-ordering a product.
+
+</InfoBox>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Shipping method
+
+</TableCell>
+<TableCell>
+
+Indicate the shipping method being used for the order, or flag non-shippable items, like digital goods.
+
+<InfoBox>
+
+For example, whether it's being shipped to a verified address on file, or being picked up by the cardholder from a local store.
+
+</InfoBox>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Delivery information
+
+</TableCell>
+<TableCell>
+
+Information about the delivery, like the delivery email address or delivery timeframe.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>

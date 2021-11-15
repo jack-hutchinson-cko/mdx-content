@@ -1,0 +1,541 @@
+---
+title: Financial actions reports
+account: NAS
+---
+
+Financial actions reports provide an accurate representation of all actions during a payment’s life-cycle that impact your currency account's available balance. Together with the payouts reports, you can reconcile payments and any associated fees against payouts paid out to you.
+
+Understanding the financial impact of each action and any foreign exchange (FX) rates applied also allows you to accurately assess your cost of sale.
+
+---
+
+## Understanding your financial actions reports
+
+The reports come in two forms:
+
+- **Financial actions by date range**: contains financial actions across a specified time period.
+
+- **Financial actions by payout ID**: contains financial actions related to a specific payout ID—useful when reconciling financial actions with a payout paid out to your bank account.
+
+Every row features a unique financial action ID that can be linked to a specific payment, using the payment ID, or a settled payout, using the payout ID.
+
+Both reports feature identical field names and list records chronologically.
+
+---
+
+## Report format
+
+Financial actions reports come in .csv format with the file name following these templates:
+
+- **Financial actions by date range**: 
+
+`financialactions_{Your Entity-ID}_{Start Date Range:YYYYMMDD}_{End Date Range:YYYYMMDD}_1.csv`
+
+- **Financial actions by payout ID**: 
+
+`financialactions_{Your Entity-ID}_{Payout date: YYYYMMDD}_{PayoutID}_1.csv`
+
+---
+
+## When are my reports available?
+
+The availability of your reports depends on the type of financial action report available to you.
+
+### Financial actions by date range
+
+These reports are available from 12:00:00 UTC and include any financial actions that impacted your available balance between 00:00:00 UTC and 23:59:59 UTC the previous day.
+
+For example, all financial actions that occur on August 3rd, 2020 (from 00:00:00 UTC to 23:59:59 UTC) will be included in the daily financial actions by date range report generated and available from August 4th, 2020 at 12:00:00 UTC.
+
+Financial actions by date range can be made available on a daily, weekly or monthly basis.
+
+### Financial actions by payout ID
+
+These reports are available from 16:00:00 UTC. The data includes any financial actions that have impacted your available balance and are linked to a payout from a currency account between 00:00:00 UTC and 23:59:59 UTC on the same day.
+
+For example, for a payout made on August 3rd, 2020, financial actions linked to payments associated with the payout will be included in the financial actions by payout ID report available on August, 3rd 2020 at 16:00:00 UTC.
+
+---
+
+## Report fields
+
+<Accordion title="See full list of field names and descriptions">
+
+<TipBox variant="info">
+
+Fields with monetary amounts are expressed in their major currency unit and rounded up to eight decimal places. For instance, an authorization fee of $0.1 will be expressed as 0.1.
+
+</TipBox>
+
+<Table>
+<TableHead headers={['Field name', 'Description']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+Client Entity ID
+
+</TableCell>
+<TableCell>
+
+The unique ID of the entity for which the payment was processed.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Client Entity Name
+
+</TableCell>
+<TableCell>
+
+The name of the entity for which the payment was processed.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Sub Entity ID
+
+</TableCell>
+<TableCell>
+
+The unique ID of the sub-entity for which the payment was processed.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Sub Entity Name
+
+</TableCell>
+<TableCell>
+
+The name of the sub-entity for which the payment was processed.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Processing Channel ID
+
+</TableCell>
+<TableCell>
+
+The unique ID for processing channel configurations.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Merchant Category Code
+
+</TableCell>
+<TableCell>
+
+Four-digit code for retail financial services expressed in ISO 18245 format to classify the types of goods or services provided by you.
+
+<InfoBox>
+
+Learn more about [MCCs](/resources/codes/merchant-category-codes).
+
+</InfoBox>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Currency Account ID
+
+</TableCell>
+<TableCell>
+
+The unique ID of the currency account to which the financial action amount was charged.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Currency Account Name
+
+</TableCell>
+<TableCell>
+
+The name of the currency account to which the financial action amount was charged.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Currency Account Custom ID
+
+</TableCell>
+<TableCell>
+
+The custom ID of the currency account to which the financial action amount was charged.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Action Type
+
+</TableCell>
+<TableCell>
+
+The type of action processed. For example, authorization, capture, refund, chargeback, pay to card.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Action ID
+
+</TableCell>
+<TableCell>
+
+The unique ID for a given financial action impacting your balances.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Payment ID
+
+</TableCell>
+<TableCell>
+
+The unique ID for the payment to which a financial action is associated.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Requested On
+
+</TableCell>
+<TableCell>
+
+The timestamp of when a gateway request was made for an action expressed in ISO format in UTC (`YYYY-MM-DD THH:MM:SS:sss`).
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Processed On
+
+</TableCell>
+<TableCell>
+
+The timestamp of when the action was processed and had impacted your balances in ISO format in UTC (`YYYY-MM-DD THH:MM:SS:sss`).
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Processing Currency
+
+</TableCell>
+<TableCell>
+
+Three-digit ISO currency code of a financial action when processed. For example, USD for dollars.
+
+<InfoBox>
+
+Learn more about [ISO currency codes](/resources/codes/currency-codes).
+
+</InfoBox>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+FX Rate Applied
+
+</TableCell>
+<TableCell>
+
+The exchange rate applied to a processed financial action.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Holding Currency
+
+</TableCell>
+<TableCell>
+
+Three-digit ISO currency code of the currency a financial action is held and paid out in. For example, USD for dollars.
+
+<InfoBox>
+
+Learn more about [ISO currency codes](/resources/codes/currency-codes).
+
+</InfoBox>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+FX Trade ID
+
+</TableCell>
+<TableCell>
+
+Unique ID of the FX trade executed in fulfilment of a financial action.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Payout ID
+
+</TableCell>
+<TableCell>
+
+The unique ID of the payout in which the financial action was included.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Reference
+
+</TableCell>
+<TableCell>
+
+An optional ID used to track financial actions.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Payment Method
+
+</TableCell>
+<TableCell>
+
+The payment method associated with the financial action.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Card Type
+
+</TableCell>
+<TableCell>
+
+The card type used to make the payment. For example, credit or debit card.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Card Category
+
+</TableCell>
+<TableCell>
+
+The card category used to make the payment. For example, consumer or commercial.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Issuer Country
+
+</TableCell>
+<TableCell>
+
+Two-digit ISO country code of the country where the payment is processed. For example, US.
+
+<InfoBox>
+
+Learn more about [ISO currency codes](/resources/codes/country-codes).
+
+</InfoBox>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Entity Country
+
+</TableCell>
+<TableCell>
+
+Two-digit ISO country code of entity. For example, US.
+
+<InfoBox>
+
+Learn more about [ISO currency codes](/resources/codes/country-codes).
+
+</InfoBox>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Region
+
+</TableCell>
+<TableCell>
+
+The region where this payment occurred. This could be Domestic, EEA, or International.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+MID
+
+</TableCell>
+<TableCell>
+
+An optional merchant ID used to segment your payments traffic with card schemes.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Response Code
+
+</TableCell>
+<TableCell>
+
+The response code of the payment request.
+
+<InfoBox>
+
+Learn more about [response codes].(/resources/codes/response-codes).
+
+</InfoBox>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Response Description
+
+</TableCell>
+<TableCell>
+
+A description of the response code of the payment request.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Breakdown Type
+
+</TableCell>
+<TableCell>
+
+A description of the type of fee or amount. For example, authorization fee.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Processing Currency Amount
+
+</TableCell>
+<TableCell>
+
+The associated amount of the financial action in the processed currency.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Holding Currency Amount
+
+</TableCell>
+<TableCell>
+
+The associated amount of the financial action in the held currency.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Entity Country Tax Currency
+
+</TableCell>
+<TableCell>
+
+The currency of the country your entity resides in for tax purposes, if applicable.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Tax FX Rate
+
+</TableCell>
+<TableCell>
+
+The foreign exchange rate between the holding currency and tax currency at the point the financial action was processed.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Tax Currency Amount
+
+</TableCell>
+<TableCell>
+
+The amount of tax applied expressed in the tax currency.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+</Accordion>
+
+---
+
+## Sample reports
+
+Select the links below to download sample reports. If you're using Safari, hold the _Option_ key when you download.
+
+- <ExternalLink href="https://assets.checkout.com/docs/downloads/SAMPLE-financial-actions_ent_zxmc2csd961nfd2mcwzkvdgmpb_20210113_20210114_1.csv" >Download a sample financial actions report</ExternalLink> (.csv file)
+
+- <ExternalLink href="https://assets.checkout.com/docs/downloads/SAMPLE-financial-actions_ent_zxmc2csd961nfd2mcwzkvdgmpb_20210114_000G7HDD96SH_1.csv" >Download a sample financial actions report by payout ID</ExternalLink> (.csv file)

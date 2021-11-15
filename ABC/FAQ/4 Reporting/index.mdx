@@ -1,0 +1,211 @@
+---
+title: Reporting
+account: ABC
+previewIcon: /faq/category-reporting.svg
+previewIconDark: /faq/category-reporting-light.svg
+description: Webhooks, statements, reports, and reconciliation.
+---
+
+<FAQItem title="What are statements, and where can I find out more?" popularity={21}>
+
+Statements are an easy way to view the processed amount, refunds, chargebacks, processing fees, rolling reserve moments, and general adjustments for a given period in your account.
+
+They are generated automatically based on your payout frequencies, and you can find them in the Statements screen in the <ExternalLink href="https://hub.checkout.com" >Hub</ExternalLink>.
+
+Read our [statements guide](/reporting-and-insights/statements-explained) for more information.
+
+</FAQItem>
+
+<FAQItem title="How can I check my statements?" popularity={21}>
+
+The _Statements_ screen in the <ExternalLink href="https://hub.checkout.com" >Hub</ExternalLink> allows you to view your current statement and download all previous ones.
+
+Alternatively, you can use the [/statements endpoint](/reporting-and-insights/reconciliation-api/statements-endpoint) of the Reconciliation API to call a summary of your statements and payouts within specified parameters.
+
+</FAQItem>
+
+<FAQItem title="Is there a difference between data in a PDF statement report and data retrieved from the statement endpoint?" popularity={21}>
+
+There is no difference. The data contained in your statement report and the Reconciliation API is the same.
+
+</FAQItem>
+
+<FAQItem title="What is the difference between the payments report endpoint and the statement reports?" popularity={21}>
+
+The payments report endpoint only contains transactional information.
+
+Non-transactional information is only included in the statements endpoint. This includes business- or merchant-level data, such as the payout fee, payout fee tax, admin fees or general adjustments.
+
+The payments report endpoint is a view of your processed volume and fees at payment level, but it won't allow you to reconcile the amounts against your payout amounts. This is because payouts contain non-transactional elements which are not reflected in this report.
+
+</FAQItem>
+
+<FAQItem title="What is the difference between the payments in the Hub and the ones in the payments report endpoint?" popularity={21}>
+
+In the payments report endpoint, you'll only find payments that are associated with movement of funds or fee application.
+
+For example, you won't find any mention of a declined payment that would have no associated fees. But that payment would be visible on the Hub, because it is a reflection of any payments processed through Checkout.com.
+
+</FAQItem>
+
+<FAQItem title="How do I see the entire history of a payment?" popularity={21}>
+
+Each payment is uniquely identified with an ID which is created at the first action administered to a payment – usually the authorization.
+
+If you include this ID in your request, you'll get all the actions associated with the payment and all the related fees and amounts.
+
+In the CSV report, you'll see that each row corresponds to a payment fee or an amount relating to a certain action.
+
+</FAQItem>
+
+<FAQItem title="To which date does the date parameter in the payments report request correspond?" popularity={21}>
+
+When you create your request, you can specify a date. This date corresponds to the original date of the first action administered to a payment – usually the authorization. In the payments report endpoint’s response, you will get all the subsequent actions and amounts that are related to this payment, even if they occurred on a later date.
+
+For example, when you set a date range from 2019-01-21 to 2019-01-21, you will get all actions related to the payments where the first date of the first action of the payment was 2019-01-21, which will most likely be the date of the authorization. Even if the interchange fees are only applied on 2019-01-22 (i.e., one day later), you would still see them in your report for the 2019-01-21 as long as your request happens after they have been taken into account (i.e., after 2019-01-22).
+
+</FAQItem>
+
+<FAQItem title="Are payments from multiple regions available through the payments reporting endpoint?" popularity={21}>
+
+Yes. You can see all of your payments globally in a single location, making the reconciliation process easier and enabling better business decisions.
+
+</FAQItem>
+
+<FAQItem title="Does the payments report response include alternative payments?" popularity={21}>
+
+Yes. All payments, including those made with alternative payment methods (APMs), are available with this endpoint.
+
+</FAQItem>
+
+<FAQItem title="When can I download an accurate list of my payments for the day?" popularity={21}>
+
+Data is accessible in real time, but keep in mind that some fees are not applied in real time so might not appear in your report immediately. For example, interchange fees are typically only applied one day after the original date of the capture so will only then appear in your report.
+
+</FAQItem>
+
+<FAQItem title="How can I tally reports with statements?" popularity={21}>
+
+To tally up your statements and reports, you can [use our /statements endpoint’s payment extension](/reporting-and-insights/reconciliation-api/statements-endpoint#2._Statement_ID_/_Payments). It allows you to retrieve the list of payments and associated fees that are included in a statement or payout which has been deposited into your bank account, or a specific payout currency.
+
+</FAQItem>
+
+<FAQItem title="How should I use the Reconciliation API if I want to reconcile it against one of my statements?" popularity={21}>
+
+You should get the statement ID of your statement and add it in the /statements endpoint.
+
+Do not use the statement period date because if for some reason an action has only been taken into account in a later date, then it will appear in a later statement even if it will still show the original date when the action was taken.
+
+</FAQItem>
+
+<FAQItem title="Does my payments report for a given date always match with the corresponding statement?" popularity={21}>
+
+Not always. If, for instance, a bug led to a delay in the processing, you would still see the original date recorded in your reports even if the effective date was later.
+
+</FAQItem>
+
+<FAQItem title="How do I reconcile the amount deposited in my bank account against a report?" popularity={21}>
+
+To reconcile the amount deposited in your bank account against one of the reports provided by the Reconciliation API, please use the [/statements endpoint](/reporting-and-insights/reconciliation-api/statements-endpoint).
+
+</FAQItem>
+
+<FAQItem title="Does my unique identifier appear on reports?" popularity={21}>
+
+Yes. The unique identifier (e.g., the customer or transaction ID) you send with the transaction using the reference parameter will appear in your payment, dispute, and reconciliation reports.
+
+</FAQItem>
+
+<FAQItem title="What are webhooks, and where can I find out more?" popularity={21}>
+
+A webhook is a notification we send you when an event occurs. It is the definitive confirmation of a status update. Webhooks are sent for a variety of events, such as when a payment is voided or flagged. You can choose which specific webhook you'd like to subscribe to.
+
+Read our [webhooks guide](/reporting-and-insights/webhooks) to find out more
+
+</FAQItem>
+
+<FAQItem title="I got an email saying there is a problem with my webhook endpoint. What does this mean?" popularity={21}>
+
+It means that the webhook associated with a specific event type is not being received properly.
+
+We will keep trying to send to that endpoint for 7 days, after which you will be unsubscribed from that event type. To remain subscribed, update your webhook settings in the <ExternalLink href="https://hub.checkout.com" >Hub</ExternalLink> under **Settings > Channels**. You will continue to receive webhook notifications for other events that are being processed successfully.
+
+Note that failed webhooks will never impact the processing of payments in any way. They are only notifications designed to help you stay informed of what's happening with your business in real time.
+
+Learn more about [webhooks](/reporting-and-insights/webhooks), and the [webhook retry mechanism](/reporting-and-insights/webhooks#Webhook_retries).
+
+</FAQItem>
+
+<FAQItem title="What are the possible payment actions, and what fees apply to them?" popularity={21}>
+
+The payment actions and their associated fees are as follows:
+
+**Authorization:**
+
+- Gateway Fee
+- Authorization Fee
+- Scheme Fixed fee
+- Scheme Variable Fee
+- Reconciliation Fee
+
+**Void:**
+
+- Gateway Fee
+- Void Fee
+- Scheme Variable Fee
+- Scheme Fixed Fee
+- Reconciliation Fee
+
+**Capture:**
+
+- Gateway Fee
+- Captured
+- Capture Fee
+- RR (Rolling Reserve)
+- Scheme Fixed Fee
+- Scheme Variable Fee
+- Premium Fee
+- SchemeIC
+- Reconciliation Fee
+- Blended Fee
+
+**Refund:**
+
+- Gateway Fee
+- Refunded
+- Scheme Fixed Fee
+- Scheme Variable Fee
+- Refund Fee
+- Reconciliation Fee
+
+**Retrieval:**
+
+- Retrieval fee
+
+**Chargeback:**
+
+- Chargeback (ADJM)
+- Chargeback Fee
+- Scheme Chargeback Variable Fee
+- Scheme Chargeback Fixed Fee
+- Representment Fee
+- Chargeback (CBRV)
+- Chargeback (AUTO)
+- Chargeback (RPDR)
+- Chargeback (RPDL)
+- Chargeback (RPDW)
+
+**Payout to Card:**
+
+- PayoutsToCard Fee
+- PayoutsToCard Success Fee
+- PayoutsToCard Fail Fee
+- Scheme PayoutsToCard Variable Fee
+- Scheme PayoutsToCard Fixed Fee
+- PayoutsToCard SchemeIC
+
+**Expiry:**
+
+- Reconciliation Fee
+
+</FAQItem>

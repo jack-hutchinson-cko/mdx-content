@@ -1,0 +1,275 @@
+---
+title: PayPal
+---
+
+Start accepting PayPal payments and open your business to thousands of online shoppers.
+
+<TipBox variant="info">
+
+To start accepting PayPal payments, please contact your Customer Success Manager.
+
+</TipBox>
+
+<Table>
+<TableBody>
+<TableRow>
+<TableCell withBackground>
+
+**Model**
+
+</TableCell>
+<TableCell>
+
+GW only
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell withBackground>
+
+**Payment flow**
+
+</TableCell>
+<TableCell>
+
+Redirect
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell withBackground>
+
+**Payment method type**
+
+</TableCell>
+<TableCell>
+
+Wallet
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell withBackground>
+
+**One-step payment**
+
+</TableCell>
+<TableTicCell type="check"/>
+</TableRow>
+<TableRow>
+<TableCell withBackground>
+
+**Authorization**
+
+</TableCell>
+<TableTicCell type="error"/>
+</TableRow>
+<TableRow>
+<TableCell withBackground>
+
+**Capture**
+
+</TableCell>
+<TableTicCell type="error" />
+</TableRow>
+<TableRow>
+<TableCell withBackground>
+
+**Refund**
+
+</TableCell>
+<TableTicCell type="check" />
+</TableRow>
+<TableRow>
+<TableCell withBackground>
+
+**Partial refund**
+
+</TableCell>
+<TableTicCell type="check" />
+</TableRow>
+<TableRow>
+<TableCell withBackground>
+
+**Chargeback**
+
+</TableCell>
+<TableTicCell type="error" />
+</TableRow>
+<TableRow>
+<TableCell withBackground>
+
+**Recurring payment**
+
+</TableCell>
+<TableTicCell type="error" />
+</TableRow>
+</TableBody>
+</Table>
+
+---
+
+## Overview
+
+PayPal payments follow a two-step process:
+
+1.  [Request a PayPal payment](/payments/payment-methods/wallets/pay-pal#Request_a_payment)
+2.  [Redirect the customer](/payments/payment-methods/wallets/pay-pal#Redirect_the_customer)
+
+---
+
+## Request a payment
+
+### Endpoints
+
+You can find the full list, as well as complete request and response examples, in our <ExternalLink href="https://api-reference.checkout.com" >API reference</ExternalLink>.
+
+<tabs>
+<tab title="Live" active>
+<LineCodeWrapper type="post">
+
+`https://api.checkout.com/payments`
+
+</LineCodeWrapper>
+</tab>
+<tab title="Sandbox">
+<LineCodeWrapper type="post">
+
+`https://api.sandbox.checkout.com/payments`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+### Request example
+
+```json
+    {
+      "amount": 100,
+      "currency": "EUR",
+      "source": {
+        "type": "paypal",
+        "invoice_number": "CKO00001",
+        "logo_url": "https://www.example.com/logo.jpg",
+        "stc": {
+          "property_name1": "property 1",
+          "property_name2": "property 2",
+          "property_name3": "property 3"
+        }
+      }
+    }
+```
+
+### Response example
+
+If you receive a `202 Success` response containing a `status` field set to `Pending`, your request was successful.
+
+### Response example
+
+```json
+    {
+      "id": "pay_ks2zlgzmff7ejnbvkpdw5n4liq",
+      "status": "Pending",
+      "customer": {
+        "id": "cus_ho2i3q5rgl4e7ed3uox4ez4a5m"
+      },
+      "_links": {
+        "self": {
+          "href": "https://api.sandbox.checkout.com/payments/pay_ks2zlgzmff7ejnbvkpdw5n4liq"
+        },
+        "redirect": {
+          "href": "https://www.sandbox.paypal.com/checkoutnow?token=EC-45B75666L8055651R&useraction=commit"
+        }
+      }
+    }
+```
+
+---
+
+## Redirect the customer
+
+Redirect your customer to the `redirect` link’s href in the response. The customer will be redirected to a PayPal page where they can authorize the payment, before being transferred to your predefined success or failure URL.
+
+---
+
+## Get details about a payment
+
+You can use the `payment_id` found in the payment response, or the `cko-session-id` from the success/failure URL (e.g., https://www/checkout.com/order/succeeded?cko-session-id=**sid_vii64oquze5u3h2x6hh4rurc4y**) to retrieve details about the payment.
+
+<TipBox variant="note">
+
+The `cko-session-id` expires 15 minutes after being created.
+
+</TipBox>
+
+Use the details below to set up your request.
+
+### Endpoints
+
+You can find the full list, as well as complete request and response examples, in our <ExternalLink href="https://api-reference.checkout.com" >API reference</ExternalLink>.
+
+<tabs>
+<tab title="Live" active>
+<LineCodeWrapper type="get">
+
+`https://api.checkout.com/payments/{payment_id}`
+
+</LineCodeWrapper>
+</tab>
+<tab title="Sandbox">
+<LineCodeWrapper type="get">
+
+`https://api.sandbox.checkout.com/payments/{payment_id}`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+### Response example
+
+```json
+    {
+      "id": "pay_ks2zlgzmff7ejnbvkpdw5n4liq",
+      "requested_on": "2019-07-17T07:24:12Z",
+      "source": {
+        "type": "paypal"
+      },
+      "amount": 100,
+      "currency": "EUR",
+      "payment_type": "Regular",
+      "status": "Captured",
+      "approved": true,
+      "risk": {
+        "flagged": false
+      },
+      "customer": {
+        "id": "cus_ho2i3q5rgl4e7ed3uox4ez4a5m"
+      },
+      "_links": {
+        "self": {
+          "href": "https://api.sandbox.checkout.com/payments/pay_ks2zlgzmff7ejnbvkpdw5n4liq"
+        },
+        "actions": {
+          "href": "https://api.sandbox.checkout.com/payments/pay_ks2zlgzmff7ejnbvkpdw5n4liq/actions"
+        },
+        "refund": {
+          "href": "https://api.sandbox.checkout.com/payments/pay_ks2zlgzmff7ejnbvkpdw5n4liq/refunds"
+        }
+      }
+    }
+```
+
+### Testing PayPal
+
+<TipBox variant="note">
+
+To start testing, you'll need to:
+
+*   <ExternalLink href="https://www.checkout.com/get-test-account" >create a test account</ExternalLink>, and
+*   contact your Customer Success Manager or Integrations engineer to activate PayPal payments in the sandbox environment.
+
+</TipBox>
+
+1.  Create a PayPal transaction as above, following the redirect link in the response to PayPal's website.
+2.  Log in with your PayPal username and password.
+3.  Set the payment status – _pending, paid_, or _refused_ – and then select _Confirm_. You should then be redirected to your predefined success URL.

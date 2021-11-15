@@ -1,0 +1,632 @@
+--- 
+title: SAP Commerce Cloud
+account: ABC
+---
+
+SAP Commerce Cloud Connector integrates seamlessly with the SAP B2C Accelerator. The Connector for SAP Commerce Cloud (formerly Hybris) enables customers to implement a global payment strategy through a single integration in a secure, compliant and unified approach.
+
+We currently support: 
+
+* SAP CC v.1905 incl. B2C Accelerator
+* SAP CC v.2005 incl. B2C Accelerator
+* SAP CC v.2011 incl. B2C Accelerator
+* SAP Spartacus v3.2 front-end with SSR (server-side rendering) support, that can work with any of the above SAP CC suites.
+
+This guide explains how to get started with our plugin.
+
+## Supported features
+
+* **SAP Commerce Fulfilment process**: With Checkout.com's APIs for authorization, capture, refund and void. The same functionality has been brought onto our Spartacus v3.2 storefront connector.
+* **SAP Commerce Backoffice**: The connector provides specific customizations for the back office to ease the administration, configuration and management of all the operations related to the integration with the Checkout.com's payment solution.
+* **3DS 2.0 (PSD2)**: In case of a non-frictionless interaction, the user must enter additional information related to the Strong Customer Authentication (SCA).
+* **SAP WCMS (Web Content Management System)**: The connector enables business users to add cards and APMs using CMS components.
+
+## Supported payment methods
+
+<tabs>
+<tab title="Major debit and credit cards">
+
+<Table>
+<TableHead headers={['Payment method', 'Countries']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+American Express
+
+</TableCell>
+<TableCell>
+
+Global
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Diners
+
+</TableCell>
+<TableCell>
+
+Global
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Discover
+
+</TableCell>
+<TableCell>
+
+Global
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+JCB
+
+</TableCell>
+<TableCell>
+
+Global
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Maestro
+
+</TableCell>
+<TableCell>
+
+Global
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Mastercard
+
+</TableCell>
+<TableCell>
+
+Global
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Visa
+
+</TableCell>
+<TableCell>
+
+Global
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+</tab>
+<tab title="Local">
+
+<Table>
+<TableHead headers={['Payment method', 'Countries']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+ACH Direct Debit (awaiting product release, on roadmap)
+
+</TableCell>
+<TableCell>
+
+US
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+EPS
+
+</TableCell>
+<TableCell>
+
+Austria
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Fawry
+
+</TableCell>
+<TableCell>
+
+Egypt
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Giropay
+
+</TableCell>
+<TableCell>
+
+Germany
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+iDEAL
+
+</TableCell>
+<TableCell>
+
+Netherlands
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Klarna
+
+</TableCell>
+<TableCell>
+
+* Austria
+* Denmark
+* Finland
+* Germany
+* Netherlands
+* Norway
+* Sweden
+* UK
+* Isle of Man
+* Jersey
+* Guernsey
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Multibanco
+
+</TableCell>
+<TableCell>
+
+Portugal
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+OXXO
+
+</TableCell>
+<TableCell>
+
+Mexico
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Przelewy24
+
+</TableCell>
+<TableCell>
+
+Poland
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+POLi
+
+</TableCell>
+<TableCell>
+
+* Australia
+* New Zealand
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+SEPA Direct Debit
+
+</TableCell>
+<TableCell>
+
+EU
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Sofort
+
+</TableCell>
+<TableCell>
+
+* Austria
+* Belgium
+* Germany
+* Italy
+* Netherlands
+* Spain
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+</tab>
+<tab title="Domestic cards">
+
+<Table>
+<TableHead headers={['Payment method', 'Countries']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+Bancontact
+
+</TableCell>
+<TableCell>
+
+Belgium
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Cartes Bancaires
+
+</TableCell>
+<TableCell>
+
+France
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+KNET
+
+</TableCell>
+<TableCell>
+
+Kuwait
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+MADA
+
+</TableCell>
+<TableCell>
+
+Saudi Arabia
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Qpay
+
+</TableCell>
+<TableCell>
+
+Qatar
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+</tab>
+<tab title="Wallet">
+
+<Table>
+<TableHead headers={['Payment method', 'Countries']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+Alipay
+
+</TableCell>
+<TableCell>
+
+* China
+* US
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Apple Pay
+
+</TableCell>
+<TableCell>
+
+Global
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+BenefitPay
+
+</TableCell>
+<TableCell>
+
+Bahrain
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Google Pay
+
+</TableCell>
+<TableCell>
+
+Global
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+PayPal
+
+</TableCell>
+<TableCell>
+
+Global
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+</tab>
+</tabs>
+
+---
+
+## Before you start
+
+### Create a test account
+
+If you haven't already, <ExternalLink href="https://www.checkout.com/get-test-account" >create a test Checkout.com account</ExternalLink>.
+
+### Get your API keys
+
+To set up the SAP Commerce Cloud Connector, you'll need three API keys: a secret one, a public one, and a private shared one. The first two are generated automatically when you create your account. The last one is generated when you create a webhook for your business.
+
+1.  Log in to your test account on the <ExternalLink href="https://sandbox.checkout.com/" >Hub sandbox</ExternalLink>.
+2.  In the left menu, go to _Settings > Channels_, and make a note of your secret and public API keys.
+
+<img maxWidth={800} src="/docs/Integrate/channel_settings.png" title="Channel settings"  />
+
+3.  Scroll down to the _Webhooks section_ of the page and select _New webhook_.
+4.  Enter the following URL, replacing <ExternalLink href="http://example.com">`example.com`</ExternalLink> with the URL of your shop: <ExternalLink href="http://example.com/checkout_com/webhook/callback">`example.com/checkout_com/webhook/callback`</ExternalLink>. (A webhook URL specific to your installation is available in the Account Settings section of the plugin configuration panel.)
+
+<TipBox variant="note">
+
+Correctly configuring your webhooks is important; if they're incorrectly formatted, the plugin will not work.
+
+</TipBox>
+
+5.  Select _API - v2.0_.
+6.  Tick _Select all_, then select _webhook_.
+
+<img
+  maxWidth={300}
+  src="/docs/Integrate/SAP/create_webhook-magento-2.png"
+  title="Create webhook Magento 2"
+  
+/>
+
+7.  Click on the webhook you just created, and make a note of the private shared API key.
+
+<img maxWidth={350} src="/docs/Integrate/SAP/webhook–magento-2.png" title="Webhook Magento 2"  />
+
+---
+
+## Payment method configuration
+
+As summarised by the table below, the visibility (availability) of the payment methods in SAP Commerce Cloud is defined by three attributes:
+
+<Table>
+<TableHead headers={['Attribute', 'Description']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+CMS Component
+
+</TableCell>
+<TableCell>
+
+For a payment method to be visible, the CMS component related to the payment needs to be added to the _CheckoutComPaymentButtonsSlot_ content slot. If you have multiple sites, the payment should be added for each site.
+
+Any payment methods that are not globally accepted by the merchant (irrespective of the customer’s shipping/billing country) should **not** be added to the CMS component.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Billing Country
+
+</TableCell>
+<TableCell>
+
+Apart from card payments (which are available for all countries), other payment methods can be configured to have country restrictions applied. If the list is empty, there is no restriction at all. Otherwise, the payment method will be available for customers whose billing country is included in the list.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Currency
+
+</TableCell>
+<TableCell>
+
+Apart from card payments (available for all countries), other payment methods can be configured to have currency restrictions applied. If the list is empty, there is no restriction at all. Otherwise, the payment method will be available for customers whose shopping cart currency is included in the list.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+## Install the plugin
+
+1.  <ExternalLink href="https://store.sap.com/dcp/en/product/display-0000059364_live_v1/Checkout.com%20Payments%20for%20SAP%20Commerce%20Cloud" >Download the latest Checkout.com SAP Commerce Cloud Connector</ExternalLink>. This contains the installer recipes and connector extensions.
+2.  Unzip the Connector .zip file.
+3.  Copy the extracted folders to the `HYBRIS_ROOT` of your Hybris installation.
+4.  Remove the SAP Commerce fulfilment extension `yacceleratorfulfilmentprocess` from `localextensions.xml`, as the connector will handle the fulfilment using the `checkoutfulfilmentprocess` extension.
+5.  Run the `ant clean` command from within your Hybris `bin/platform` directory.
+6.  Edit your `localextensions.xml` and add the following:
+
+```html
+<path autoload="true" dir="${HYBRIS_BIN_DIR}/modules/checkoutcom" />
+```
+
+<TipBox variant="info">
+
+The extensions do not rely on any absolute paths, so you can place the extensions in a different location (such as `${HYBRIS_BIN_DIR}/custom`).
+
+</TipBox>
+
+7.  Run the following commands to install the add-ons to the yaccelatorstorefront (you can replace yaccelatorstorefront with your custom storefront).
+
+```
+ant addoninstall -Daddonnames="checkoutaddon" DaddonStorefront.yacceleratorstorefront="yacceleratorstorefront"
+```
+
+### Add Checkout sample data add-on (optional)
+
+The Checkout sample data add-on is optional and allows you to add fields to the checkout page, which can be used to gather information from your customers, upsell services and products, and much more. To install:
+
+1.  Run the following code:
+
+```
+ant addoninstall -Daddonnames="checkoutsampledataaddon"
+-DaddonStorefront.yacceleratorstorefront="yacceleratorstorefront"
+```
+
+3.  Run the `ant clean all` command from within your Hybris bin/platform directory.
+4.  Run the `hybrisserver.sh` command to start up the Hybris server.
+5.  Update your running system using `ant updatesystem`.
+
+After setting up the hosts file, the connector will work initially without any external setup needed, because the Checkout sample data add-on will provide all the required data for the accelerator’s electronics and apparel stores.
+
+<TipBox variant="info">
+
+The add-ons are independent and can be installed on separate server instances.
+
+</TipBox>
+
+### Installing the plugin using the provided recipes
+
+The add-on comes with one Gradle recipe to be used with the Hybris installer. The recipe is `b2c_acc_plus_checkout_com` with b2c and Checkout.com functionality, and is based on the `b2b_acc_plus` recipes provided by Hybris.
+
+The recipe generates the `local.properties` file with the properties defined in the recipe. You can choose to add this file to the `customconfig` folder.
+
+In order to install the add-on using one of the recipes detailed in that folder, run the following commands:
+
+```bash
+HYBRIS_HOME/installer$ ./install.sh -r [RECIPE_NAME] setup
+
+HYBRIS_HOME/installer$ ./install.sh -r [RECIPE_NAME] initialize
+
+HYBRIS_HOME/installer$ ./install.sh -r [RECIPE_NAME] start
+```
+
+---
+
+## Configure the global settings of the plugin
+
+<TipBox variant="info">
+
+Our SAP Commerce Cloud Connector supports multiple Checkout.com channels, where a different website is connected to each channel. So, if you have multiple websites running on SAP Commerce Cloud, you can have a different configuration for each one and keep the payment transaction separate.
+
+</TipBox>
+
+1.  In the _Secret keys_ tab, enter your public key, secret key, and private shared key.
+2.  In the _Global Settings_ tab, set the environment to _Test_, so you can start testing payments. (You will need to change this to _Production_ when you're ready to go live.)
+3.  Still in the _Global Settings_ tab, select the payment action you want.
+    *  _Authorize_ will only authorize the charge; you have to manually capture the payment yourself.
+    *  _Authorize and Capture_ means that the charge is authorized and captured (i.e., the money due from the customer's account is moved into your account) at the same time. If you're unsure, _Authorize and Capture_ is probably the right choice.
+4.  In the same tab, there are three more fields you can fill in:
+    - Review transactions at risk: If true, payment events coming from Checkout.com that have risk flag set to true will be created with transaction status _REVIEW_. Otherwise, the payment status will be _ACCEPTED_.
+    - Authorization amount validation threshold: This is used to determine whether the authorization amount reflects the value of the order. This is the allowed difference of the amounts that may exist due to the way the amounts are calculated. Increase it if you observe false positives in your integration.
+    - Billing descriptor: If set to true, the payment requests made will contain the billing descriptor name and city you have specified. If false, no billing descriptor will be sent.
+
+That's it! You're ready to start testing card payments.
+
+### Set up webhooks
+
+We will send payment events for all the webhooks configured in the Hub. There should be at least one webhook created (per environment) pointing to the webhook event receiver. Read our [webhook documentation](/reporting-and-insights/webhooks) for more information.
+
+The connector **requires** the following events to be sent:
+
+- `payment_approved`
+- `payment_pending`
+- `payment_declined`
+- `payment_expired`
+- `payment_canceled`
+- `payment_voided`
+- `payment_void_declined`
+- `payment_captured`
+- `payment_capture_declined`
+- `payment_refunded`
+- `payment_refund_declined`
+
+This is reflecting your `checkoutComPaymentEventTypes` configuration property. If the webhook in the Hub sends more events, they will be ignored by the event receiver.
+
+---
+
+## Next steps
+
+### [Extend your configuration](/integrate/e-commerce-platforms/sap-commerce-cloud/go-further-with-sap-commerce-cloud)
+
+You can extend your configuration to add more payment methods, accept 3D Secure payments, and more.

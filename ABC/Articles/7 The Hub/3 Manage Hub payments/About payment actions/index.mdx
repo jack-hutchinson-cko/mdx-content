@@ -1,0 +1,561 @@
+---
+title: About payment actions
+account: ABC
+---
+
+Find out all about the payment actions you might see in the Hub.
+
+---
+
+## Authorization
+
+The cardholder's issuing bank approved a payment and the payment amount is held on the customer’s card, but not yet transferred to your account. Authorized payments must be captured within 7 days. Otherwise, the payment will be voided automatically and the payment amount will be released back to the cardholder. 
+
+<Table>
+<TableHead headers={['Action', 'Description']} />
+<TableBody>
+
+<TableRow>
+<TableCell>
+
+`AUTH`
+
+</TableCell>
+<TableCell>
+
+The payment has been approved by the issuer and the amount is held on the customer’s card.
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+`AUTH PENDING`
+
+</TableCell>
+<TableCell>
+
+For 3DS payments, is displayed while the system waits for the customer to pass the required checks.
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+`AUTH FLAG`
+
+</TableCell>
+<TableCell>
+
+The payment triggered a risk scenario and needs to be reviewed manually at your level before capturing or voiding the payment.
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+`AUTH FAILED`
+
+</TableCell>
+<TableCell>
+
+The cardholder’s issuing bank did not approve the payment.
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+`CARD V.`
+
+</TableCell>
+<TableCell>
+
+The card verification request has been approved and the cardholder’s details have been saved to their account.
+
+<InfoBox>
+
+This action is applicable when performing a [card verification](/risk-management/card-verification).
+
+</InfoBox>
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+`CARD V. FLAG`
+
+</TableCell>
+<TableCell>
+	
+The card verification request has been approved, but the charge is set to be flagged.
+
+<InfoBox>
+
+This action is applicable when performing a [card verification](/risk-management/card-verification).
+
+</InfoBox>
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+`CARD V. FAILED`
+
+</TableCell>
+<TableCell>
+
+The card verification request could not be processed.
+
+<InfoBox>
+
+This action is applicable when performing a [card verification](/risk-management/card-verification).
+
+</InfoBox>
+
+</TableCell>
+</TableRow>
+
+</TableBody>
+</Table>
+
+<TipBox variant="info">
+
+If the original payment was processed under a 3D Secure environment, the action will include `3D` at the end.
+
+</TipBox>
+
+---
+
+## Void
+
+An authorized payment was canceled and the authorized amount has been released back to the cardholder. Please note that only authorized payments can be voided. In order to reverse a captured payment, you must issue a refund.
+
+<Table>
+<TableHead headers={['Action', 'Description']} />
+<TableBody>
+
+<TableRow>
+<TableCell>
+
+`VOID`
+
+</TableCell>
+<TableCell>
+
+The payment is voided successfully upon your request, or our system automatically voided it for not being captured within seven days of being authorized.
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+`VOID FAILED`
+
+</TableCell>
+<TableCell>
+
+The payment could not be voided.
+
+</TableCell>
+</TableRow>
+
+</TableBody>
+</Table>
+
+---
+
+## Capture
+
+The cardholder's issuing bank has processed the payment and the funds have been transferred.
+
+<Table>
+<TableHead headers={['Action', 'Description']} />
+<TableBody>
+
+<TableRow>
+<TableCell>
+
+`CAPTURE`
+
+</TableCell>
+<TableCell>
+
+The funds of a successfully authorized payment have been transferred to your account.
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+`CAPTURE FAILED`
+
+</TableCell>
+<TableCell>
+
+The funds could not be transferred to your account.
+
+<InfoBox>
+
+This status is rare and will usually be related to the issuing bank having a technical issue at their end. We encourage you to re-attempt payments with this status after a few hours.
+
+</InfoBox>
+
+</TableCell>
+</TableRow>
+
+</TableBody>
+</Table>
+
+--- 
+
+## Refund
+
+Funds were transferred from your merchant account to the cardholder's account. The refund amount can never exceed the capture amount of the payment. Please note that only captured payments can be refunded. To reverse an authorized payment, you must void it.
+
+<Table>
+<TableHead headers={['Action', 'Description']} />
+<TableBody>
+
+<TableRow>
+<TableCell>
+
+`REFUND`
+
+</TableCell>
+<TableCell>
+
+A refund was successfully issued to the customer.
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+`REFUND FAILED`
+
+</TableCell>
+<TableCell>
+
+The refund could not be issued.
+
+<InfoBox>
+
+This status is rare and will usually be related to the issuing bank having a technical issue at their end. We encourage you to re-attempt payments with this status after a few hours.
+
+</InfoBox>
+
+</TableCell>
+</TableRow>
+
+</TableBody>
+</Table>
+
+---
+
+## Chargeback
+
+The issuing bank has issued a demand to reverse the payment. Chargebacks, also known as [disputes](/risk-management/disputes), are typically due to a complaint made by the cardholder concerning the goods or services purchased.
+
+<Table>
+<TableHead headers={['Action', 'Description']} />
+<TableBody>
+
+<TableRow>
+<TableCell>
+
+`CHB Debit to Account`
+
+</TableCell>
+<TableCell>
+
+Funds have been deducted from your account.
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+`CHB Auto Representment`
+
+</TableCell>
+<TableCell>
+
+The chargeback has been automatically resolved on your behalf, and no additional intervention is needed.
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+`CHB Representment`
+
+</TableCell>
+<TableCell>
+
+The chargeback has been represented to the issuer on your behalf, based on the gathered evidence to demonstrate that the payment was completed accordingly.
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+`CHB Pre Arbitration`
+
+</TableCell>
+<TableCell>
+
+The issuing bank has rejected the evidence provided in the representment.
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+`CHB Issuer Reversal`
+
+</TableCell>
+<TableCell>
+
+The issuing bank has canceled a chargeback and credited your merchant account with the respective amount.
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+`CHB Evidence Under Review`
+
+</TableCell>
+<TableCell>
+
+You have provided the required evidence and we have forwarded this to the card scheme.
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+`CHB Case Lost`
+
+</TableCell>
+<TableCell>
+
+You have lost the case.
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+`CHB Case Won`
+
+</TableCell>
+<TableCell>
+
+You have won the case.
+
+</TableCell>
+</TableRow>
+
+</TableBody>
+</Table>
+
+--- 
+
+## Payouts
+
+If payouts are enabled for your account, you'll be able to see them in the Hub alongside your regular payments.
+
+<Table>
+<TableHead headers={['Action', 'Description']} />
+<TableBody>
+
+<TableRow>
+<TableCell>
+
+`PAID`
+
+</TableCell>
+<TableCell>
+
+The payout was successfully paid out to the customer.
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+`DECLINED`
+
+</TableCell>
+<TableCell>
+
+The payout was declined. Refer to the [response code](/resources/codes/response-codes) for more information.
+
+</TableCell>
+</TableRow>
+
+</TableBody>
+</Table>
+
+---
+
+## Alternative payments
+
+<Table>
+<TableHead headers={['Action', 'Description']} />
+<TableBody>
+
+<TableRow>
+<TableCell>
+
+`AUTH PENDING`
+
+</TableCell>
+<TableCell>
+
+A temporary status shown before a payment is authorized or declined.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`AUTH FAILED`
+
+</TableCell>
+<TableCell>
+
+The alternative payment provider did not approve the payment.
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+`VOID`
+
+</TableCell>
+
+<TableCell>
+
+The customer canceled the alternative payment.
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+`EXPIRY`
+
+</TableCell>
+<TableCell>
+
+The alternative payment was not successfully captured after the deferred capture period. The customer abandoned the session and did not finalize the payment.
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+`CAPTURE`	
+
+</TableCell>
+<TableCell>
+
+The alternative payment provider has processed the payment and the funds have been transferred into your account.
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+`CAPTURE FAILED`
+
+</TableCell>
+
+<TableCell>
+
+The funds could not be transferred into your account.
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+`DEFERRED`
+
+</TableCell>
+<TableCell>
+
+Some alternative payment methods (such as Sofort) may defer the capture of a payment several days.
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+`DEFERRED FAILED`
+
+</TableCell>
+<TableCell>
+
+A deferred payment could not be captured.
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+`REFUND`
+
+</TableCell>
+<TableCell>
+
+A refund was successfully issued to the customer and funds were transferred from your merchant account back to the customer.
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+`REFUND FAILED`
+
+</TableCell>
+<TableCell>
+
+The refund could not be processed.
+
+</TableCell>
+</TableRow>
+
+</TableBody>
+</Table>

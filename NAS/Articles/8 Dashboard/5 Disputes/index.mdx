@@ -1,0 +1,287 @@
+--- 
+title: Manage disputes
+account: NAS
+---
+
+Disputes (also known as chargebacks) are a challenging but inevitable part of e-commerce. They arise when a customer queries a transaction with their card issuer. The issuer creates a formal dispute which immediately reverses the payment, debiting your account for both the payment amount and a dispute fee.
+
+The Dashboard allows you to monitor and respond to disputes quickly and easily.
+
+<TipBox>
+
+This page explains how to manage disputes in the Dashboard, but you can also use our [Disputes API](/risk-management/disputes/disputes-api).
+
+</TipBox>
+
+## About the dispute lifecycle and dispute statuses
+
+<img src="/NAS/Dashboard/Manage_disputes/disputes_flow.png"  alt="Disputes flow" />
+
+<Table>
+<TableHead headers={['Step','Status','Description']}/>
+<TableBody>
+<TableRow>
+<TableCell>
+
+1
+
+</TableCell>
+<TableCell>
+
+Payment disputed
+
+</TableCell>
+<TableCell>
+
+Your customer disputes the payment. This status does not show in the Dashboard but is the starting point of all disputes. The only financial repercussion at this stage is a fee being applied.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+2a
+
+</TableCell>
+<TableCell>
+
+Evidence required
+
+</TableCell>
+<TableCell>
+
+An action on your side is required (you need to respond to the dispute). At this stage, your account gets debited the disputed amount.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+2b
+
+</TableCell>
+<TableCell>
+
+Resolved
+
+</TableCell>
+<TableCell>
+
+We automatically resolve the dispute because it had already been refunded previously. There are no further financial implications.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+3a
+
+</TableCell>
+<TableCell>
+
+Evidence under review
+
+</TableCell>
+<TableCell>
+
+You have submitted evidence to defend against the dispute. Your evidence is now under review by our Disputes team. Once reviewed, the team will send it to the card scheme for review. No further action is required on your side.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+3b
+
+</TableCell>
+<TableCell>
+
+Expired
+
+</TableCell>
+<TableCell>
+
+The time limit to take action is met. There is no further implication and you can’t respond to the dispute anymore.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+3c
+
+</TableCell>
+<TableCell>
+
+Accepted
+
+</TableCell>
+<TableCell>
+
+You have accepted the dispute. There is no further implication or action required.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+3d
+
+</TableCell>
+<TableCell>
+
+Canceled
+
+</TableCell>
+<TableCell>
+
+The dispute is canceled by the issuing bank and your account is credited back the amount of the dispute. You don’t need to take any further action.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+4a
+
+</TableCell>
+<TableCell>
+
+Lost
+
+</TableCell>
+<TableCell>
+
+The issuing bank has rejected your evidence and you have lost the dispute. There are no further financial implications.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+4b
+
+</TableCell>
+<TableCell>
+
+Won
+
+</TableCell>
+<TableCell>
+
+The issuing bank has accepted your evidence and you have won the dispute. Your account has been credited back of the amount of the dispute.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+## View disputes
+
+---
+
+### In the Disputes screen
+
+The Disputes screen contains two tabs:
+
+- **Unanswered**: this tab contains all disputed payments for which an action is required.
+- **All disputes**: this tab contains all payments that have been disputed, including unanswered ones.
+
+<img src="/NAS/Dashboard/Manage_disputes/disputes_screen.png"  alt="Disputes screen" />
+
+Each tab shows the following information:
+
+- Disputed amount
+- Currency (as a 3-letter ISO code)
+- Status ([see above](#About_the_dispute_lifecycle_and_dispute_statuses) for more information)
+- Reason for the dispute
+- Payment ID
+- Reference
+- Initiated on
+- Expiry date (in the _Unanswered_ tab)
+- Date last updated (in the _All disputes_ tab)
+
+<TipBox>
+
+In the All disputes tab, you can:
+
+- filter by date range based on the Updated on date
+- filter by **Payment ID**, **Dispute ID**, **Sub-entity** **ID**, **ARN**, **Reference** (exact match)
+
+</TipBox>
+
+---
+
+### In the _Payments_ screen
+
+In the _Status_ column, disputed payments have a `DISPUTED` label as well as the dispute's current status (for example, `DISPUTED EVIDENCE REQUIRED`).
+
+<img src="/NAS/Dashboard/Manage_disputes/disputes_payments_screen.png"  alt="Disputes payments screen" />
+
+If a customer has made a retrieval request (meaning their bank has asked you for details of the transaction to validate it), the relevant payment will have a `RETRIEVAL REQUESTED` label.
+
+<img src="/NAS/Dashboard/Manage_disputes/retrieval_request.png"  alt="Retrieval request" />
+
+If you have a payment with a retrieval request against it, you can contact our Disputes team at <ExternalLink href="mailto:disputes@checkout.com">disputes@checkout.com</ExternalLink>. to respond to it, or you can refund the payment directly from your Dashboard to avoid a chargeback.
+
+<TipBox>
+
+You can search for a dispute using its payment ID, dispute ID, or any other filter relevant in the page, such as a reference or the customer's email.
+
+</TipBox>
+
+## View payment details
+
+Select any disputed payment in the _Disputes_ or _Payments_ screens to bring up the payment details. You can view the dispute details, as well as the latest status of the payment.
+
+<img src="/NAS/Dashboard/Manage_disputes/dispute_payment_details.png"  alt="Dispute payment details" />
+
+---
+
+### Respond to a dispute
+
+If a dispute has the status `EVIDENCE REQUIRED`, you can respond by either accepting it or challenging it and submitting evidence. You can see how long you've got left to respond to any dispute by looking under the *Expires in* column in the Unanswered tab.
+
+<img src="/NAS/Dashboard/Manage_disputes/unanswered_tab.png"  alt="Unanswered tab" />
+
+---
+
+### Accept or challenge a dispute
+
+In the _Disputes screen_, select a disputed payment to see the payment details. 
+
+- **Accept**: If you think the dispute is legitimate, because, for example, you know the transaction is fraudulent, select _Accept dispute_. You don’t have to do anything else; the funds will already have been debited from your account.
+- **Challenge**: If you want to defend against the dispute, because you have evidence that the transaction is valid, select _Submit evidence_. This will take you to the [disputes form where you can upload your evidence](/dashboard/disputes#Submit_evidence).
+
+<img src="/NAS/Dashboard/Manage_disputes/dispute_details.png"  />
+
+<TipBox variant='info'>
+
+If a payment has multiple disputes raised against it, you will be asked to select the ID of the particular dispute you want to answer. Make sure you are submitting evidence to the right dispute.
+
+</TipBox>
+
+---
+
+### Submit evidence
+
+The evidence you submit should be relevant to the reason for the dispute. To help, we outline the recommended evidence for the particular dispute you’re responding to. Alternatively, select _General_ to see all the evidence types you can upload.
+
+<img src="/NAS/Dashboard/Manage_disputes/submit_evidence_form.png"  alt="Submit evidence form" />
+
+To submit your evidence:
+
+1. Upload your files (JPEG, PDF or PNG).
+2. For each file you upload, select what type of evidence it is.
+3. If at any point you want to save your progress and come back to the form later, select _Save and continue later_. You, or another user, can then pick up where you left off.The dispute status will remain `EVIDENCE REQUIRED`.
+4. If you’ve uploaded all the evidence you want to, select _Submit evidence_.
+
+<TipBox variant='info'>
+
+You can only upload **one file per type of evidence**, but you don’t have to submit every evidence type to complete the form.
+
+</TipBox>
+
+Once you’ve submitted your evidence, the form will be sent for review and the dispute’s status will change to `EVIDENCE UNDER REVIEW`. You can track its status in the All disputes tab of the _Disputes_ page.
+
+<img src="/NAS/Dashboard/Manage_disputes/all_disputes_tab.png"  alt="All disputes tab"/>

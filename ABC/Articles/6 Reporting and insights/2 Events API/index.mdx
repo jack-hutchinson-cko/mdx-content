@@ -1,0 +1,431 @@
+---
+title: Events API
+account: ABC
+description: Get a snapshot of your transaction history with events.
+---
+
+Request and view events that have taken place within a specific timeframe.
+
+With the Events API, you can:
+
+* [Get an event based on an ID](#Get_an_event)
+* [Get events based on query parameters](#Get_events)
+* [Get a summary of notifications for an event](#Get_an_event's_notification_summary)
+* [Retry notifications for all subscribed active webhooks](#Retry_notifications_for_all_active_webhooks)
+* [Retry a single event for a specified webhook](#Retry_a_single_event)
+
+To view a list of events you can subscribe to, please see our [event types page](/reporting-and-insights/events-api/event-types).
+
+<TipBox variant="info" title="Event retention period">
+
+You can view events created within the last 30 days via the API.
+
+</TipBox>
+
+---
+
+## Get an event
+
+Get an event using the event's ID.
+
+Use the details below to set up your request.
+
+### Endpoints
+
+You can find the full list, as well as complete request and response examples, in our <ExternalLink href="https://api-reference.checkout.com" >API reference</ExternalLink>.
+
+<tabs>
+<tab title="Live">
+<LineCodeWrapper type="get">
+
+`https://api.checkout.com/events/{eventId}`
+
+</LineCodeWrapper>
+</tab>
+<tab title="Sandbox">
+<LineCodeWrapper type="get">
+
+`https://api.sandbox.checkout.com/events/{eventId}`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+### Response example
+
+Below is an example of a successful response.
+
+<TipBox variant="info" >
+
+For a full description of what each section means, see <ExternalLink href="https://api-reference.checkout.com/#operation/retrieveEvent" >our API reference</ExternalLink>.
+
+</TipBox>
+
+```json
+{
+  "id": "evt_az5sblvku4ge3dwpztvyizgcau",
+  "type": "payment_approved",
+  "version": "2.0",
+  "created_on": "2018-10-29T16:59:20Z",
+  "data": {
+    "id": "pay_y3oqhf46pyzuxjbcn2giaqnb44",
+    "action_id": "act_y3oqhf46pyzuxjbcn2giaqnb44",
+    "amount": 6540,
+    "currency": "GBP",
+    "approved": true,
+    "status": "Authorized",
+    "auth_code": "643381",
+    "response_code": "10000",
+    "response_summary": "Approved",
+    "3ds": {
+      "downgraded": true,
+      "enrolled": "N"
+    },
+    "flagged": true,
+    "source": {
+      "type": "card",
+      "id": "src_wmlfc3zyhqzehihu7giusaaawu",
+      "billing_address": {
+        "address_line1": "75 York Road",
+        "address_line2": "Apartment 3",
+        "city": "Oxford",
+        "state": "Oxfordshire",
+        "zip": "OX1 5DJ",
+        "country": "GB"
+      },
+      "phone": {
+        "country_code": "+44",
+        "number": "7891 23456"
+      }
+    },
+    "customer": {
+      "id": "cus_y3oqhf46pyzuxjbcn2giaqnb44",
+      "email": "jack.brown@ckomail.com",
+      "name": "Jack Brown"
+    },
+    "processed_on": "2018-10-29T16:59:20Z",
+    "reference": "ORD-5023-4E89",
+    "destinations": [
+      {
+        "id": "vendor-123456",
+        "amount": 10.5
+      }
+    ],
+    "metadata": {
+      "coupon_code": "LDN2018",
+      "partner_id": 123989
+    }
+  },
+  "notifications": [
+    {
+      "id": "ntf_az5sblvku4ge3dwpztvyizgcau",
+      "url": "https://example.com/webhooks",
+      "success": false,
+      "_links": {
+        "self": {
+          "href": "https://api.checkout.com/events/evt_az5sblvku4ge3dwpztvyizgcau/notifications/ntf_az5sblvku4ge3dwpztvyizgcau"
+        }
+      }
+    }
+  ],
+  "_links": {
+    "self": {
+      "href": "https://api.checkout.com/events/evt_az5sblvku4ge3dwpztvyizgcau"
+    },
+    "webhooks-retry": {
+      "href": "https://api.checkout.com/events/evt_az5sblvku4ge3dwpztvyizgcau/webhooks/retry"
+    }
+  }
+}
+```
+
+Other possible responses:
+
+- 404 - The event was not found
+- 500 - Unexpected server error
+
+---
+
+## Get events
+
+Retrieve events based on your query parameters. You can pass multiple query parameters, using `&` to separate each one.
+
+Use the details below to set up your request.
+
+### Endpoints
+
+You can find the full list, as well as complete request and response examples, in our <ExternalLink href="https://api-reference.checkout.com/">API reference</ExternalLink>
+
+<tabs>
+<tab title="Live">
+<LineCodeWrapper type="get">
+
+`https://api.checkout.com/events`
+
+</LineCodeWrapper>
+</tab>
+<tab title="Sandbox">
+<LineCodeWrapper type="get">
+
+`https://api.sandbox.checkout.com/events`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+### Request examples
+
+Below are some example requests using different query parameters.
+
+<tabs>
+<tab title="payment_id">
+
+```bash
+curl --location --request GET 'https://api.checkout.com/events?payment_id=pay_ok2ynq6ubn3ufmo6jsdfmdvy5q' \
+--header 'Authorization: sk_cde31df9-6d52-4dda-957d-065b43819fe0'
+```
+
+</tab>
+<tab title="charge_id">
+
+```bash
+curl --location --request GET 'https://api.checkout.com/events?charge_id=charge_FC1919EE547L23CC6BE1' \
+--header 'Authorization: sk_cde31df9-6d52-4dda-957d-065b43819fe0'
+```
+</tab>
+<tab title="track_id">
+
+```bash
+curl --location --request GET 'https://api.checkout.com/events?track_id=TRK12345' \
+--header 'Authorization: sk_cde31df9-6d52-4dda-957d-065b43819fe0'
+```
+
+</tab>
+<tab title="from">
+
+```bash
+curl --location --request GET 'https://api.checkout.com/events?from=2020-11-07T04:00:00Z' \
+--header 'Authorization: sk_cde31df9-6d52-4dda-957d-065b43819fe0'
+```
+
+</tab>
+</tabs>
+
+### Response examples
+
+Below are some response examples.
+
+<TipBox variant="info">
+
+For a full description of each response, see our <ExternalLink href="https://api-reference.checkout.com/#operation/retrieveEvent">API Reference</ExternalLink>.
+
+</TipBox>
+
+<tabs>
+<tab title="200 - payment_id">
+
+```json
+{
+  "total_count": 1,
+  "limit": 5,
+  "skip": 0,
+  "from": "2021-06-11T09:41:21Z",
+  "to": "2021-06-25T09:40:12Z",
+  "data": [
+    {
+      "id": "evt_3nup2pts3emebenhtw6ky4frim",
+      "type": "payment_approved",
+      "created_on": "2021-06-25T09:40:12Z",
+      "_links": {
+        "self": {
+          "href": "https://qaapi.ckotech.co/broadcast/events/evt_3nup2pts3emebenhtw6ky4frim"
+        },
+        "webhooks-retry": {
+          "href": "https://qaapi.ckotech.co/broadcast/events/evt_3nup2pts3emebenhtw6ky4frim/webhooks/retry"
+        }
+      }
+    }
+  ]
+}
+```
+
+</tab>
+<tab title="200 - charge_id">
+
+```json
+{
+  "total_count": 1,
+  "limit": 10,
+  "skip": 0,
+  "from": "2021-06-11T10:36:32Z",
+  "to": "2021-06-25T10:36:17Z",
+  "data": [
+    {
+      "id": "evt_a4aqkopnq65udagtnlpqsqr7uy",
+      "type": "charge.succeeded",
+      "created_on": "2021-06-25T10:36:17Z",
+      "_links": {
+        "self": {
+          "href": "https://qaapi.ckotech.co/broadcast/events/evt_a4aqkopnq65udagtnlpqsqr7uy"
+        },
+        "webhooks-retry": {
+          "href": "https://qaapi.ckotech.co/broadcast/events/evt_a4aqkopnq65udagtnlpqsqr7uy/webhooks/retry"
+        }
+      }
+    }
+  ]
+}
+```
+
+</tab>
+<tab title="422 - wrong payament_id">
+
+```json
+"error_codes": [
+  "payment_id_invalid"
+]
+```
+
+</tab>
+<tab title="422 - wrong charge_id">
+
+```json
+"error_codes": [
+  "charge_id_invalid"
+]
+```
+
+</tab>
+</tabs>
+
+
+Other possible responses:
+
+* 204 - No Content
+* 401 - Unauthorized
+
+## Get an event's notification summary
+
+View a summary of the notifications for an event.
+
+Use the details below to set up your request.
+
+---
+
+### Endpoints
+
+You can find the full list, as well as complete request and response examples, in our <ExternalLink href="https://api-reference.checkout.com" >API reference</ExternalLink>.
+
+<tabs>
+<tab title="Live">
+<LineCodeWrapper type="get">
+
+`https://api.checkout.com/events/{eventId}/notifications/{notificationId}`
+
+</LineCodeWrapper>
+</tab>
+<tab title="Sandbox">
+<LineCodeWrapper type="get">
+
+`https://api.sandbox.checkout.com/events/{eventId}/notifications/{notificationId}`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+### Response example
+
+Below is an example successful response.
+
+```json
+{
+  "id": "ntf_az5sblvku4ge3dwpztvyizgcau",
+  "url": "https://example.com/webhooks",
+  "success": false,
+  "content_type": "json",
+  "attempts": [
+    {
+      "status_code": 400,
+      "response_body": "Bad Request",
+      "retry_mode": "Automatic",
+      "timestamp": "2018-10-29T16:59:20Z"
+    }
+  ],
+  "_links": {
+    "self": {
+      "href": "https://api.checkout.com/events/evt_az5sblvku4ge3dwpztvyizgcau/notifications/ntf_az5sblvku4ge3dwpztvyizgcau"
+    },
+    "retry": {
+      "href": "https://api.checkout.com/events/evt_az5sblvku4ge3dwpztvyizgcau/webhooks/wh_5nuzkt62ddxuho5rwsvt6pyesi/retry"
+    }
+  }
+}
+```
+
+Other possible response: 404 - The event or notification was not found.
+
+---
+
+## Retry notifications for all active webhooks
+
+Use this API request to retry notifications for all subscribed active webhooks.
+
+Use the details below to set up your request.
+
+### Endpoints
+
+You can find the full list, as well as complete request and response examples, in our <ExternalLink href="https://api-reference.checkout.com" >API reference</ExternalLink>.
+
+<tabs>
+<tab title="Live">
+<LineCodeWrapper type="post">
+
+`https://api.checkout.com/events/{eventId}/webhooks/retry`
+
+</LineCodeWrapper>
+</tab>
+<tab title="Sandbox">
+<LineCodeWrapper type="post">
+
+`https://api.sandbox.checkout.com/events/{eventId}/webhooks/retry`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+### Response
+
+Below is a list of example responses:
+
+- 202 - Accepted. Notifications were queued
+- 204 - No content. No active webhooks are subscribed to this event
+- 404 - The event does not exist
+
+---
+
+## Retry a single event
+
+Retry a single event for a specific webhook.
+
+Use the details below to set up your request.
+
+### Endpoints
+
+You can find the full list, as well as complete request and response examples, in our <ExternalLink href="https://api-reference.checkout.com" >API reference</ExternalLink>.
+
+<tabs>
+<tab title="Live">
+<LineCodeWrapper type="post">
+
+`https://api.checkout.com/events/{eventId}/webhooks/{webhookId}/retry`
+
+</LineCodeWrapper>
+</tab>
+<tab title="Sandbox">
+<LineCodeWrapper type="post">
+
+`https://api.sandbox.checkout.com/events/{eventId}/webhooks/{webhookId}/retry`
+
+</LineCodeWrapper>
+</tab>
+</tabs>

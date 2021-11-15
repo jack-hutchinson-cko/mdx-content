@@ -1,0 +1,2058 @@
+---
+title: Non-hosted sessions
+account: NAS
+---
+
+For full control over your 3D Secure authentication flow, use non-hosted sessions. These will be initiated by your backend.
+
+<TipBox variant="info">
+
+Non-hosted sessions are suitable for authentications initiated for both **browsers and mobile apps**.
+
+</TipBox>
+
+<List>
+<ListNumberItem number={1}>
+
+[Request a session](/risk-management/sessions/non-hosted-sessions#Non-hostedsessions-requestsession)
+
+</ListNumberItem>
+<ListNumberItem number={2}>
+
+[Get session details](/risk-management/sessions/non-hosted-sessions#Non-hostedsessions-getsessiondetails)
+
+</ListNumberItem>
+<ListNumberItem number={3}>
+
+[Issuer fingerprint (browser only)](/risk-management/sessions/non-hosted-sessions#Non-hostedsessions-issuerfingerprint)
+
+</ListNumberItem>
+<ListNumberItem number={4}>
+
+[Collect channel data](/risk-management/sessions/non-hosted-sessions#Non-hostedsessions-collectchanneldata)
+
+</ListNumberItem>
+<ListNumberItem number={5}>
+
+Challenge (browser only)
+
+</ListNumberItem>
+<ul>
+<ListNumberItem number={1}>
+
+[3DS2 challenge](/risk-management/sessions/non-hosted-sessions#Non-hostedsessions-3ds2)
+
+</ListNumberItem>
+<ListNumberItem number={2}>
+
+[3DS1 challenge (in case of downgrade)](/risk-management/sessions/non-hosted-sessions#Non-hostedsessions-3ds1)
+
+</ListNumberItem>
+</ul>
+<ListNumberItem number={6}>
+
+[Complete session (optional)](/risk-management/sessions/non-hosted-sessions#DisputesAPI-completesession)
+
+</ListNumberItem>
+</List>
+
+---
+
+## Authenticating your requests
+
+### Access tokens
+
+All Sessions API endpoints will accept a valid JSON web token (JWT) bearer token. These short-lived tokens can be generated using your client id and secret, which you will have received when you created your account.
+
+Tokens must contain the scope `sessions:browser` for browser channel flows or `sessions:app` for native mobile app channel flows. If you are unsure of the channel you're going to use when you request the session, you can include both scopes.
+
+### Session secret
+
+All endpoints following the request to create a new session will also accept the session secret; creating a session will return a `session_secret` property, which can be used in the Authorization header of subsequent requests for that session.
+
+The `session_secret` is short-lived randomly generated string that can only be used for actions taken on a specific session, reducing the chance of it being leaked. This way the frontend does not have to have access to the client secrets required to create JWT tokens (which, if exposed to the frontend, can risk being leaked to malicious third parties).
+
+<TipBox variant="info">
+
+Note that any endpoint accessible with `session_secret` can also be accessed with a valid JWT token. This can be useful if you intend to access the endpoints from your backend, for instance, because you proxy the requests instead of making them directly from the frontend.
+
+</TipBox>
+
+---
+
+## Step 1: Request a session
+
+This is the first step to starting a 3DS authentication flow with Sessions. Authenticate the call with an access token and perform it from your backend.
+
+### Endpoints
+
+For the full API specification, see the <ExternalLink href="https://api-reference.checkout.com/preview/crusoe/" >API reference</ExternalLink>.
+
+<tabs>
+<tab title="Live">
+<LineCodeWrapper type="post">
+
+`https://api.checkout.com/sessions`
+
+</LineCodeWrapper>
+</tab>
+<tab title="Sandbox">
+<LineCodeWrapper type="post">
+
+`https://api.sandbox.checkout.com/sessions`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+<TipBox variant="success" title="Additional parameters">
+
+To increase the likelihood of frictionless authentication, [add additional data fields](/risk-management/sessions/non-hosted-sessions#Non-hostedsessions-additionalauthenticationdata) when requesting a session.
+
+</TipBox>
+
+<TipBox variant="info" title="Channel data">
+
+If you create a session with channel data, there is no need to update the channel data ([step 4 in this guide](/risk-management/sessions/non-hosted-sessions#Non-hostedsessions-collectchanneldata)) later on.
+
+</TipBox>
+
+### Request example
+
+```json
+{
+  "source": {
+    "type": "card",
+    "number": "4485040371536584",
+    "expiry_month": 1,
+    "expiry_year": 2030
+  },
+  "amount": 100,
+  "currency": "USD",
+  "authentication_type": "regular",
+  "authentication_category": "payment",
+  "challenge_indicator": "no_preference",
+  "reference": "ORD-5023-4E89",
+  "transaction_type": "goods_service",
+  "shipping_address": {
+    "address_line1": "Checkout.com",
+    "address_line2": "90 Tottenham Court Road",
+    "city": "London",
+    "state": "London",
+    "zip": "W1T 4TJ",
+    "country": "GB"
+  },
+  "completion": {
+    "type": "non_hosted",
+    "callback_url": "https://example.com/sessions/callback"
+  }
+}
+```
+### Response example
+
+You should receive a `202 - Accepted` response, with a `status` of `pending`. It will also contain:
+
+- The session `id` (prefixed by `sid_`), which you'll use to get the session details in the next step.
+
+- A `_links.fingerprint` URL, where the cardholder should be redirected to load the 3DS method.
+
+- A `next_actions` property, which will tell you what action(s) to take next.
+
+```json
+{
+  "session_secret": "sek_Dal7UyiH8rIFXA4PfgiIk2jUyQkVDeEWgVBEL4TsRTE=",
+  "id": "sid_llraltf4jlwu5dxdtprcv7ba5i",
+  "transaction_id": "cc05e25a-4abc-4eed-8ee3-9be22afc20ea",
+  "amount": 6540,
+  "currency": "USD",
+  "completed": false,
+  "authentication_type": "regular",
+  "authentication_category": "payment",
+  "status": "pending",
+  "approved": false,
+  "protocol_version": "2.1.0",
+  "reference": "ORD-5023-4E89",
+  "next_actions": [
+    "collect_channel_data",
+    "issuer_fingerprint"
+  ],
+  "transaction_type": "goods_service",
+  "_links": {
+    "self": {
+      "href": "https://3ds2.ckotech.co/sessions/sid_llraltf4jlwu5dxdtprcv7ba5i"
+    },
+    "issuer_fingerprint": {
+      "href": "http://3ds2.cko.lon/3ds2simulator/acs/3ds-method"
+    }
+  }
+}
+```
+---
+
+## Step 2: Get session details
+
+Next, you need to gather the device data (meaning the details of the browser or mobile app that initiated the session) in order to make an authentication request. To do so, get the current session details with the following request.
+
+<TipBox variant="info">
+
+You can skip this step if your backend forwards the response of requesting a new session to your frontend.
+
+</TipBox>
+
+### Endpoints
+
+For the full API specification, see the <ExternalLink href="https://api-reference.checkout.com/preview/crusoe/" >API reference</ExternalLink>.
+
+<tabs>
+<tab title="Live">
+<LineCodeWrapper type="get">
+
+`https://api.checkout.com/sessions/{session_id}`
+
+</LineCodeWrapper>
+</tab>
+<tab title="Sandbox">
+<LineCodeWrapper type="get">
+
+`https://api.sandbox.checkout.com/sessions/{session_id}`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+### Response
+
+You will get a response with the property `next_actions`, which will tell you what you need to do next.
+
+<Table>
+<TableHead headers={['Field name', 'Description']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`id`
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+The unique identifier of the session.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`next_actions`
+
+<TypeTag type="array" />
+
+</TableCell>
+<TableCell>
+
+Specifies what action to take to complete the session. Will be one of: `collect_channel_data`, `issuer_fingerprint` (browser-initiated only), `challenge_cardholder`, or `complete`.
+
+<InfoBox>
+
+[See below for all possible actions and their meanings](/risk-management/sessions/non-hosted-sessions#Non-hostedsessions-actions).
+
+</InfoBox>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`status`
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+The status of the session. Should be `pending`.
+
+<InfoBox>
+
+[See below for all possible statuses and their meanings](/risk-management/sessions/non-hosted-sessions#Non-hostedsessions-statuses).
+
+</InfoBox>
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+---
+
+## Step 3: Issuer fingerprint (browser only)
+
+If one of the next actions after creating the session was `issuer_fingerprint`, this step must be completed before proceeding with the session.
+
+This involves the customer's browser contacting the Access Control Server directly so that the latter can calculate a fingerprint of it.
+
+### Create payload
+
+To do this, you first need to construct the following payload:
+
+```json
+{
+  "threeDSServerTransID": //the transaction_id property of the session,
+  "threeDSMethodNotificationURL": //the URL that will receive the 3DS method notification message
+}
+```
+
+This payload needs to be base64 encoded and sent to the `three_ds_method_url` property of the `_links` object of the session using a POST request and putting the base64 encoded data in a form field called `threeDSMethodData`.
+
+### Redirect
+
+This will trigger a POST redirect to the `threeDSMethodNotificationURL` with a form parameter named `threeDSMethodData`. This will be a base64 encoded payload that, when decoded, will look like the following:
+
+```json
+{
+  "threeDSServerTransID": //the transaction_id property of the session
+}
+```
+
+If you do not wish to handle the notification manually you can use our interceptor application to do it for you. To do so, set the `threeDSMethodNotificationURL` with the applicable endpoint:
+
+<tabs>
+<tab title="Live">
+<LineCodeWrapper type="post">
+
+`https://3ds2.checkout.com/interceptor/3ds-method-notification`
+
+</LineCodeWrapper>
+</tab>
+<tab title="Sandbox">
+<LineCodeWrapper type="post">
+
+`https://3ds2-sandbox.ckotech.co/interceptor/3ds-method-notification`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+### Notification of completion
+
+After you POST the `threeDSMethodData`, you can be notified about the completion by listening for a browser event as follows:
+
+```json
+window.addEventListener("message", messageCallback, false);
+```
+
+Where `messageCallback` is a function with the following signature:
+
+```json
+function messageCallback(event){
+  console.log(event.data)
+}
+```
+
+And `event.data` will contain the following object:
+
+```json
+{
+  “threeDSServerTransID”: //the transaction_id property of the session
+}
+```
+
+### Fingerprint completed
+
+Once you've received the message, the fingerprint has completed successfully and you can set the `three_ds_method_completion` property to `Y`.
+
+If you don't receive the message within 10 seconds of initiating the flow, you can set this property to N. If there is no 3DS method URL available, set it to `U`. You submit that property as detailed <ExternalLink href="https://api-reference.checkout.com/preview/crusoe/#tag/Sessions/paths/~1sessions~1%7Bid%7D~1issuer-fingerprint/put" >here</ExternalLink>.
+
+<TipBox variant="info">
+
+The issuer fingerprint part of the flow can be combined with collecting the channel data (see below). Specifically, if you have completed the fingerprint with the ACS, you can add the `three_ds_method_completion` status as detailed above to the payload of collect channel data which will perform both actions at once.
+
+</TipBox>
+
+---
+
+## Step 4: Collect channel data
+
+Once you've completed the relevant actions indicated by the `next_actions` property, you need to update the session with the collected device data to make the authentication request.
+
+<TipBox variant="note">
+
+If you created the session with channel data, there is no need to complete this step. This step will be handled by our mobile SDKs for mobile app flows.
+
+</TipBox>
+
+### Endpoints
+
+For the full API specification, see the <ExternalLink href="https://api-reference.checkout.com/preview/crusoe/" >API reference</ExternalLink>.
+
+
+<tabs>
+<tab title="Live">
+<LineCodeWrapper type="put">
+
+`https://api.checkout.com/sessions/{session_id}/collect-data`
+
+</LineCodeWrapper>
+</tab>
+<tab title="Sandbox">
+<LineCodeWrapper type="put">
+
+`https://api.sandbox.checkout.com/sessions/{session_id}/collect-data`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+### Body parameters
+
+<tabs>
+<tab title="Browser authentication">
+
+<Table>
+<TableHead headers={['Field name', 'Description']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`channel`
+
+<StatusTag type="required" />
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+Indicates the interface (either `browser` or `app`) being used to initiate the transaction. Set this to `browser`.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`accept_header`
+
+<StatusTag type="required" />
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+Exact content of the HTTP accept headers as sent to the 3DS Requestor from the cardholder’s browser.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`java_enabled`
+
+<StatusTag type="required" />
+
+<TypeTag type="boolean" />
+
+</TableCell>
+<TableCell>
+
+Boolean that represents the ability of the cardholder browser to execute Java. The value is returned from the `navigator.javaEnabled` property.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`language`
+
+<StatusTag type="required" />
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+Value representing the browser language as defined in IETF BCP47. Returned from the `navigator.language` property.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`color_depth`
+
+<StatusTag type="required" />
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+Value representing the bit depth of the colour palette for displaying images, in bits per pixel. Obtained from the cardholder's browser using the `screen.colorDepth` property.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`screen_height`
+
+<StatusTag type="required" />
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+Total height of the cardholder’s screen in pixels. Value is returned from the `screen.height` property.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`screen_width`
+
+<StatusTag type="required" />
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+Total width of the cardholder’s screen in pixels. Value is returned from the `screen.width` property.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`timezone`
+
+<StatusTag type="required" />
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+Time difference between UTC time and the local time of the cardholder's browser, in minutes.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`user_agent`
+
+<StatusTag type="required" />
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+Exact content of the HTTP user-agent header.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`ip_address`
+
+<StatusTag type="required" />
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+IP address of the browser as returned by the HTTP headers to the 3DS Requestor.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`three_ds_method_completion`
+
+<StatusTag type="optional" />
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+Indicates whether the 3DS Method successfully completed.
+
+- `Y`: successfully completed
+- `N`: did not successfully complete
+- `U`: Unavailable (3DS Method URL was not present in the preparation response message data for the card range associated with the cardholder's account number).
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+</tab>
+<tab title="App authentication">
+
+<Table>
+<TableHead headers={['Field name', 'Description']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`channel`
+
+<StatusTag type="required" />
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+Indicates the interface (either `browser` or `app`) being used to initiate the transaction. Set this to `app`.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`sdk_app_id`
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+A unique ID created upon all installations and updates of the 3DS Requestor App on a consumer device. This will be newly generated and stored by the SDK for each installation or update.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`sdk_max_timeout`
+
+<StatusTag type="required" />
+
+<TypeTag type="integer" />
+
+</TableCell>
+<TableCell>
+
+Indicates the maximum amount of time (in minutes) for all exchanges.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`sdk_ephem_pub_key`
+
+<StatusTag type="required" />
+
+<TypeTag type="object" />
+
+</TableCell>
+<TableCell>
+
+Public key component of the ephemeral key pair generated by the SDK and used to establish session keys between the SDK and access control server. In the authentication request, this data element is present as its own object. In the authentication response, this data element is contained within the ACS Signed Content JWS object.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`sdk_encrypted_data`
+
+<StatusTag type="required" />
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+Contains data encrypted by the SDK for the directory server to decrypt.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`sdk_transaction_id`
+
+<StatusTag type="required" />
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+Unique ID assigned by the SDK to identify a single transaction.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`sdk_interface_type`
+
+<StatusTag type="required" />
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+Lists all the SDK interface types that the cardholder's device supports for displaying specific challenge user interfaces within the SDK.
+
+<InfoBox>
+
+Values: native, html, both.
+
+</InfoBox>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`sdk_ui_elements`
+
+<StatusTag type="required" />
+
+<TypeTag type="array" />
+
+</TableCell>
+<TableCell>
+
+Lists all the elements that the cardholder's device supports for displaying the challenge user interface within the SDK.
+
+<InfoBox>
+
+Values: text, single_select, multi_select, oob, html_other.
+
+</InfoBox>
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+</tab>
+</tabs>
+
+### The response
+
+Once the update is received, an authentication request will be sent, returning an authentication response from the issuer with the outcome of the authentication: approved, attempted, unavailable, declined, rejected, or challenged.
+
+This outcome sets the `next_actions` property in the update response, letting you know what to do next.
+
+<Table>
+<TableHead headers={['Field name', 'Description']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`id`
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+The unique identifier of the session.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`next_actions`
+
+<TypeTag type="array" />
+
+</TableCell>
+<TableCell>
+
+Specifies what action to take to complete the session.
+
+- `challenge_cardholder`: the issuer is challenging the authentication and the cardholder will need to submit additional credentials.
+
+- `complete`: no further actions need to be taken. You can complete the session.
+
+<InfoBox>
+
+[See below for all possible actions and their meanings.](/risk-management/sessions/non-hosted-sessions#Non-hostedsessions-actions).
+
+</InfoBox>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`status`
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+The status of the session. Should be `processing`. If `expired`, the authentication was started but could not be completed.
+
+<InfoBox>
+
+[See below for all possible statuses and their meanings](/risk-management/sessions/non-hosted-sessions#Non-hostedsessions-actions).
+
+</InfoBox>
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+---
+
+## Step 5 a: 3DS2 (browser only)
+
+<TipBox variant="info">
+
+This is only relevant for browser-based authentications. Our mobile SDKs will handle the challenge flow for mobile app authentications.
+
+</TipBox>
+
+If, after completing the issuer fingerprint and channel data steps, the authentication is approved/declined immediately—the "frictionless" flow—you can proceed to [complete the session](/risk-management/sessions/non-hosted-sessions#Non-hostedsessions-completesession).
+
+If not, the cardholder will now be challenged to provide additional information to authenticate the payment—the "challenge" flow.
+
+<Accordion title="See an example of a session with a challenge">
+
+```json
+{
+  "id": "sid_r5supjqo6kduppai4u56apandi",
+  "transaction_id": "a647658f-f20e-4787-bc08-e53be03c0d1a",
+  "amount": 1000,
+  "currency": "GBP",
+  "completed": false,
+  "authentication_type": "regular",
+  "authentication_category": "payment",
+  "status": "challenged",
+  "protocol_version": "2.1.0",
+  "next_actions": [
+    "challenge_cardholder"
+  ],
+  "ds": {
+    "reference_number": "0c6e7212-710a-48c6-9e67-bf889569",
+    "transaction_id": "a05d24dd-b450-4d9c-9623-5df6835975f6"
+  },
+  "acs": {
+    "reference_number": "6f66a1bd-c4e0-4d6d-b233-739b5a2d",
+    "transaction_id": "d990b286-f75b-4347-9371-c66132cd7c21",
+    "operator_id": "cf99f707-d05d-44ac-bd4d-af691f82",
+    "url": "http://3ds2.ckotech.co/3ds2simulator/acs/challenge",
+    "challenge_mandated": true,
+    "authentication_type": "01"
+  },
+  "response_code": "C",
+  "response_status_reason": "01",
+  "challenged": true,
+  "transaction_type": "goods_service",
+  "_links": {
+    "self": {
+      "href": "https://3ds2-sandbox.cko.lon/sessions/sid_r5supjqo6kduppai4u56apandi"
+    }
+  }
+}
+```
+
+</Accordion>
+
+### Create challenge request
+
+The `next_actions` field will contain the `challenge_cardholder` action (see example above). To proceed, create the challenge request (CReq) message as follows:
+
+```json
+{
+  "threeDSServerTransID": //the transaction_id field of the session,
+  "acsTransID": //the acs.transaction_id field of the session,
+  "messageType":"CReq",
+  "messageVersion": //the specific 3DS version used. Should be set to the protocol_version property of the session,
+  "challengeWindowSize": //the requested challenge size. See below for possible values
+}
+```
+<Table>
+<TableHead headers={['Challenge window size value', 'Size']} />
+<TableBody>
+
+<TableRow>
+<TableCell>
+
+01
+
+</TableCell>
+<TableCell>
+
+250-400px
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+02
+
+</TableCell>
+<TableCell>
+
+390-400px
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+03
+
+</TableCell>
+<TableCell>
+
+500-600px
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+04
+
+</TableCell>
+<TableCell>
+
+600-400px
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+05
+
+</TableCell>
+<TableCell>
+
+Full screen
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+<TipBox variant="info">
+
+The style of the challenge window style is dependent on the issuer, so the above sizes may not be exact. We recommend that you render the challenge inside a frame so you have full control over the final size on your page.
+
+</TipBox>
+
+### Render the challenge
+
+Once the CReq message is constructed, it needs to be base64 encoded and posted to the `acs.url` property of the session in a form field named `creq`. If successful, the response will be the HTML needed to render the challenge.
+
+<Accordion title="See an example">
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Checkout 3D Simulator</title>
+  <link rel="stylesheet" type="text/css" href="/3ds2simulator/css/main.css" />
+</head>
+
+<body>
+  <div id="picture-less-loading-container">
+    <div id="picture-less-loading">
+	</div>
+  </div>
+  <div class="container">
+    <span class="main-title">Simulator</span>
+    <div class="wrap">
+	  <div class="logo"><img src="/3ds2simulator/images/logo.jpg" alt="Checkout.com" title="Checkout.com" /></div>
+	    <p class="title text-center">3D-Secure 2 Authentication</p>
+		<p class="disclaimer text-center">Please enter your password</p>
+		<form id="form" method="post" action="/3ds2simulator/acs/challenge-submit">
+		  <input type="hidden" name="transactionId"/>
+		  <div class="input-wrap">
+		    <i class="glyph-icon ckoicon-lock"></i>
+			<input id="password" type="password" name="password" class="form-field" placeholder="Hint: Checkout1!" />
+          </div>
+			<input type="submit" value="Continue" class="btn" id="txtButton" />
+        </form>
+	</div>
+  </div>
+<script type="text/javascript" src="/3ds2simulator/js/main.js"></script>
+</body>
+</html>
+```
+
+</Accordion>
+
+<TipBox variant="info">
+
+The challenge is dependent on the card issuer, so the actual HTML may look different, but there should be a form for the cardholder to complete the challenge.
+
+</TipBox>
+
+### Notification of outcome
+
+If you want to be notified about the completion of the challenge, you can register an event handler on your page as follows:
+
+```json
+window.addEventListener("message", messageCallback, false);
+```
+
+Where `messageCallback` is a function with the following signature:
+
+```json
+function messageCallback(event){
+  console.log(event.data)
+}
+```
+And `event.data` will contain the following object:
+
+```json
+{
+  "transStatus": "Y",
+  "threeDSServerTransID": "352455b7-b3b1-4696-a916-69e2e4274e6c"
+}
+```
+
+Where `threeDSServerTransID` is the `transaction_id` of the session and `transStatus` is one of the following values:
+
+<Table>
+<TableHead headers={['Value', 'Description']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`Y`
+
+</TableCell>
+<TableCell>
+
+Authentication/Verification Successful
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`N`
+
+</TableCell>
+<TableCell>
+
+Not Authenticated/Account Not Verified (transaction denied)
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`U`
+
+</TableCell>
+<TableCell>
+
+Authentication/Account Verification Could Not Be Performed (a technical or other problem, as indicated in ARes or RReq)
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`A`
+
+</TableCell>
+<TableCell>
+
+Attempts Processing Performed (not authenticated/verified, but a proof of attempted authentication/verification is provided)
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`R`
+
+</TableCell>
+<TableCell>
+
+Authentication/Account Verification Rejected (issuer has rejected transaction)
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+### Challenge completed
+
+Once the challenge has been completed, the session should move to a final state, allowing you to (optionally) complete the session.
+
+<TipBox variant="info">
+
+At this point the session should contain the `eci` and `cryptogram` (CAVV/AVV) properties needed for authorization, but these will only be returned when retrieving the session using a JWT token and not the `session_secret`. This is to protect them from leaking to the client side.
+
+</TipBox>
+
+<TipBox variant="success">
+
+The challenge flow should be completed within 10 minutes of initiating the flow. If this is not the case, the status of the challenge can be set to `U`.
+
+</TipBox>
+
+---
+
+## Step 5 b: 3DS1 challenge (browser only)
+
+<TipBox variant="info">
+
+This is only relevant for browser-based authentications.
+
+</TipBox>
+
+If you have 3DS protocol 1.0.2 enabled for processing, there is a chance your session will be downgraded from 3DS2 to 3DS1. This can happen because the card or the issuer was not enrolled for 3DS2, your processor is only set up for 3DS1, or there was an issue while communicating with the 3DS2 Directory Server.
+
+Depending on the specific scenario, this can happen:
+
+- Immediately after creating the session
+
+- After collecting browser data and performing the issuer fingerprint, so essentially instead of a 3DS2 challenge described above.
+
+When this downgrade happens your session will typically look like this:
+
+```json
+{
+  "id": "sid_czh2caqsczxufdjpgojfop3upy",
+  "transaction_id": "02a14f16-1612-426f-8d2f-3392573f747e",
+  "amount": 10,
+  "currency": "USD",
+  "completed": false,
+  "authentication_type": "regular",
+  "authentication_category": "payment",
+  "status": "challenged",
+  "protocol_version": "1.0.2",
+  "next_actions": [
+    "authenticate"
+  ],
+  "challenged": true,
+  "transaction_type": "goods_service",
+  "session_secret": "sek_PEX6+C6bwZiLbYauPEuN6ix4fyhKvl9l7gV9mVrNX3U=",
+  "scheme": "visa",
+  "pareq": "eJyNVNtSqzAUffcrMrw6kBuFthPiVDsdq9ZLb0cfEUJhFFoDaPXrDWnrnDNHJbzATtba7LVv7GSbP4NXIctsXQQWdpAFRBGt46xYBdZiPrK71gk%2fAv8%2fbJ5KIYYzEdVSfIvQqIkoy3AlQBYHFiIhdhPs2djDxHaJl9jdmCQ2pT3S8Wniu76wfnSl3d0OpuLlV4iG7QVxpcchDB7MVt5EyCgNi6oVqdFh9HI6vubU9%2f0OYnBvGlFzIcdDjg4PQS6lPoO7YyMPRZgLnu%2fjBcusDAGNS0AcFYm%2bM%2fISreuiku%2b8SzwGD4YRs5bPPK2qTdmHUL%2brsHLqEhKkAmguW5MNjbPNbusGWRqK2mYxHz0dp4N0%2fOcRXV5ffdzMlh89lOSjPMaTgMEGYeQqDivBiaoP6hIf4E6foj7qMajPzZokb7LKkYPBYjZUXbKzjbibRvZgR8AqrX%2fbZuWtpVTjrOrrKvqXZcQV2826EOpPaoC%2bvtuLalwqdnZuOmZRpaYCXixPp9HD%2bXzp3d2vzi7up28iuluMBqunoBk%2bDTJVlqk2R4QiLS0z6HkGW8JVyn%2fdTU2761X4%2fTaF%2f6zTT1fXJcw%3d",
+  "xid": "Fk+hAhIWb0KNLzOSVz90fmFmd1M=",
+  "_links": {
+    "self": {
+      "href": "https://3ds2.ckotech.co/sessions/sid_czh2caqsczxufdjpgojfop3upy"
+     },
+     "acs_url": {
+       "href": "https://3ds2.ckotech.co/3ds1simulator/visa/ds/challenge?p=4484070000035519"
+     },
+     "term_url": {
+       "href": "https://3ds2.ckotech.co/sessions/sid_czh2caqsczxufdjpgojfop3upy/pares"
+     }
+    }
+}
+```
+
+The `next_action` is `authenticate` and the protocol version is `1.0.2`. The 3DS1 flow always contains a challenge and the challenge is always browser-based. Let us see how to initiate the challenge.
+
+### Render the challenge
+
+To render the challenge you need to POST the following form fields to the `session._links.acs_url`:
+
+<Table>
+<TableHead headers={['Field name', 'Description']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`MD`
+
+</TableCell>
+<TableCell>
+
+The `session.transation_id`.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`TermUrl`
+
+</TableCell>
+<TableCell>
+
+The URL for the handler that will receive the PaRes (Payer Authentication Response) message. We recommend using `session._links.term_url` for this if you do not wish to build your own handler, but you can also receive the message on your end and forward it to our `term_url`.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`PaReq`
+
+</TableCell>
+<TableCell>
+
+The Payer Authentication Request (`session.pareq`). This is the base64 and URL-encoded payload to send to the ACS.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+<TipBox variant="note">
+
+The above fields can be case-sensitive depending on the ACS, so please make sure to follow the casing shown.
+
+</TipBox>
+
+The result of this POST will be the challenge form. Once the cardholder completes this successfully, the `TermUrl` will receive the `PaRes` (Payer Authentication Response) and the outcome of that will be rendered in place of the challenge (see next section).
+
+### Notification of outcome
+
+If you want to be notified about the completion of the challenge, you can register an event handler on your page as follows:
+
+```js
+window.addEventListener("message", messageCallback, false);
+Where messageCallback is a function with the following signature:
+function messageCallback(event){
+  console.log(event.data)
+}
+```
+
+`event.data` will contain the following object:
+
+```json
+{
+  "status": "approved",
+  "transaction_id": "352455b7-b3b1-4696-a916-69e2e4274e6c"
+}
+```
+
+Where `transaction_id` is the transaction ID of the session and `status` is the final status of the session based on the outcome of the challenge.
+
+If an unexpected error occurred during the validation of the PaRes, the event data will look like this instead:
+
+```json
+{
+  "request_id":"0HM2GJLG46GM1:00000001",
+  "error_type":"operation_not_allowed",
+  "error_codes":["update_not_allowed_due_to_state"]
+}
+```
+
+Similar to an error Sessions API would respond with.
+
+### Challenge completed
+
+Once the 3DS1 challenge has been completed, the session should move to a final state, allowing you to (optionally) complete the session.
+
+<TipBox variant="info">
+
+At this point the session should contain the `eci`, `xid`, and `cryptogram` (CAVV/AVV) properties needed for authorization, but these will only be returned when retrieving the session using a JWT token and not the `session_secret`. This is to protect them from leaking to the client side.
+
+</TipBox>
+
+<TipBox variant="success">
+
+The challenge flow should be completed within 10 minutes of initiating the flow. If this is not the case, the status of the session will be set to `challenge_abandoned`.
+
+</TipBox>
+
+---
+
+## Step 6: Complete session (optional)
+
+<TipBox variant="info">
+
+This is an optional step providing an easy way for you to be notified about the completion of the authentication.
+
+</TipBox>
+
+Once the session is in a final state (approved, declined, rejected, unavailable, or attempted), you can choose to complete it.
+
+This triggers a POST to the `completion.callback_url` field of the session and will respond with `204` if the call was successful or `500` otherwise. Alternatively, you can GET the session details to inspect it and verify its final status.
+
+### Endpoints
+
+For the full API specification, see the <ExternalLink href="https://api-reference.checkout.com/preview/crusoe/" >API reference</ExternalLink>.
+
+<tabs>
+<tab title="Live">
+<LineCodeWrapper type="post">
+
+`hhttps://api.checkout.com/sessions/{session_id}/complete`
+
+</LineCodeWrapper>
+</tab>
+<tab title="Sandbox">
+<LineCodeWrapper type="post">
+
+`https://api.sandbox.checkout.com/sessions/{session_id}/complete`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+### The response
+
+If successful, we will use the `callback_url` to share the authentication outcome with you (see example below). If we receive a `2XX` response from you, you will then get a successful `204` response with no content. If the payment was authenticated, you're now ready to authorize and complete the payment.
+
+<TipBox variant="info">
+
+If the authentication is approved (`“response_code”: “Y”`) or attempted (`“A”`), you can authorize the payment. If the authentication is unavailable due to technical issues (`“U”`), you can decide whether or not to proceed with the payment, based on your risk assessment.
+
+</TipBox>
+
+### Example authentication outcome
+
+```json
+{
+ "session_id": "sid_llraltf4jlwu5dxdtprcv7ba5i",
+ "amount" : 6540,
+ "currency": "USD",
+ "status": "approved",
+ "authentication_type": "regular",
+ "authentication_category": "payment",
+ "reference": "ORD-5023-4E89",
+ "approved": true,
+ "protocol_version": "2.1.0",
+ "response_code": "Y" ,
+ "response_reason": "01",
+ "cryptogram": "MTIzNDU2Nzg5MDA5ODc2NTQzMjE=",
+ "eci": "05",
+ "challenged": true
+}
+```
+
+<Table>
+<TableHead headers={['Field name', 'Description']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`session_id`
+
+<TypeTag type="string, 36 chars" />
+
+</TableCell>
+<TableCell>
+
+The unique identifier for the session.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`amount`
+
+<TypeTag type="integer" />
+
+</TableCell>
+<TableCell>
+
+The amount in the major currency.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`currency`
+
+<TypeTag type="string" />
+
+
+</TableCell>
+<TableCell>
+
+The three-letter ISO [currency code](/resources/codes/currency-codes).
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`status`
+
+<TypeTag type="string (enum)" />
+
+
+</TableCell>
+<TableCell>
+
+Indicates the status of the session.
+
+One of:
+
+- `challenge_abandoned`
+- `expired`
+- `approved`
+- `attempted`
+- `unavailable`
+- `declined`
+- `rejected`
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`authentication_type`
+
+<TypeTag type="string" />
+
+
+</TableCell>
+<TableCell>
+
+Indicates the type of payment this session is for.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`authentication_category`
+
+<TypeTag type="string (enum)" />
+
+
+</TableCell>
+<TableCell>
+
+Indicates the category of the authentication request.
+
+One of:
+
+- `payment`
+- `non-payment`
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`reference`
+
+<TypeTag type="string, maximum 100 chars" />
+
+
+</TableCell>
+<TableCell>
+
+A reference you can later use to identify this payment, such as an order number.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`approved`
+
+<TypeTag type="boolean" />
+
+
+</TableCell>
+<TableCell>
+
+Indicates whether the authentication was successful.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`protocol_version`
+
+<TypeTag type="string, maximum 50 chars" />
+
+
+</TableCell>
+<TableCell>
+
+The 3DS version used for authentication.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`response_code`
+
+<TypeTag type="string (enum)" />
+
+
+</TableCell>
+<TableCell>
+
+The response from the DS or ACS which indicates whether a transaction qualifies as an authenticated transaction or account verification.
+
+One of:
+
+- `Y`: authentication verification successful
+- `N`: not authenticated / account not verified; transaction denied
+- `U`: authentication/ account verification could not be performed; technical or other problem, as indicated in ARes or RReq
+- `A`: attempts processing performed; not authenticated/verified, but a proof of attempted authentication/verification is provided
+- `C`: challenge required; additional authentication is required using the CReq/CRes
+- `D`: challenge required; decoupled authentication confirmed
+- `R`: authentication / account verification rejected; issuer is rejecting authentication / verification and requests that the authorization not be attempted
+- `I`: informational only; 3DS requestor challenge preference acknowledged
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`response_reason`
+
+<TypeTag type="string" />
+
+
+</TableCell>
+<TableCell>
+
+The response from the direct server (DS) or access control server (ACS) which provides information on why the `response_code` field has the specified value
+
+- `01`: card authentication failed
+- `02`: unknown device
+- `03`: unsupported device
+- `04`: exceeds authentication frequency limit
+- `05`: expired card
+- `06`: invalid card number
+- `07`: invalid transaction
+- `08`: no card record
+- `09`: security failure
+- `10`: stolen card
+- `11`: suspected fraud
+- `12`: transaction not permitted to cardholder
+- `13`: cardholder not enrolled in service
+- `14`: transaction timed out at the ACS
+- `15`: low confidence
+- `16`: medium confidence
+- `17`: high confidence
+- `18`: very high confidence
+- `19`: exceeds ACS maximum challenges
+- `20`: non-payment transaction not supported
+- `21`: 3RI transaction not supported
+- `22`: ACS technical issue
+- `23`: decoupled authentication required by ACS but not requested by 3DS requestor
+- `24`: 3DS requestor decoupled max expiry time exceeded
+- `25`: decoupled authentication was provided in insufficient time to authenticate the cardholder. ACS will not make attempt.
+- `26`: authentication attempted but not performed by the cardholder
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`cryptogram`
+
+<TypeTag type="string, 28 chars" />
+
+
+</TableCell>
+<TableCell>
+
+A payment system-specific value provided as part of the access control server (ACS) registration for each supported direct server (DS).
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`eci`
+
+<TypeTag type="string, 2 chars" />
+
+
+</TableCell>
+<TableCell>
+
+The electronic commerce indicator (ECI).
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`challenged`
+
+<TypeTag type="boolean" />
+
+
+</TableCell>
+<TableCell>
+
+Indicates whether this session involved a challenge.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+### Session properties
+
+### Session statuses
+
+Below are the possible values of the `status` field, which tell you the current status of the session.
+
+<Table>
+<TableHead headers={['Field name', 'Description']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`pending`
+
+</TableCell>
+<TableCell>
+
+Authentication has been requested and the session has been started. The session `id` is passed back to your server and can be shared with the mobile app (iOS or Android) SDK.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`processing`
+
+</TableCell>
+<TableCell>
+
+The 3DS server has updated the authentication with channel data collected by the SDKs and has created and sent an authentication request to the directory server. The access control server is now evaluating the data to decide whether to authenticate the transaction (frictionless) or challenge it.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`approved`
+
+</TableCell>
+<TableCell>
+
+The payment has been successfully authenticated (frictionless or challenged).
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`attempted`
+
+</TableCell>
+<TableCell>
+
+The payment has not been successfully authenticated, because the access control server could not be reached, but proof of the attempted authentication is provided (frictionless).
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`unavailable`
+
+</TableCell>
+<TableCell>
+
+Authentication failed because of technical problems with the directory server or the issuer's access control server.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`declined`
+
+</TableCell>
+<TableCell>
+
+The transaction was not authenticated. The issuer denied the transaction.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`rejected`
+
+</TableCell>
+<TableCell>
+
+The transaction was rejected. The issuer is rejecting the authentication and requests that authorisation not be attempted.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`challenged`
+
+</TableCell>
+<TableCell>
+
+Authentication has been requested but the issuer requires that the cardholder be presented with a challenge.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`challenge_abandoned`
+
+</TableCell>
+<TableCell>
+
+Authentication has been started and challenged, but the cardholder did not complete the challenge.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`expired`
+
+</TableCell>
+<TableCell>
+
+Authentication has been started but the channel data could not be collected, meaning an authentication request was not created.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+### Next actions
+
+Below are the possible values for the `next_actions` field. When present, they identify what action to take in order to complete the session.
+
+<Table>
+<TableHead headers={['Session type', 'Action', 'Description', 'Channel']} />
+<TableBody>
+<TableRow>
+<TableCell rowSpan={3}>
+
+`Non-hosted`
+
+</TableCell>
+<TableCell>
+
+`collect_channel_data`
+
+</TableCell>
+<TableCell>
+
+Indicates that the SDK should collect the device data and pass it to the Sessions API so that the 3DS server can create an authentication request.
+
+</TableCell>
+<TableCell>
+
+Browser and app
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`issuer_fingerprint`
+
+</TableCell>
+<TableCell>
+
+The issuer fingerprint is a step where the 3DS Method URL is used by the access control server before the authentication request to gather additional browser information to perform the risk assessment of the transaction. The use of the 3DS Method URL is optional.
+
+</TableCell>
+<TableCell>
+
+Browser only
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`challenge_cardholder`
+
+</TableCell>
+<TableCell>
+
+This occurs after an issuer decides to challenge an authentication. You should create a challenge request and submit it to the issuer's access control server to obtain the details to render a challenge window for the cardholder to submit their credentials.
+
+</TableCell>
+<TableCell>
+
+Browser and app
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Hosted and non-hosted
+
+</TableCell>
+<TableCell>
+
+`complete`
+
+</TableCell>
+<TableCell>
+
+No further actions are required. You can complete the session.
+
+</TableCell>
+<TableCell>
+
+Browser and app
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+---
+
+## Additional authentication data
+
+When requesting a session, you can add additional data fields to increase the chances of a frictionless authentication. Below is a summary of the optional data you can add to your request.
+
+<Table>
+<TableHead headers={['Type of data', 'Description and examples']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+Client user data
+
+</TableCell>
+<TableCell>
+
+Data that supports the specific authentication and information about the authentication method used.
+
+<InfoBox>
+
+For example, your own credentials, and the issuer's credentials.
+
+</InfoBox>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Prior transaction information
+
+</TableCell>
+<TableCell>
+
+For returning users and recurring transactions, gather and submit data with each following transaction.
+
+<InfoBox>
+
+For example, when the recurring payment plan expires, payment references, and the authentication method used.
+
+</InfoBox>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Account type
+
+</TableCell>
+<TableCell>
+
+The account type used in your request. Issuer's attach different risk profiles to different accounts.
+
+<InfoBox>
+
+For example, credit or debit.
+
+</InfoBox>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Address match
+
+</TableCell>
+<TableCell>
+
+Indicates whether the cardholder's shipping and billing address are the same.
+
+<InfoBox>
+
+For example, how long they've had an account with you, and the number of purchases they've made in the last six months.
+
+</InfoBox>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+User purchase history
+
+</TableCell>
+<TableCell>
+
+Details of the cardholder's purchase history.
+
+<InfoBox>
+
+For example, the number of purchases in the last six months, and the number of card attempts in the last 24 hours.
+
+</InfoBox>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Shipping address usage
+
+</TableCell>
+<TableCell>
+
+Information about the use of the shipping address.
+
+<InfoBox>
+
+For example, when the shipping address was first used, and whether the address name matches the cardholder's name.
+
+</InfoBox>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Suspicious account activity
+
+</TableCell>
+<TableCell>
+
+Indicates whether you've experienced any suspicious activity on the cardholder's account.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Cardholder information
+
+</TableCell>
+<TableCell>
+
+Additional information you want to provide about the cardholder and their account with you.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Cardholder email address
+
+</TableCell>
+<TableCell>
+
+The email address associated with the cardholder's account.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Cardholder shipping address
+
+</TableCell>
+<TableCell>
+
+The cardholder's full shipping address.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Installment payment data
+
+</TableCell>
+<TableCell>
+
+For transactions that are being paid in installments, you can provide information about the maximum number of authorizations permitted within that payment plan.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Pre-paid and gift card transactions
+
+</TableCell>
+<TableCell>
+
+Information about pre-paid or gift card transactions.
+
+<InfoBox>
+
+For example, the gift card amount, and whether or not the cardholder is pre-ordering a product.
+
+</InfoBox>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Shipping method
+
+</TableCell>
+<TableCell>
+
+Indicate the shipping method being used for the order, or flag non-shippable items, like digital goods.
+
+<InfoBox>
+
+For example, whether it's being shipped to a verified address on file, or being picked up by the cardholder from a local store.
+
+</InfoBox>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Delivery information
+
+</TableCell>
+<TableCell>
+
+Information about the delivery, like the delivery email address or delivery timeframe.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>

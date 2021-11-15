@@ -1,0 +1,234 @@
+---
+title: Checkout.js migration guide
+account: ABC
+---
+
+If you’re using Checkout.js with our Classic API, you should upgrade to one of our new integration options to benefit from our latest features.
+
+This guide compares the payment flows of each option, helping you to decide which integration option is best for you.
+
+You can choose between a [Hosted Payments Page](/integrate/hosted-payments-page) or [Frames](/integrate/frames). Like Checkout.js, both solutions present a form to your customer where they can enter their payment information. We then convert the payment details into a temporary token, which you can use to make a payment request, without having to handle any sensitive information yourself.
+
+You can also watch a tutorial to learn how to update your configuration from Checkout.js to a Hosted Payment Page or Frames:
+
+<center>
+<iframe margin="0" width="80%" height="300px" allow="fullscreen" position="absolute" src="https://assets.checkout.com/docs/videos/checkoutjs-migration.mp4" />
+</center>
+
+---
+
+## Checkout.js
+
+Checkout.js is our legacy solution, built on our Classic API.
+
+<TipBox variant="note">
+
+As of May 2021, the Classic API is only receiving security updates.
+
+</TipBox>
+
+### Payment flow
+
+The following is a reminder of the payment flow with Checkout.js.
+
+### 1. Create a payment token
+
+From the server side, send a POST request to our `/api2/v2/tokens/payment` endpoint, providing information about the payment you want to process. For example:
+
+```json
+{
+  value: 1000, // pence
+  currency: “EUR”
+}
+```
+
+And the response from our Classic API would look like:
+
+```json
+{
+  id: "pay_tok_7B1D75B9-6214-4A6E-B209-90610D13C002",
+  liveMode: false // depends on the environment
+}
+```
+
+### 2. Initialize Checkout.js with the payment token
+
+Once you’ve generated a payment token, pass it in the configuration of Checkout.js and render a lightbox for your customer so they can choose how to pay (with a card or a local payment method, like Sofort).
+
+Here's an example of a configuration:
+
+```html
+<script src="https://cdn.checkout.com/sandbox/js/checkout.js"></script>
+<form class="payment-form" method="POST" action="server/autocapture.php">
+  <input name="cko-card-token" id="input-id" value="" hidden />
+</form>
+
+<button onclick="Checkout.open()">PAY EUR 100.00</button>
+
+<script>
+  Checkout.configure({
+    publicKey: “pk_test_ac89202e-4531-43b3-a830-9e4f0151cd49”,
+    paymentToken: “pay_tok_7B1D75B9-6214-4A6E-B209-90610D13C002”,
+    customerEmail: "testme@email.com",
+    value: 10000,
+    currency: "EUR",
+    paymentMode: "mixed"   // allows both cards and local payments
+  });
+</script>
+```
+
+---
+
+## Hosted Payments Page
+
+Our Hosted Payments Page integration option is a fast and easy way to collect your customer’s payment information and process the payment request.
+
+### Try it out
+
+Preview a Hosted Payments Page with the demo below. Try it with the following test card or Sofort details.
+
+<tabs>
+<tab title="Card">
+
+* **Card number**: 4242 4242 4242 4242
+* **Expiry date**: Any future date
+* **CVV**: 100
+
+</tab>
+<tab title="Sofort">
+
+Use the following details to test a Sofort payment flow:
+
+1. Enter `88888888` in the 'Bank name, BLZ, IBAN or BIC' field. Click Next.
+2. Enter `88888888` in the 'Account number' field.
+3. Enter `123456` in the PIN field. Click Next.
+4. Select any account. Click Next.
+5. Enter `12345` in the TAN field. Click Next.
+
+</tab>
+</tabs>
+
+<center><iframe src="https://pay.sandbox.checkout.com/examples/docs-example/" width="100%" height="700px"></iframe></center>
+
+### Payment flow
+
+The Hosted Payment Page payment flow offers a similar experience to Checkout.js.
+
+<img src="/docs/Resources/ckojs_migration_hosted_payments_page.png"  />
+
+### 1. Create a Hosted Payments Page
+
+Call our `/hosted-payments` endpoint, providing information about the transaction and billing location.
+
+We’ll use this information to render a payment page tailored to your customer’s region where they can enter their payment details. Here’s an example request:
+
+```json
+{
+  amount: 1000,
+  currency: "EUR",
+  billing: { address: { country: "DE", }, },
+  success_url: "https://checkout.com/success",
+  cancel_url: "https://checkout.com/cancel",
+  failure_url: "https://checkout.com/fail",
+}
+```
+
+In the response you'll get a redirect link for the Hosted Payments Page. Here's an example:
+
+```json
+{
+  _links: {
+    redirect: { href: 'https://pay.sandbox.checkout.com/page/uUuwh39apxXS' }
+  }
+}
+```
+
+### 2. Present the Hosted Payments Page and handle the outcome
+
+Once you’ve got the link to the Hosted Payment Page, redirect your customer to it. They will enter their payment details on the page and then get sent to either your success or failure page.
+
+You don’t have to worry about managing the session. When we redirect the customer back to your page, we provide a session ID (`cko-session-id`) or payment ID (`cko-payment-id`) as a query parameter in the URL, which you can pass into our <ExternalLink href="https://api-reference.checkout.com/#operation/getPaymentDetails" >get payment details endpoint</ExternalLink> to get a full overview of the payment.
+
+<TipBox variant="note">
+
+Out of the box, you can also accept iDEAL, KNET, Mada, PayPal, and Sofort with a Hosted Payments Page. You can integrate [more payment methods](/payments/payment-methods) if you want.
+
+</TipBox>
+
+<TipBox variant="info">
+
+You can sign up to webhook notifications to let you know how the payment is progressing. If you have an order management system, webhooks are useful where, for example, you want to dispatch the goods or provide services only after you know the payment has been captured (meaning the money has actually been taken from the customer’s account).
+
+</TipBox>
+
+## Frames
+
+Frames is a customizable payment form that collects and tokenizes your customers' payment details. It offers more customization options than a Hosted Payment Page, giving you more control over the checkout experience.
+
+### Try it out
+
+Preview Frames with the demo below. Enter `4242424242424242` as the card number, any future expiry date, and 100 for the CVV.
+
+<center>
+<iframe margin="0" width="350px" height="250px" allow="fullscreen" position="absolute" src="https://assets.checkout.com/docs/examples/1liner-new/index.html" />
+</center>
+
+### Payment flow
+
+<img src="/docs/Resources/ckojs_migration_frames.png"  />
+
+### 1. Collect card details
+
+Frames allows you to securely collect the card details of your customers, exchanging the sensitive card information for a secure token (single use, expiring after 15 minutes) you can use to make a payment request.
+
+### 2. Send a payment request
+
+Once you've received the token from Frames, call our `/payments` endpoint from your server to process a payment. Here’s an example of a payment request:
+
+```html
+
+<pre><code class="language-json">{
+  "source": {
+    "type": "token",
+    "token": "{{the_token_generated_by_frames}}"
+  },
+  "amount": 1000,
+  "currency": "EUR"
+}</code></pre>
+```
+
+### 3. Handle the outcome
+
+After you send a payment request you’ll receive the authorization response – whether the payment was accepted or not. You can use this response to show your customer a success or failure outcome page or message.
+
+<TipBox variant="info">
+
+You can sign up to [webhook notifications](/reporting-and-insights/webhooks) to let you know how the payment is progressing. If you have an order management system, webhooks are useful where, for example, you want to dispatch the goods or provide services only after you know the payment has been captured (meaning the money has actually been taken from the customer’s account).
+
+</TipBox>
+
+## Accepting local payment methods
+
+Frames is designed to collect card details and exchange them for a secure payment token, but you can also use it to accept local payment methods, integrating them using our Unified Payments API.
+
+For example, let’s say you want to accept payments with [Sofort](/payments/payment-methods/bank-transfers/sofort). First, you need to create a ‘pay with Sofort’ button, or checkbox, the customer can interact with. Then, when they choose this option, you call our payments API with the necessary information required for a Sofort payment to receive a redirect link. Once you’ve got the link, use it to redirect your customer to the payment page and then handle the outcome.
+
+[Learn more about the local payment methods](/payment-methods) you can accept.
+
+---
+
+## Next steps
+
+<CardWrapper cardsInRow={{desktop:2,tablet:2,mobile:1}}>
+
+<Card href="/integrate/hosted-payments-page" title="Hosted Payments Page">
+
+Learn more about Hosted Payment Pages and how to set up your integration.
+
+</Card>
+<Card href="/integrate/frames" title="Frames">
+
+Learn more about Frames, and how to set up and customize your integration.
+
+</Card>
+</CardWrapper>

@@ -1,0 +1,418 @@
+---
+title: How to search and filter your payments
+account: NAS
+---
+
+This page explains how you can search for payments, and what kind of filters you are able to apply to narrow down your search.
+
+1. Select the search bar to get started.
+
+<img src="/NAS/Dashboard/Filter_payments/search_bar.png"  alt="Filter payments search bar"/>
+
+2. Select a filter, and then add the value you want to filter by. Some filters have pre-defined values. For instance, selecting `status:` will suggest a list of statuses with which you can filter the results. 
+
+<img src="/NAS/Dashboard/Filter_payments/search_status_filter.png"  alt="Filter payments search status filter"/>
+
+If your search term includes a space, you must wrap it in quotation marks. For example, `"John Doe"`.
+
+<img src="/NAS/Dashboard/Filter_payments/search_string.png"  alt="Filter payments search string"/>
+
+3. You can add extra search terms to further narrow your results. These should be separated by spaces, `AND`, or `OR`—placing the `OR` operator between two search terms will return results for one or the other. For example: 
+    - Entering `status:declined AND response_code:20005` will return all payments that were unauthorized because of the Declined - Do Not Honour - 20005 soft decline. (`status:declined response_code:20005` will return the exact same list of payments.)
+    - Searching `payment_method:VISA OR payment_method:Mastercard` will return all payments processed via Visa or Mastercard.
+4. Press Enter or select _See all results_ to apply your filter. The *Payments* screen will be updated to show your results.
+5. If you want to undo your search, select the cross in the search bar.
+
+<TipBox variant='info'>
+
+You do not need to use a filter to search by identifier (payment ID, action ID, customer ID, dispute ID), or email address. These will be recognized immediately as you type them in the search bar.
+
+</TipBox>
+
+## Available filters
+
+The following table describes the available filter criteria, as well as the different search terms you can enter to use them.
+
+<TipBox variant='info'>
+
+You can use the following operators in your searches:
+
+- Equal to: `:`
+- Between: `..`
+- Greater than: `>`
+- Less than: `<`
+
+</TipBox>
+
+<TipBox variant='note'>
+
+You cannot combine the status and action filters in the same search.
+
+</TipBox>
+
+<Table>
+<TableHead headers={['Filter','Seatch term(s)','Description','Example(s)']}/>
+<TableBody>
+<TableRow>
+<TableCell>
+
+Amount
+
+</TableCell>
+<TableCell>
+
+`amount`
+
+</TableCell>
+<TableCell>
+
+The original payment amount or range of your payment request. If combined with an action, it will be the action amount or range.
+
+</TableCell>
+<TableCell>
+
+`amount:50`
+`amount<10`
+`amount>50`
+`amount:20..35`
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Customer
+
+</TableCell>
+<TableCell>
+
+`customer email`
+
+</TableCell>
+<TableCell>
+
+Customer email address, customer name, or customer ID.
+
+</TableCell>
+<TableCell>
+
+`customer:"John Doe"`
+`johndoe@gmail.com`
+`email:johndoe@gmail.com`
+`cus_udst2tfldj6upmye2reztkmm4i`
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Card number
+
+</TableCell>
+<TableCell>
+
+`card bin fingerprint`
+
+</TableCell>
+<TableCell>
+
+The last four, or first six, digits of the card, or the card fingerprint.
+
+</TableCell>
+<TableCell>
+
+`card:4242`
+`bin:674567`
+`fingerprint:F31828E2BDABAE63EB694903825CDD36041CC6ED461440B81415895855502832`
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Currency
+
+</TableCell>
+<TableCell>
+
+`currency`
+
+</TableCell>
+<TableCell>
+
+The three-letter ISO code of the payment currency.
+
+</TableCell>
+<TableCell>
+
+`currency:EUR`
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Payment method
+
+</TableCell>
+<TableCell>
+
+`payment_method`
+
+</TableCell>
+<TableCell>
+
+The payment method used to make the payment.
+
+</TableCell>
+<TableCell>
+
+`payment_method:visa`
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Reference
+
+</TableCell>
+<TableCell>
+
+`reference`
+
+</TableCell>
+<TableCell>
+
+The reference for the payment.
+
+</TableCell>
+<TableCell>
+
+`reference:TRK-001`
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Status
+
+</TableCell>
+<TableCell>
+
+`status`
+
+</TableCell>
+<TableCell>
+
+The status of the payment, and whether it has been flagged.
+
+</TableCell>
+<TableCell>
+
+`status:refunded`
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Action
+
+</TableCell>
+<TableCell>
+
+`action`
+
+</TableCell>
+<TableCell>
+
+Actions that have been taken on a payment. Results will include all payments on which the action has been taken, even if it was not the latest action. Results are ordered by the date of the action.
+
+<InfoBox>
+
+When one of the search terms is an action, the results displayed in the list will take a slightly different form, listing actions (or events) instead of payments.
+
+</InfoBox>
+
+</TableCell>
+<TableCell>
+
+`action:refund`
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Date
+
+</TableCell>
+<TableCell>
+
+`date`
+
+</TableCell>
+<TableCell>
+
+The date, or date range, the payment request was made. If combined with an action, it will be the date, or date range, the action was taken.
+
+</TableCell>
+<TableCell>
+
+Date:
+
+- `date:2019-10-31`
+- `date:20191031`
+
+Date range:
+
+- `date:2019-12-01..2019-12-31`
+- `date:20191201..20191231`
+
+Before or after date:
+
+- `date<20190303`
+- `date>20190303`
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+IDs (payment, action or customer)
+
+</TableCell>
+<TableCell>
+
+`pay_...`
+`act_...`
+`cus_...`
+
+</TableCell>
+<TableCell>
+
+Returns the payment or action associated with the ID, or the payments/actions associated with the customer's ID.
+
+</TableCell>
+<TableCell>
+
+`pay_mbabizu24mvu3mela5njyhpit4`
+`act_fd3h6evhpn3uxdoqbuu3lqnqbm`
+`cus_udst2tfldj6upmye2reztkmm4i`
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Billing descriptor
+
+</TableCell>
+<TableCell>
+
+`billing_descriptor`
+
+</TableCell>
+<TableCell>
+
+Payments with the specified billing descriptor (the text displayed on the customer's bank statement identifying the payment).
+
+</TableCell>
+<TableCell>
+
+`billing_descriptor:ORD_12345`
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Response codes
+
+</TableCell>
+<TableCell>
+
+`response_code`
+
+</TableCell>
+<TableCell>
+
+Payments with the specified response code.
+
+</TableCell>
+<TableCell>
+
+`response_code:20014` (returns all payments declined owing to an invalid card number)
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Issuer
+
+</TableCell>
+<TableCell>
+
+`issuer`
+
+</TableCell>
+<TableCell>
+
+Payments processed through the specified issuing bank.
+
+</TableCell>
+<TableCell>
+
+`issuer:"BNP PARIBAS"`
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Payment type
+
+</TableCell>
+<TableCell>
+
+`payment_type`
+
+</TableCell>
+<TableCell>
+
+Payments of the specified type. By default, `Regular` payments are returned, but you can also search for `Recurring` and `MOTO` payments.
+
+</TableCell>
+<TableCell>
+
+`payment_type:MOTO`
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Sub-entity ID
+
+</TableCell>
+<TableCell>
+
+`sub_entity_ID`
+
+</TableCell>
+<TableCell>
+
+The unique identifier of the sub-entity.
+
+</TableCell>
+<TableCell>
+
+`sub_entity_ID:"ent_w4jelhppmfiufdnatam37wrfc4"`
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>

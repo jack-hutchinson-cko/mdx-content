@@ -1,0 +1,2368 @@
+--- 
+title: Commercetools
+account: ABC
+---
+
+Learn how to get started with our integration for commercetools.
+
+<TipBox variant="info">
+
+This guide assumes that you have already created a commercetools project. If you would like to test this integration, please <ExternalLink href="mailto:partnerships@checkout.com">contact partnerships</ExternalLink>.
+
+</TipBox>
+
+Commercetools is an e-commerce platform that offers true cloud-native, headless commerce integration capabilities. The plugin makes it easier for those already using commercetools to integrate with <ExternalLink href="https://checkout.com">Checkout.com</ExternalLink>'s payment solutions.
+
+Our integration has two parts:
+
+1. [Configure our API Client](#Configure_api_client) in the commercetools Merchant Center.
+2. [Set up the frontend](#Set_up_the_frontend), which involves integrating [Frames](/integrate/frames) for card payments and our [Klarna SDK](/payments/payment-methods/invoice-and-pay-later/klarna) for Klarna payments.
+
+---
+
+## Before you start
+
+### Create a test account
+
+If you haven't already, <ExternalLink href="https://www.checkout.com/get-test-account" >create a test Checkout.com account</ExternalLink>.
+
+### Get your API keys
+
+To set up our commercetools API Client, you'll need your public and secret API keys, which are generated automatically upon account creation.
+
+1. Log in to your test account on the <ExternalLink href="https://sandbox.checkout.com/" >Hub sandbox</ExternalLink>.
+2. In the left menu, go to _Settings > Channels_, and make a note of your secret and public API keys.
+
+<img maxWidth={700} src="/docs/Integrate/Commercetools/apple_pay_flow.png"  />
+
+### Configure webhooks
+
+<TipBox variant="info">
+
+Webhooks are notifications that we send when an event occurs on your account. For example, when a payment is captured. These are used by commercetools to update the status of an order. [Read more about webhooks](/reporting-and-insights/webhooks).
+
+</TipBox>
+
+1. Scroll down to the _Webhooks_ section of the page and select _New webhook_.
+2. Enter the following URLs:
+
+<tabs>
+<tab title="Live">
+<Table withTopBorder={false}>
+<TableHead headers={['Webhook URL', 'Events']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+<ExternalLink href="https://commercetools.integration.checkout.com/api/webhooks/payments" >`https://commercetools.integration.checkout.com/api/webhooks/payments`</ExternalLink>
+
+</TableCell>
+<TableCell>
+
+- `payment_approved`
+- `payment_declined`
+- `payment_pending`
+- `payment_canceled`
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+<ExternalLink href="https://commercetools.integration.checkout.com/api/webhooks/transactions" >`https://commercetools.integration.checkout.com/api/webhooks/transactions`</ExternalLink>
+
+</TableCell>
+<TableCell>
+
+- `payment_captured`
+- `payment_capture_pending`
+- `payment_capture_declined`
+- `payment_refunded`
+- `payment_refund_pending`
+- `payment_refund_declined`
+- `payment_voided`
+- `payment_void_declined`
+- `payment_expired`
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+</tab>
+<tab title="Sandbox">
+<Table withTopBorder={false}>
+<TableHead headers={['Webhook URL', 'Events']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+<ExternalLink href="https://commercetools.integration.sandbox.checkout.com/api/webhooks/payments" >`https://commercetools.integration.sandbox.checkout.com/api/webhooks/payments`</ExternalLink>
+
+</TableCell>
+<TableCell>
+
+- `payment_approved`
+- `payment_declined`
+- `payment_pending`
+- `payment_canceled`
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+<ExternalLink href="https://commercetools.integration.sandbox.checkout.com/api/webhooks/transactions" >`https://commercetools.integration.sandbox.checkout.com/api/webhooks/transactions`</ExternalLink>
+
+</TableCell>
+<TableCell>
+
+- `payment_captured`
+- `payment_capture_pending`
+- `payment_capture_declined`
+- `payment_refunded`
+- `payment_refund_pending`
+- `payment_refund_declined`
+- `payment_voided`
+- `payment_void_declined`
+- `payment_expired`
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+</tab>
+</tabs>
+
+3. Select _API - v2_.
+4. Select _Create webhook_.
+
+<TipBox variant="note">
+
+Correctly configuring your webhooks is important; if they're incorrectly formatted, our API Client will not work.
+
+</TipBox>
+
+### How webhooks interact with commercetools
+
+When a webhook is triggered on our side, our integration is creating or updating a transaction in commercetools to reflect the change.
+
+These transactions are attached to a payment, and there may be multiple transactions attached to a single payment. This is all done automatically, and you don't have to do anything other than setting up the webhooks and configuring the API client.
+
+You can see these interactions in your commercetools Merchant Center by going to _Order list > Order_ and selecting the _Payment_ tab.
+
+<Accordion title="What we create/update when a webhook is triggered">
+<Table>
+<TableHead headers={['Webhook', 'Transaction created or updated?', 'Transaction name', 'New status of the transaction (if needed)']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`payment_approved`
+
+</TableCell>
+<TableCell>Created
+
+</TableCell>
+<TableCell>
+  
+Authorization
+
+</TableCell>
+<TableCell>
+  
+Success
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`payment_declined`
+
+</TableCell>
+<TableCell>
+
+Created
+
+</TableCell>
+<TableCell>
+
+Authorization
+
+</TableCell>
+<TableCell>
+
+Failure
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`payment_pending`
+
+</TableCell>
+<TableCell>
+
+Created
+
+</TableCell>
+<TableCell>
+
+Authorization
+
+</TableCell>
+<TableCell>
+
+Pending
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`payment_captured`
+
+</TableCell>
+<TableCell>
+
+Created or updated
+
+</TableCell>
+<TableCell>
+
+Charge
+
+</TableCell>
+<TableCell>
+
+Success
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`payment_capture_pending`
+
+</TableCell>
+<TableCell>
+
+Created
+
+</TableCell>
+<TableCell>
+
+Charge
+
+</TableCell>
+<TableCell>
+
+Pending
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`payment_capture_declined`
+
+</TableCell>
+<TableCell>
+
+Created
+
+</TableCell>
+<TableCell>
+
+Charge
+
+</TableCell>
+<TableCell>
+
+Failure
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`payment_refunded`
+
+</TableCell>
+<TableCell>
+
+Created or updated
+
+</TableCell>
+<TableCell>
+
+Refund
+
+</TableCell>
+<TableCell>
+
+Success
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`payment_refund_pending`
+
+</TableCell>
+<TableCell>
+
+Created
+
+</TableCell>
+<TableCell>
+
+Refund
+
+</TableCell>
+<TableCell>
+
+Pending
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`payment_refund_declined`
+
+</TableCell>
+<TableCell>
+
+Created or updated
+
+</TableCell>
+<TableCell>
+
+Refund
+
+</TableCell>
+<TableCell>
+
+Failure
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`payment_voided`
+
+</TableCell>
+<TableCell>
+
+Created
+
+</TableCell>
+<TableCell>
+
+Authorization canceled
+
+</TableCell>
+<TableCell>
+
+Success
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`payment_void_declined`
+
+</TableCell>
+<TableCell>
+
+Created
+
+</TableCell>
+<TableCell>
+
+Authorization canceled
+
+</TableCell>
+<TableCell>
+
+Failure
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`payment_expired`
+
+</TableCell>
+<TableCell>
+
+Created or Updated
+
+</TableCell>
+<TableCell>
+
+Authorization
+
+</TableCell>
+<TableCell>
+
+Failure
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`payment_canceled`
+
+</TableCell>
+<TableCell>
+
+Created or Updated
+
+</TableCell>
+<TableCell>
+
+Authorization
+
+</TableCell>
+<TableCell>
+
+Failure
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+</Accordion>
+
+<TipBox variant="info">
+
+We do not automatically update the order or payment status. This allows you to build your own order flow.
+
+</TipBox>
+
+---
+
+## Configure API Client
+
+Follow the steps below to create and configure the <ExternalLink href="https://checkout.com">Checkout.com</ExternalLink> API Client on your commercetools site.
+
+1. Log in to the commercetools Merchant Center, go to _Settings > Developer Settings_ and select _Create API Client_.
+2. Enter a name for this new API Client (e.g., cko-payment-integration).
+3. Select the following scopes:
+
+- Manage: Orders
+- Manage: Payments
+
+4. Select _Create API Client_.
+5. Copy the following details from the screen that appears, and send them to our Integration team at <ExternalLink href="mailto:integration@checkout.com">integration@checkout.com</ExternalLink> (you must save this information, as it is only displayed once):
+
+- project_key
+- client_id
+- secret
+- API URL
+- Auth URL
+
+6. Using <ExternalLink href="https://impex.europe-west1.gcp.commercetools.com/playground">commercetools' IMPEX</ExternalLink>, set `Types` as `endpoint`, and `create` as `command`, and then copy and paste in the following JSON files to install them (make sure you're in the right project when doing this:
+
+<Accordion title="payment-interface-interaction.json">
+
+```json
+{
+  "key": "ctp-cko-integration-interaction",
+  "name": {
+    "en": "Checkout.com Interaction"
+  },
+  "resourceTypeIds": ["payment-interface-interaction"],
+  "fieldDefinitions": [
+    {
+      "name": "responseCode",
+      "label": {
+        "en": "Response Code"
+      },
+      "required": true,
+      "type": {
+        "name": "String"
+      },
+      "inputHint": "SingleLine"
+    },
+    {
+      "name": "responseSummary",
+      "label": {
+        "en": "Response Summary"
+      },
+      "required": true,
+      "type": {
+        "name": "String"
+      },
+      "inputHint": "SingleLine"
+    },
+    {
+      "name": "id",
+      "label": {
+        "en": "Action Id"
+      },
+      "required": true,
+      "type": {
+        "name": "String"
+      },
+      "inputHint": "SingleLine"
+    }
+  ]
+}
+```
+
+</Accordion>
+<Accordion title="payment-saved-payment-instrument.json">
+
+```json
+{
+  "key": "ctp-cko-integration-payment",
+  "name": { "en": "Saved Payment Instrument" },
+  "description": { "en": "Stores customer saved payments" },
+  "resourceTypeIds": ["payment"],
+  "fieldDefinitions": [
+    {
+      "name": "paymentInstrumentId",
+      "type": { "name": "String" },
+      "required": false,
+      "label": { "en": "Payment Instrument" },
+      "inputHint": "SingleLine"
+    }
+  ]
+}
+```
+
+</Accordion>
+
+## Set up the frontend
+
+Next, set up the frontend part of our commercetools integration.
+
+- Integrate [Frames](/integrate/frames) to accept card payments.
+- Add our [Klarna SDK](/payments/payment-methods/invoice-and-pay-later/klarna) (follow steps 2 and 3 on that page; we'll take care of the rest) to support Klarna payments.
+
+If you are planning to accept SEPA payments, before any payment can occur, your customer must authorize the payment by accepting the terms of the mandate. By accepting, they are authorizing you to collect the specified amount from their bank account using SEPA Direct Debit. See [Issue the mandate](/payments/payment-methods/direct-debit/sepa-direct-debit#Issue_the_mandate) for more information
+
+<Accordion title="See an example implementation">
+
+```js
+// create context
+const createContext = async ({ public_key, reference }) => {
+  const data = await fetch(`https://commercetools.integration.checkout.com/api/contexts`, {
+    method: 'post',
+    headers: {
+      'content-type': 'application/json',
+      authorization: public_key
+    },
+    body: JSON.stringify({ reference })
+  }).then(res => res.json())
+  return data
+}
+
+// create payment
+const createPayment = async args => {
+  const { token, public_key, context_id, success_url, failure_url, save_payment_instrument } = args
+  const data = await fetch(`https://commercetools.integration.checkout.com/api/payments`, {
+    method: 'post',
+    headers: {
+      'content-type': 'application/json',
+      authorization: public_key
+    },
+    body: JSON.stringify({
+      type: 'token',
+      token,
+      context_id,
+      '3ds': args['3ds'],
+      success_url,
+      failure_url,
+      save_payment_instrument
+    })
+  })
+  const body = await data.json()
+  return {
+    success: data.status >= 200,
+    redirectUrl: body.redirect_url
+  }
+}
+
+// Credit card frames initialisation
+Frames.init({
+  publicKey: config.cko.publicKey,
+  cardValidationChanged: function () {
+    console.log('CARD_VALIDATION_CHANGED: %o', event)
+    payButton.disabled = !Frames.isCardValid()
+  },
+  cardTokenized: async data => {
+    console.log('CARD_TOKENIZATION: %o', data)
+    const paymentSuccess = await createContext({
+      public_key: config.cko.publicKey,
+      reference: order ? order.id : cart.id
+    }).then(context =>
+      createPayment({
+        public_key: config.cko.publicKey,
+        token: data.token,
+        context_id: context.id,
+        save_payment_instrument: true, // only works for if users is registered
+        '3ds': {enabled: true | false}, // ability to send 3ds flag for a request (ideally configured through Hub, use only for testing)
+        success_url: `https://example.com/3ds-success.html`, // ability to configure 3ds redirect
+        failure_url: `https://example.com/3ds-error.html` // ability to configure 3ds redirect
+      })
+    )
+
+    if (!paymentSuccess) {
+      return console.error('Create payment error', payment)
+    }
+
+    const order = await createOrder()
+
+    if (!order) {
+      console.error('Create order error', order)
+      return
+    }
+
+    window.location.href = `/confirmation.html?orderId=${order.id}`
+  },
+  cardTokenizationFailed: function (data) {
+    console.log('CARD_TOKENIZATION_FAILED: %o', data)
+  }
+})
+
+Frames.addEventHandler(Frames.Events.FRAME_ACTIVATED, () => window.dispatchEvent(paymentFormRendered))
+
+form.addEventListener('submit', async event => {
+  event.preventDefault()
+  Frames.submitCard()
+})
+
+// klarna
+const paymentSuccess = await createContext({
+  public_key: config.cko.publicKey,
+  reference: order ? order.id : cart.id
+}).then(context => {
+  const reference = order.id : cart.id
+
+  const apm = context.apms.find(a => a.name === 'klarna')
+  const container = document.getElementById('payment-klarna')
+  const buyWithKlarna = document.getElementById('payment-method-klarna')
+  // button is disabled by default
+  const payWithKlarna = document.getElementById('pay-klarna')
+
+  buyWithKlarna.addEventListener(
+    'click',
+    () => {
+      Klarna.Payments.authorize(
+        // options
+        {
+          instance_id: context.id // Same as instance_id set in Klarna.Payments.load().
+        },
+        // data
+        {},
+        // callback
+        response => {
+          console.log('klarna payments authorize', response)
+          buyWithKlarna.classList.add('hidden')
+          payWithKlarna.classList.remove('hidden')
+          // show button to pay with klarna now
+          payWithKlarna.addEventListener('click', async () =>
+            // pay
+            createPayment({ type: apm.name, token: response.authorization_token, contextId: context.id })
+          )
+        }
+      )
+    },
+    false
+  )
+
+  Klarna.Payments.init({
+    client_token: apm.metadata.details.client_token
+  })
+
+  Klarna.Payments.load(
+    // show the klarna component
+    {
+      container: '#klarna_container',
+      payment_method_categories: apm.metadata.details.payment_method_category.map(cat => cat.identifier),
+      instance_id: context.id
+    },
+    // use data from session
+    apm.metadata.session,
+    // callback
+    function (response) {
+      console.log('klarna payments load', response)
+      // ...
+    }
+  )
+})
+```
+
+</Accordion>
+
+## Make a payment
+
+Now that you've set up the integration, you're ready to make a payment. You can make a payment in two steps:
+
+1. Create context
+2. Request payment
+
+### Create context
+
+First, create a payment context. This returns the available payment options to the customer, and gives you a `context_id`, with which you can then request a payment.
+
+Expand the table below to see how our properties map to commercetools' properties.
+
+<Accordion title="Property mapping between commercetools and Checkout.com">
+
+Note, the reference property in commercetools refers to the cart or order ID.
+
+<Table>
+<TableHead headers={['Checkout.com', 'commercetools', 'Notes']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`amount`
+
+<StatusTag type="required" />
+
+</TableCell>
+<TableCell>
+
+`reference.taxedPrice.totalGross.centAmount`
+
+</TableCell>
+<TableCell>
+
+You will get an error if `taxedPrice` is missing from
+`reference`.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`amount.discount_amount`
+
+<StatusTag type="required" />
+
+</TableCell>
+<TableCell>
+
+n/a
+
+</TableCell>
+<TableCell>
+
+Set to zero because commercetools applies discounts across line items.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`currency`
+
+<StatusTag type="required" />
+
+</TableCell>
+<TableCell>
+
+`reference.taxedPrice.totalGross.currencyCode`
+
+</TableCell>
+<TableCell>
+
+You will get an error if `taxedPrice` is missing from
+`reference`.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`reference`
+
+<StatusTag type="required" />
+
+</TableCell>
+<TableCell>
+
+<ExternalLink href="http://payload.id/">`payload.id`</ExternalLink>
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`billing`
+
+<StatusTag type="required" />
+
+</TableCell>
+<TableCell>
+
+`reference.billingAddress`
+
+</TableCell>
+<TableCell>
+
+You will get an error if `billingAddress` is missing from
+`reference`.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`billing.address.address_line1`
+
+<StatusTag type="optional" />
+
+</TableCell>
+<TableCell>
+
+`reference.billingAddress.(streetNumber ' ' streetName)`
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`billing.address.address_line2`
+
+<StatusTag type="optional" />
+
+</TableCell>
+<TableCell>
+
+`reference.billingAddress.additionalStreetInfo`
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`billing.address.zip`
+
+<StatusTag type="optional" />
+
+</TableCell>
+<TableCell>
+
+`reference.billingAddress.postalCode`
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`billing.address.city`
+
+<StatusTag type="optional" />
+
+</TableCell>
+<TableCell>
+
+`reference.billingAddress.city`
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`billing.address.state`
+
+<StatusTag type="optional" />
+
+</TableCell>
+<TableCell>
+
+`reference.billingAddress.(state|region)`
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`billing.address.country`
+
+<StatusTag type="required" />
+
+</TableCell>
+<TableCell>
+
+`reference.billingAddress.country`
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`shipping`
+
+<StatusTag type="optional" />
+
+</TableCell>
+<TableCell>
+
+`reference.shippingAddress`
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`shipping.address.address_line1`
+
+<StatusTag type="optional" />
+
+</TableCell>
+<TableCell>
+
+`reference.shippingAddress.streetNumber`
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`shipping.address.address_line2`
+
+<StatusTag type="optional" />
+
+</TableCell>
+<TableCell>
+
+`reference.shippingAddress.streetName`
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`shipping.address.city`
+
+<StatusTag type="optional" />
+
+</TableCell>
+<TableCell>
+
+`reference.shippingAddress.city`
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`shipping.address.state`
+
+<StatusTag type="optional" />
+
+</TableCell>
+<TableCell>
+
+`reference.shippingAddress.(state|region)`
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`shipping.address.zip`
+
+<StatusTag type="optional" />
+
+</TableCell>
+<TableCell>
+
+`reference.shippingAddress.postalCode`
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`shipping.address.country`
+
+<StatusTag type="required" />
+
+</TableCell>
+<TableCell>
+
+`reference.shippingAddress.country`
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`customer`
+
+<StatusTag type="optional" />
+
+</TableCell>
+<TableCell>
+
+n/a
+
+</TableCell>
+<TableCell>
+
+Not set if `firstName` and `lastName` are missing
+from `billingAddress`.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+<ExternalLink href="http://customer.name/">`customer.name`</ExternalLink>
+
+<StatusTag type="required" />
+
+</TableCell>
+<TableCell>
+
+`reference.billingAddress.(firstName ' ' lastName)`
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`customer.email`
+
+<StatusTag type="optional" />
+
+</TableCell>
+<TableCell>
+
+- `payload.customerEmail`
+- `reference.billingAddress.email`
+- `reference.customerEmail`
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+<ExternalLink href="http://products.items.name/">`products.items.name`</ExternalLink>
+
+<StatusTag type="required" />
+
+</TableCell>
+<TableCell>
+
+<ExternalLink href="http://reference.lineitems.variant.name/">`reference.lineItems.variant.name`</ExternalLink>
+
+</TableCell>
+<TableCell>
+
+Uses the language of the order country if present. Defaults to English
+if no country is included.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`products.items.quantity`
+
+<StatusTag type="required" />
+
+</TableCell>
+<TableCell>
+
+`reference.lineItems.quantity`
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`products.items.price`
+
+<StatusTag type="required" />
+
+</TableCell>
+<TableCell>
+
+- `reference.lineItems.price.value.centAmount`
+
+- `shippingInfo.price.centAmount`
+
+</TableCell>
+<TableCell>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`products.items.amount`
+
+<StatusTag type="required" />
+
+</TableCell>
+<TableCell>
+
+- `reference.lineItems.taxedPrice.totalGross.centAmount`
+- `shippingInfo.taxedPrice.totalGross.centAmount`
+
+</TableCell>
+<TableCell>
+
+You will get an error if `taxedPrice` is missing from
+`lineItems` or `shippingInfo`.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`products.items.discount_amount`
+
+<StatusTag type="required" />
+
+</TableCell>
+<TableCell>
+
+(`reference.lineItems.price.value.centAmount` \*
+`reference.lineItem.quantity`) -
+`reference.lineItem.taxedPrice.totalGross.centAmount`
+
+</TableCell>
+<TableCell>
+
+The value is calculated from the difference between the total gross
+(includes discount) and the item total price (excludes discount).
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+</Accordion>
+
+<TipBox variant="tip">
+
+We recommend that you create a context when your payment options page loads, and reload it if the customer makes a change to their basket or details.
+
+</TipBox>
+
+### Endpoint
+
+<tabs>
+<tab title="Live">
+<LineCodeWrapper type="post">
+
+`https://commercetools.integration.checkout.com/api/contexts`
+
+</LineCodeWrapper>
+</tab>
+<tab title="Sandbox">
+<LineCodeWrapper type="post">
+
+`https://commercetools.integration.sandbox.checkout.com/api/contexts`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+### Header parameters
+
+<Table>
+<TableHead headers={['Header', 'Value']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`Authorization`
+
+<StatusTag type="required" />
+
+</TableCell>
+<TableCell>
+
+`public key`
+
+<InfoBox>
+
+Use the valid public key of your <ExternalLink href="https://checkout.com" >Checkout.com</ExternalLink> account. You can find this in the <ExternalLink href="https://hub.checkout.com/v2" >Hub</ExternalLink>.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`Content-Type`
+
+<StatusTag type="required" />
+
+</TableCell>
+<TableCell>
+
+`application/json`
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+### Body parameters
+
+<Table>
+<TableHead headers={['Field name', 'Description']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`reference`
+
+<TypeTag type="string" />
+<StatusTag type="required" />
+
+</TableCell>
+<TableCell>
+
+The commercetools cart or order ID.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`customer_email`
+
+<TypeTag type="string" />
+<StatusTag type="optional" />
+
+</TableCell>
+<TableCell>
+
+The customer's email.
+
+<InfoBox>
+
+If not present, the billing email or the email from the order will be used.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+### Request payment
+
+Creating the context above will give you a `context_id`. Use this to request a payment with the following endpoint.
+
+The commercetools integration currently supports the following payment methods:
+
+- Card
+- iDEAL
+- Sofort
+- Klarna
+- PayPal
+
+### Endpoint
+
+<tabs>
+<tab title="Live">
+<LineCodeWrapper type="post">
+
+`https://commercetools.integration.checkout.com/api/payments`
+
+</LineCodeWrapper>
+</tab>
+<tab title="Sandbox">
+<LineCodeWrapper type="post">
+
+`https://commercetools.integration.sandbox.checkout.com/api/payments`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+### Header parameters
+
+<Table>
+<TableHead headers={['Header', 'Value']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`Authorization`
+
+<StatusTag type="required" />
+
+</TableCell>
+<TableCell>
+
+`public key`
+
+<InfoBox>
+
+Use the valid public key of your <ExternalLink href="https://checkout.com" >Checkout.com</ExternalLink> account. You can find this in the <ExternalLink href="https://hub.checkout.com/v2" >Hub</ExternalLink>.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`Content-Type`
+
+<StatusTag type="required" />
+
+</TableCell>
+<TableCell>
+
+`application/json`
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+### Body parameters
+
+<tabs>
+<tab title="Card token">
+<Table withTopBorder={false}>
+<TableHead headers={['Field name', 'Description']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`type`
+
+<TypeTag type="string" />
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+The type of payment method. Set this to `token`.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`context_id`
+
+<TypeTag type="string" />
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+The ID of the payment context created above.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`token`
+
+<TypeTag type="string" />
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+The <ExternalLink href="https://checkout.com">Checkout.com</ExternalLink> token.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`cvv`
+
+<TypeTag type="string" />
+<StatusTag type="optional" />
+</TableCell>
+<TableCell>
+
+The three-digit (or four digits for Amex) card verification value/code.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`save_payment_instrument`
+
+<TypeTag type="string" />
+<StatusTag type="optional" />
+</TableCell>
+<TableCell>
+
+Allows you to save the payment method for future use.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`3ds`
+
+<TypeTag type="object" />
+<StatusTag type="optional" />
+</TableCell>
+<TableCell>
+
+Allows you to select whether the transaction should be 3D Secure authenticated.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`3ds.enabled`
+
+<TypeTag type="boolean" />
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+Required the `3ds` object is included in the request.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`reference`
+
+<TypeTag type="string" />
+<StatusTag type="optional" />
+</TableCell>
+<TableCell>
+
+A reference you can use to later identify the payment. This populates
+the reference field in the <ExternalLink href="https://hub.checkout.com/v2" >Hub</ExternalLink>
+
+<InfoBox>
+
+Leaving this blank will result in `context.reference` being used as the reference in the Hub.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`success_url`
+
+<TypeTag type="string" />
+<StatusTag type="optional" />
+</TableCell>
+<TableCell>
+
+The URL to which the customer will be redirected if the payment is successful.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`failure_url`
+
+<TypeTag type="string" />
+<StatusTag type="optional" />
+</TableCell>
+<TableCell>
+
+The URL to which the customer will be redirected if the payment fails.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+</tab>
+<tab title="Saved card">
+<Table withTopBorder={false}>
+<TableHead headers={['Field name', 'Description']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`type`
+
+<TypeTag type="string" />
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+The type of payment method. Set this to `id`.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`context_id`
+
+<TypeTag type="string" />
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+The ID of the payment context created above.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`token`
+
+<TypeTag type="string" />
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+The identifier of the saved payment source.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`cvv`
+
+<TypeTag type="string" />
+<StatusTag type="optional" />
+</TableCell>
+<TableCell>
+
+The three-digit (or four digits for Amex) card verification value/code.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`save_payment_instrument`
+
+<TypeTag type="string" />
+<StatusTag type="optional" />
+</TableCell>
+<TableCell>
+
+Allows you to save the payment method for future use.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`3ds`
+
+<TypeTag type="object" />
+<StatusTag type="optional" />
+</TableCell>
+<TableCell>
+
+Allows you to select whether the transaction should be 3D Secure authenticated.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`3ds.enabled`
+
+<TypeTag type="boolean" />
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+Required the `3ds` object is included in the request.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`reference`
+
+<TypeTag type="string" />
+<StatusTag type="optional" />
+</TableCell>
+<TableCell>
+
+A reference you can use to later identify the payment. This populates
+the reference field in the <ExternalLink href="https://hub.checkout.com/v2" >Hub</ExternalLink>
+
+<InfoBox>
+
+Leaving this blank will result in `context.reference` being used as the reference in the Hub.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`success_url`
+
+<TypeTag type="string" />
+<StatusTag type="optional" />
+</TableCell>
+<TableCell>
+
+The URL to which the customer will be redirected if the payment is successful.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`failure_url`
+
+<TypeTag type="string" />
+<StatusTag type="optional" />
+</TableCell>
+<TableCell>
+
+The URL to which the customer will be redirected if the payment fails.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+</tab>
+<tab title="iDEAL">
+<Table withTopBorder={false}>
+<TableHead headers={['Field name', 'Description']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`type`
+
+<TypeTag type="string" />
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+The type of payment method. Set this to `ideal`.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`context_id`
+
+<TypeTag type="string" />
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+The ID of the payment context created above.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`banking`
+
+<TypeTag type="object" />
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+An object containing the bank details.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`banking.bic`
+
+<TypeTag type="string" />
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+The Bank Identifier Code (BIC).
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`reference`
+
+<TypeTag type="string" />
+<StatusTag type="optional" />
+</TableCell>
+<TableCell>
+
+A reference you can use to later identify the payment. This populates the reference field in the <ExternalLink href="https://hub.checkout.com/v2" >Hub</ExternalLink>.
+
+<InfoBox>
+
+Leaving this blank will result in context.reference being used as the reference in the Hub.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`success_url`
+
+<TypeTag type="string" />
+<StatusTag type="optional" />
+</TableCell>
+<TableCell>
+
+The URL to which the customer will be redirected if the payment is successful.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`failure_url`
+
+<TypeTag type="string" />
+<StatusTag type="optional" />
+</TableCell>
+<TableCell>
+
+The URL to which the customer will be redirected if the payment fails.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+</tab>
+<tab title="Klarna">
+<Table withTopBorder={false}>
+<TableHead headers={['Field name', 'Description']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`type`
+
+<TypeTag type="string" />
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+The type of payment method. Set this to `klarna`.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`context_id`
+
+<TypeTag type="string" />
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+The ID of the payment context created above.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`token`
+
+<TypeTag type="string" />
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+The Klarna authorization token.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`save_payment_instrument`
+
+<TypeTag type="string" />
+<StatusTag type="optional" />
+</TableCell>
+<TableCell>
+
+Allows you to save the payment method for future use.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`3ds`
+
+<TypeTag type="object" />
+<StatusTag type="optional" />
+</TableCell>
+<TableCell>
+
+Allows you to select whether the transaction should be 3D Secure authenticated.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`3ds.enabled`
+
+<TypeTag type="boolean" />
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+Required the `3ds` object is included in the request.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`reference`
+
+<TypeTag type="string" />
+<StatusTag type="optional" />
+</TableCell>
+<TableCell>
+
+A reference you can use to later identify the payment. This populates
+the reference field in the <ExternalLink href="https://hub.checkout.com/v2" >Hub</ExternalLink>
+
+<InfoBox>
+
+Leaving this blank will result in `context.reference` being used as the reference in the Hub.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`success_url`
+
+<TypeTag type="string" />
+<StatusTag type="optional" />
+</TableCell>
+<TableCell>
+
+The URL to which the customer will be redirected if the payment is successful.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`failure_url`
+
+<TypeTag type="string" />
+<StatusTag type="optional" />
+</TableCell>
+<TableCell>
+
+The URL to which the customer will be redirected if the payment fails.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+</tab>
+<tab title="PayPal">
+<Table withTopBorder={false}>
+<TableHead headers={['Field name', 'Description']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`type`
+
+<TypeTag type="string" />
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+The type of payment method. Set this to `paypal`.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`context_id`
+
+<TypeTag type="string" />
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+The ID of the payment context created above.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`save_payment_instrument`
+
+<TypeTag type="string" />
+<StatusTag type="optional" />
+</TableCell>
+<TableCell>
+
+Allows you to save the payment method for future use.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`3ds`
+
+<TypeTag type="object" />
+<StatusTag type="optional" />
+</TableCell>
+<TableCell>
+
+Allows you to select whether the transaction should be 3D Secure authenticated.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`3ds.enabled`
+
+<TypeTag type="boolean" />
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+Required the `3ds` object is included in the request.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`reference`
+
+<TypeTag type="string" />
+<StatusTag type="optional" />
+</TableCell>
+<TableCell>
+
+A reference you can use to later identify the payment. This populates
+the reference field in the <ExternalLink href="https://hub.checkout.com/v2" >Hub</ExternalLink>
+
+<InfoBox>
+
+Leaving this blank will result in `context.reference` being used as the reference in the Hub.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`success_url`
+
+<TypeTag type="string" />
+<StatusTag type="optional" />
+</TableCell>
+<TableCell>
+
+The URL to which the customer will be redirected if the payment is successful.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`failure_url`
+
+<TypeTag type="string" />
+<StatusTag type="optional" />
+</TableCell>
+<TableCell>
+
+The URL to which the customer will be redirected if the payment fails.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+</tab>
+<tab title="Sofort">
+<Table withTopBorder={false}>
+<TableHead headers={['Field name', 'Description']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`type`
+
+<TypeTag type="string" />
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+The type of payment method. Set this to `sofort`.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`context_id`
+
+<TypeTag type="string" />
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+The ID of the payment context created above.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`reference`
+
+<TypeTag type="string" />
+<StatusTag type="optional" />
+</TableCell>
+<TableCell>
+
+A reference you can use to later identify the payment. This populates
+the reference field in the <ExternalLink href="https://hub.checkout.com/v2" >Hub</ExternalLink>
+
+<InfoBox>
+
+Leaving this blank will result in `context.reference` being used as the reference in the Hub.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`success_url`
+
+<TypeTag type="string" />
+<StatusTag type="optional" />
+</TableCell>
+<TableCell>
+
+The URL to which the customer will be redirected if the payment is successful.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`failure_url`
+
+<TypeTag type="string" />
+<StatusTag type="optional" />
+</TableCell>
+<TableCell>
+
+The URL to which the customer will be redirected if the payment fails.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+</tab>
+</tabs>
+
+---
+
+## Manage saved payment instruments
+
+The following endpoints allow you to retrieve a customer's saved payment instruments or delete them.
+
+### Retrieve saved payment instruments
+
+Use this endpoint to return a list of a customer's saved payment instruments.
+
+### Endpoint
+
+<tabs>
+<tab title="Live">
+<LineCodeWrapper type="get">
+
+`https://commercetools.integration.checkout.com/api/merchants/{public_key}/customers/{customer_id}`
+
+</LineCodeWrapper>
+</tab>
+<tab title="Sandbox">
+<LineCodeWrapper type="get">
+
+`https://commercetools.integration.sandbox.checkout.com/api/merchants/{public_key}/customers/{customer_id}`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+### Header and path parameters
+
+<Table>
+<TableHead headers={['Header', 'Value']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`Authorization`
+
+<StatusTag type="required" />
+
+</TableCell>
+<TableCell>
+
+`secret key`
+
+<InfoBox>
+
+Use the valid secret key of your <ExternalLink href="https://checkout.com" >Checkout.com</ExternalLink> account. You can find this in the <ExternalLink href="https://hub.checkout.com/v2" >Hub</ExternalLink>.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`Content-Type`
+
+<StatusTag type="required" />
+
+</TableCell>
+<TableCell>
+
+`application/json`
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+<Table>
+<TableHead headers={['Path', 'Description']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`public_key`
+
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+Your <ExternalLink href="https://checkout.com">Checkout.com</ExternalLink> public key. You can find this in the <ExternalLink href="https://hub.checkout.com/v2">Hub</ExternalLink>.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`customer_id`
+
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+The customer's commercetools ID.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+### Delete a saved payment instrument
+
+Use the endpoint below to delete a customer's saved payment instrument.
+
+### Endpoint
+
+<tabs>
+<tab title="Live">
+<LineCodeWrapper type="delete">
+
+`https://commercetools.integration.checkout.com/api/merchants/{public_key}/customers/{customer_id}/payment-instruments/{payment_instrument_id}`
+
+</LineCodeWrapper>
+</tab>
+<tab title="Sandbox">
+<LineCodeWrapper type="delete">
+
+`https://commercetools.integration.sandbox.checkout.com/api/merchants/{public_key}/customers/{customer_id}/payment-instruments/{payment_instrument_id}`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+### Header and path parameters
+
+<Table>
+<TableHead headers={['Header', 'Value']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`Authorization`
+
+<StatusTag type="required" />
+
+</TableCell>
+<TableCell>
+
+`secret key`
+
+<InfoBox>
+
+Use the valid secret key of your <ExternalLink href="https://checkout.com">Checkout.com</ExternalLink> account. You can find this in the <ExternalLink href="https://hub.checkout.com/v2" >Hub</ExternalLink>.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`Content-Type`
+
+<StatusTag type="required" />
+
+</TableCell>
+<TableCell>
+
+`application/json`
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+<Table>
+<TableHead headers={['Path', 'Description']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`public_key`
+
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+Your <ExternalLink href="https://checkout.com">Checkout.com</ExternalLink> public key. You can find this in the <ExternalLink href="https://hub.checkout.com/v2">Hub</ExternalLink>.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`customer_id`
+
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+The customer's commercetools ID.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`payment_instrument_id`
+
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+The unique identifier of the saved payment instrument.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+---
+
+## Postman collection
+
+For more testing, commercetools have created a <ExternalLink href="https://consumerpayments.postman.co/workspaces/7c5d60af-d230-476e-a98a-5126a55ccbd2/collections" >Postman collection</ExternalLink>.

@@ -1,0 +1,700 @@
+--- 
+title: Storefront integration
+account: ABC
+---
+
+<TipBox variant="info">
+
+Follow this guide if you're building a storefront on top of a headless Magento 2 backend.
+
+</TipBox>
+
+Once you've set up our [Magento 2 plugin](/integrate/e-commerce-platforms/magento-2) in the Magento back end, you're ready to start accepting payments through your own storefront.
+
+To get started, follow Magento's <ExternalLink href="https://devdocs.magento.com/guides/v2.3/graphql/tutorials/checkout/" >checkout tutorial</ExternalLink> until you get to step 9. Then, instead of following steps 9 and 10, use our request payment endpoint below to complete the order.
+
+---
+
+## Request payment
+
+<TipBox variant="note">
+
+Currently, this endpoint only accepts card payments (including [Mada](/payments/payment-methods/cards/mada)). We will add further functionality in due course.
+
+</TipBox>
+
+The request
+
+**Endpoint**
+
+<tabs>
+<tab title="v3">
+<TipBox variant="note">
+
+In addition to card payments the v3 endpoint also allows payments via saved cards for uses who are logged in.
+
+</TipBox>
+<TipBox variant="info">
+
+Replace  <ExternalLink href="http://example.com/">`example.com`</ExternalLink>  in the following endpoint URL with your store's domain name. The URL can be `http` or `https`.
+
+</TipBox>
+
+**Logged in customers**
+
+<LineCodeWrapper type="post">
+
+`https://www.example.com/rest/default/v1/checkout_com/mine/api/v3`
+
+</LineCodeWrapper>
+
+**Guest checkout**
+
+<LineCodeWrapper type="post">
+
+`https://www.example.com/rest/default/v1/checkout_com/guest/api/v3`
+
+</LineCodeWrapper>
+
+### **Header parameters**
+
+<Table>
+<TableHead headers={['Header', 'Value']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`Authorization`
+
+<StatusTag type="required" />
+<InfoBox>
+
+For logged in customers only
+
+</InfoBox>
+</TableCell>
+<TableCell>
+
+`Bearer customer_token`
+
+<InfoBox>
+
+See <ExternalLink href="https://devdocs.magento.com/guides/v2.4/rest/tutorials/orders/order-create-customer.html#get-token" >Magento documentation</ExternalLink> to generate a customer token.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`Cko-Authorization`
+
+<StatusTag type="required" />
+
+</TableCell>
+<TableCell>
+
+`public key`
+
+<InfoBox>
+
+Use the valid public key of your <ExternalLink href="https://checkout.com" >Checkout.com</ExternalLink> account. You can find this in the <ExternalLink href="https://hub.checkout.com/v2">Hub</ExternalLink>.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+### **Body parameters**
+
+<Table withTopBorder={false}>
+<TableHead headers={['Field name', 'Description']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`payment_method`
+
+<TypeTag type="string" />
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+The payment method.
+
+`checkoutcom_card_payment` / `checkoutcom_vault`
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`quote_id`
+
+<TypeTag type="number" />
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+The shopping cart identifier.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`payment_token`
+
+<TypeTag type="string" />
+<StatusTag type="required" />
+<InfoBox> 
+
+For card payments
+
+</InfoBox>
+</TableCell>
+<TableCell>
+
+The <ExternalLink href="https://checkout.com">Checkout.com</ExternalLink> payment token.
+
+<InfoBox showIcon={false}>
+
+Use [Frames](/integrate/frames), or another of our integration methods, to tokenize customers' cards.
+
+</InfoBox>
+<TipBox variant="info">
+
+This is only for card payments.
+
+</TipBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`public_hash`
+
+<TypeTag type="number" />
+<StatusTag type="required" />
+<InfoBox>
+
+For Vault payments
+
+</InfoBox>
+</TableCell>
+<TableCell>
+
+The Vault public hash.
+
+<TipBox variant="info">
+
+This is only for payments through Vault.
+
+</TipBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`card_bin`
+
+<TypeTag type="string" />
+<StatusTag type="optional" />
+</TableCell>
+<TableCell>
+
+The bank identification number (BIN) of a card.
+
+<InfoBox>
+
+Required if the payment is made with a Mada card.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`card_cvv`
+
+<TypeTag type="number" />
+<StatusTag type="optional" />
+</TableCell>
+<TableCell>
+
+The card verification value (CVV) of a card.
+
+<TipBox variant="info">
+
+This is only for card payments and users who are logged in.
+
+</TipBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`save_card`
+
+<TypeTag type="boolean" />
+<StatusTag type="optional" />
+<InfoBox>
+
+For card payment and logged in users
+
+</InfoBox>
+</TableCell>
+<TableCell>
+
+Save card option for `checkoutcom_card_payment`.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`success_url`
+
+<TypeTag type="string" />
+<StatusTag type="optional" />
+</TableCell>
+<TableCell>
+
+The URL to which the customer is redirected following a successful payment. Allows you to have a different redirection URL for the storefront from the one on your Magento 2 instance.
+
+<InfoBox>
+
+If not provided, your existing `success_url` will be used.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`failure_url`
+
+<TypeTag type="string" />
+<StatusTag type="optional" />
+</TableCell>
+<TableCell>
+
+The URL to which the customer is redirected following a failed payment. Allows you to have a different redirection URL for the storefront from the one on your Magento 2 instance.
+
+<InfoBox>
+
+If not provided, your existing `failure_url` will be used.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+### **Request example**
+
+<tabs>
+<tab title="Card payment">
+
+```json
+{
+    "paymentRequest": {
+        "payment_method": "checkoutcom_card_payment",
+        "payment_token": "tok_4gzeau5o2uqubbk6fufs3m7p54",
+        "quote_id": 799,
+        "save_card": true
+    }
+}
+```
+
+</tab>
+<tab title="Vault payment">
+
+```json
+{
+    "paymentRequest": {
+        "payment_method": "checkoutcom_vault",
+        "public_hash": "7212a2d6e8f31de3ea58f2a1d9cc00332dc90b0da902272b398368ae795f3f7f",
+        "card_cvv": 100,
+        "quote_id": 800
+    }
+}
+```
+
+</tab>
+</tabs>
+
+### The response
+
+If you get a response with `"success": true`, your order was successful.
+
+If the payment was made with [3D Secure (3DS) authentication](/risk-management/3d-secure), you will get a `200` response containing a redirect link that the customer will need to complete in order to finalize the transaction.
+
+If unsuccessful, you will get one of the following error messages:
+
+*   Status code `422` – `"The request is invalid."`
+*   Status code `500` – `"The order could not be created."`
+*   Status code `422` – `"The payment request was declined by the gateway."`
+
+
+### **Success response example**
+
+<tabs>
+<tab title="3DS disabled">
+
+```json
+{
+  "success": true,
+  "orderID": 000000028
+}
+```
+
+</tab>
+<tab title="3DS enabled">
+<TipBox variant="info" title="session_id">
+
+Once 3DS authentication is completed, you will receive a `session_id` from our payment gateway. You can pass this `session_id` to our [get payment details endpoint](/payments/manage-payments/get-payment-details) to determine whether the payment was approved, or to get more information about it.
+
+</TipBox>
+</tab>
+</tabs>
+</tab>
+<tab title="v2">
+<TipBox variant="note">
+
+The v2 endpoint is only available for plugin version 2.2.6 and above.
+
+</TipBox>
+<TipBox variant="info">
+
+Replace  <ExternalLink href="http://example.com/">`example.com`</ExternalLink>  in the following endpoint URL with your store's domain name. The URL can be `http` or `https`.
+
+</TipBox>
+
+<LineCodeWrapper type="post">
+
+`https://example.com/checkout_com/api/v2`
+
+</LineCodeWrapper>
+
+
+**Header parameters**
+
+<Table>
+<TableHead headers={['Header', 'Value']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`Authorization`
+
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+`public key`
+
+<InfoBox>
+
+Use the valid public key of your <ExternalLink href="https://checkout.com" >Checkout.com</ExternalLink> account. You can find this in the <ExternalLink href="https://hub.checkout.com/v2" >Hub</ExternalLink>.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+**Body parameters**
+
+<Table withTopBorder={false}>
+<TableHead headers={['Field name', 'Description']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`payment_token`
+
+<TypeTag type="string" />
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+The <ExternalLink href="https://checkout.com">Checkout.com</ExternalLink> payment token.
+
+<InfoBox>
+
+Use [Frames](/integrate/frames), or another of our integration methods, to tokenize customers' cards.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`quote_id`
+
+<TypeTag type="string" />
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+The shopping cart identifier.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`card_bin`
+
+<TypeTag type="string" />
+<StatusTag type="optional" />
+</TableCell>
+<TableCell>
+
+The bank identification number (BIN) of a card.
+
+<InfoBox>
+
+Required if the payment is made with a Mada card.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`success_url`
+
+<TypeTag type="string" />
+<StatusTag type="optional" />
+</TableCell>
+<TableCell>
+
+The URL to which the customer is redirected following a successful payment. Allows you to have a different redirection URL for the storefront from the one on your Magento 2 instance.
+
+<InfoBox>
+
+If not provided, your existing `success_url` will be used.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`failure_url`
+
+<TypeTag type="string" />
+<StatusTag type="optional" />
+</TableCell>
+<TableCell>
+
+The URL to which the customer is redirected following a failed payment. Allows you to have a different redirection URL for the storefront from the one on your Magento 2 instance.
+
+<InfoBox>
+
+If not provided, your existing `failure_url` will be used.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+### **Request example**
+
+```json
+{
+  "payment_token": "tok_4gzeau5o2uqubbk6fufs3m7p54",
+  "quote_id": 12345,
+  "card_bin": "424242",
+  "success_url": "https://mywebsite.com/storefront_1/success",
+  "failure_url": "https://mywebsite.com/storefront_1/failure"
+}
+```
+
+### The response
+
+If you get a response with `"success": true`, your order was successful.
+
+If the payment was made with [3D Secure (3DS) authentication](/risk-management/3d-secure), you will get a `200` response containing a redirect link that the customer will need to complete in order to finalize the transaction.
+
+If unsuccessful, you will get one of the following error messages:
+
+*   Status code `422` – `"The request is invalid."`
+*   Status code `500` – `"The order could not be created."`
+*   Status code `422` – `"The payment request was declined by the gateway."`
+
+<Box horizontal="sm">
+
+### **Success response example - 3DS disabled**
+
+</Box>
+
+```json
+{
+  "success": true,
+  "orderID": 000000028
+}
+```
+
+<Box horizontal="sm">
+
+### **Success response example - 3DS enabled**
+
+</Box>
+
+```json
+{
+  "success": true,
+  "order_id": 000000028,
+  "redirect_url": "https://3ds2-sandbox.ckotech.co/interceptor/3ds_wt6jghhglt6urf63fir4v6zuem",
+  "error_message": ""
+}
+```
+
+<Box horizontal="sm">
+<TipBox variant="info" title="session_id">
+
+Once 3DS authentication is completed, you will receive a `session_id` from our payment gateway. You can pass this `session_id` to our [get payment details endpoint](/payments/manage-payments/get-payment-details) to determine whether the payment was approved, or to get more information about it.
+
+</TipBox>
+</Box>
+</tab>
+<tab title="v1">
+<TipBox variant="info">
+
+Replace <ExternalLink href="http://example.com/">`example.com`</ExternalLink> in the following endpoint URL with your store's domain name. The URL can be `http` or `https`.
+
+</TipBox>
+<LineCodeWrapper type="post">
+
+`https://example.com/checkout_com/api/v1`
+
+</LineCodeWrapper>
+
+<Box horizontal="sm">
+
+### **Header parameters**
+
+<Table withTopBorder={false}>
+<TableHead headers={['Header', 'Value']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`Authorization`
+
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+`public key`
+
+<InfoBox>
+
+Use the valid public key of your <ExternalLink href="https://checkout.com" >Checkout.com</ExternalLink> account. You can find this in the <ExternalLink href="https://hub.checkout.com/v2" >Hub</ExternalLink>.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+### **Body parameters**
+
+<Table withTopBorder={false}>
+<TableHead headers={['Field name', 'Description']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`payment_token`
+
+<TypeTag type="string" />
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+The <ExternalLink href="https://checkout.com">Checkout.com</ExternalLink> payment token.
+
+<InfoBox>
+
+Use [Frames](/integrate/frames), or another of our integration methods, to tokenize customers' cards.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`quote_id`
+
+<TypeTag type="string" />
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+The shopping cart identifier.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`card_bin`
+
+<TypeTag type="string" />
+<StatusTag type="optional" />
+</TableCell>
+<TableCell>
+
+The bank identification number (BIN) of a card.
+
+<InfoBox>
+
+Required if the payment is made with a Mada card.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+### **Request example**
+</Box>
+
+```json
+{
+  "payment_token": "tok_4gzeau5o2uqubbk6fufs3m7p54",
+  "quote_id": 12345,
+  "card_bin": "424242"
+}
+```
+
+<Box horizontal="sm">
+
+### The response
+
+If you get a response with `"success": true`, your order was successful.
+
+If unsuccessful, you will get one of the following error messages:
+
+*   Status code `422` – `"The request is invalid."`
+*   Status code `500` – `"The order could not be created."`
+*   Status code `422` – `"The payment request was declined by the gateway."`
+
+### **Success response example**
+</Box>
+
+```json
+{
+  "success": true,
+  "orderID": 000000028
+}
+```
+
+</tab>
+</tabs>

@@ -1,0 +1,33 @@
+<IBuilderDescriptionCard title="Set up Frames events" tab="html/app.js" lines={[26, 30]}>
+
+Frames has a collection of events that are triggered when certain actions happen. They help you tailor the experience you want to provide to your users. [Read more about events in Frames](/integrate/frames/frames-reference#Events).
+
+For our example, we will focus on using the `FRAMES_VALIDATION_CHANGED` event to listen out for field validation status changes. Behind the scenes, Frames is checking the length of the card number, the provider, expiry date and CVV to see if it is valid. The `FRAMES_VALIDATION_CHANGED` event is triggered every time new information is entered in one of the input fields. We can use this to change logos, present an error message and prevent a user from submitting the form.
+
+As you can see in our example, we add a normal JavaScript event listener to Frames that listens out for `FRAMES_VALIDATION_CHANGED`. When that event is triggered, our function `onValidationChanged` is called. What you decide to do with this event may be different from our implementation, but you can also copy our implementation.
+
+<TipBox variant="tip">
+
+To access Frames events, use `Frames.Events.<EVENT_NAME>`.
+
+</TipBox>
+
+</IBuilderDescriptionCard>
+
+<IBuilderDescriptionCard title="Handle form submission" tab="html/app.js" lines={[169, 173]}>
+
+Because the input fields are iframes, we need to interact with them in specific ways. To submit the card details to Frames, use the built-in action `submitCard` to submit the card details. 
+
+In our example, we have added an event listener on the form, so we know when the user tries to submit the form. When this event happens, we use the `Frames.submitCard()` action to send the card details securely once all the inputs are valid.
+
+</IBuilderDescriptionCard>
+
+<IBuilderDescriptionCard title="Listen for card tokenization" tab="html/app.js" lines={[175, 186]}>
+
+Following our example, we have used `Frames.Events.CARD_TOKENIZED` in an event listener, so we know when we can send the token to our back end to handle the payment.
+
+</IBuilderDescriptionCard>
+
+
+
+

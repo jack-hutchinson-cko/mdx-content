@@ -1,0 +1,13 @@
+{
+	"name": "frames-integration-builder",
+	"version": "1.0.0",
+	"description": "Integration builder for Checkout.com product Frames.",
+	"main": "server.js",
+	"author": "Checkout.com",
+	"license": "ISC",
+	"dependencies": {
+		"checkout-sdk-node": "^1.0.37",
+		"cors": "^2.8.5",
+		"express": "^4.17.1"
+	}
+}

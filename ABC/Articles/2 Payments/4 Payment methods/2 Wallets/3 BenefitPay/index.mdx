@@ -1,0 +1,437 @@
+---
+title: BenefitPay
+account: ABC
+---
+
+Start accepting payments using BenefitPay, Bahrain's electronic wallet payment system.
+
+<TipBox variant="info">
+
+To start accepting BenefitPay payments, please contact your Customer Success Manager.
+
+</TipBox>
+
+<Table>
+<TableBody>
+<TableRow>
+<TableCell withBackground>
+
+**Model**
+
+</TableCell>
+<TableCell>
+
+GW
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell withBackground>
+
+**Payment flow**
+
+</TableCell>
+<TableCell>
+
+Redirect
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell withBackground>
+
+**Payment method type**
+
+</TableCell>
+<TableCell>
+
+Wallet
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell withBackground>
+
+**One-step payment**
+
+</TableCell>
+<TableTicCell type="check"/>
+</TableRow>
+<TableRow>
+<TableCell withBackground>
+
+**Authorization**
+
+</TableCell>
+<TableTicCell type="error"/>
+</TableRow>
+<TableRow>
+<TableCell withBackground>
+
+**Capture**
+
+</TableCell>
+<TableTicCell type="error" />
+</TableRow>
+<TableRow>
+<TableCell withBackground>
+
+**Refund**
+
+</TableCell>
+<TableTicCell type="check" />
+</TableRow>
+<TableRow>
+<TableCell withBackground>
+
+**Partial refund**
+
+</TableCell>
+<TableTicCell type="check" />
+</TableRow>
+<TableRow>
+<TableCell withBackground>
+
+**Chargeback**
+
+</TableCell>
+<TableTicCell type="error" />
+</TableRow>
+<TableRow>
+<TableCell withBackground>
+
+**Recurring payment**
+
+</TableCell>
+<TableTicCell type="error" />
+</TableRow>
+</TableBody>
+</Table>
+
+---
+
+## Overview
+
+You can process a BenefitPay payment in two steps:
+
+1.  [Request a BenefitPay payment](/payments/payment-methods/wallets/benefit-pay#Request_a_payment)
+2.  [Display the QR code to the customer](/payments/payment-methods/wallets/benefit-pay#Display_the_QR_code)
+
+---
+
+## Request a payment
+
+Use the details below to set up your request.
+
+You can request either a **web payment** or a **mobile payment** by setting the `source.integration_type` field to `web` or `mobile`.
+
+<TipBox variant="info" title="Mobile payments">
+
+If you opt for a mobile payment, the customer can pay with the BenefitPay mobile app by either [scanning the QR code](/payments/payment-methods/wallets/benefit-pay#Display_the_QR_code) or logging in to pay with the card attached to their account.
+
+</TipBox>
+
+### Endpoints
+
+You can find the full list, as well as complete request and response examples, in our <ExternalLink href="https://api-reference.checkout.com/#tag/Payments/paths/~1payments/post" >API reference</ExternalLink>.
+
+<tabs>
+<tab title="Live" active>
+<LineCodeWrapper type="post">
+
+`https://api.checkout.com/payments`
+
+</LineCodeWrapper>
+</tab>
+<tab title="Sandbox">
+<LineCodeWrapper type="post">
+
+`https://api.sandbox.checkout.com/payments`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+### Request examples
+
+<tabs>
+<tab title="Web payment" active>
+
+```json
+{
+  "amount": 1000,
+  "currency": "BHD",
+  "source": {
+    "type": "benefitpay",
+    "integration_type": "web"
+  }
+}
+```
+
+</tab>
+<tab title="Mobile payment">
+
+```json
+{
+  "amount": 1000,
+  "currency": "BHD",
+  "source": {
+    "type": "benefitpay",
+    "integration_type": "mobile"
+  }
+}
+```
+
+</tab>
+</tabs>
+
+### Response example
+
+If you receive a 202 response with "status": "Pending", BenefitPay has accepted your transaction request. We will also send you `payment_pending` and `payment_capture_pending` webhooks to confirm.
+
+```json
+    {
+      "id": "pay_aeb7fegfsihejgpeeby36rrf3y",
+      "status": "Pending",
+      "customer": {
+        "id": "cus_uj7uhbi2lwaela6fsx6apeztv4"
+      },
+      "_links": {
+        "self": {
+          "href": "https://api.sandbox.checkout.com/payments/pay_aeb7fegfsihejgpeeby36rrf3y"
+        }
+      }
+    }
+```
+
+---
+
+## Display the QR code
+
+To capture the pending payment, you will need to display the associated QR code to your customer for them to scan with the BenefitPay mobile app.
+
+To do this you will need to get the QR code data, convert that into a QR code and then display it on your payment page.
+
+### Get QR code data
+
+### The GET request
+
+Use the details below to get the `source.qr_data`.
+
+### Endpoints
+
+<tabs>
+<tab title="Live" active>
+<LineCodeWrapper type="get">
+
+`https://api.checkout.com/payments/{payment_id}`
+
+</LineCodeWrapper>
+</tab>
+<tab title="Sandbox">
+<LineCodeWrapper type="get">
+
+`https://api.sandbox.checkout.com/payments/{payment_id}`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+### Response example
+
+```json
+    {
+      "id": "pay_aeb7fegfsihejgpeeby36rrf3y",
+      "requested_on": "2019-10-16T06:54:09Z",
+      "source": {
+        "type": "benefitpay",
+        "reference_number": "aaf902e2-23de-4980-a305-d3c43a013255",
+        "qr_data": "00020101021205081000019949440008mobi.foo010810000199021010000000010402db52046300530304854051.0005802BH5907Talabat6003Web62570536aaf902e2-23de-4980-a305-d3c43a0132550713201754708940863048B0C"
+      },
+      "amount": 1000,
+      "currency": "BHD",
+      "payment_type": "Regular",
+      "status": "Pending",
+      "risk": {
+        "flagged": false
+      },
+      "customer": {
+        "id": "cus_uj7uhbi2lwaela6fsx6apeztv4"
+      },
+      "_links": {
+        "self": {
+          "href": "https://api.sandbox.checkout.com/payments/pay_aeb7fegfsihejgpeeby36rrf3y"
+        }
+      }
+    }
+```
+
+---
+
+## Create and display the QR code
+
+Now take the `source.qr_data` obtained in the previous step and turn it into a QR code (via an API or your own implementation). You should then display this on your payment page so the customer can scan it with their BenefitPay mobile app and complete the transaction.
+
+Once the customer has completed the payment by scanning the QR code, we will send you a `payment_captured` webhook notification to confirm the success of the payment.
+
+---
+
+## Refunds and chargebacks
+
+BenefitPay has no native support for refunds. If you want to refund a customer who has made a BenefitPay payment, we recommend that you make the refund using a standard bank transfer.
+
+In addition, there is no chargeback mechanism for BenefitPay.
+
+---
+
+## Webhooks
+
+When using BenefitPay, you may receive the following webhooks.
+
+<Table>
+<TableHead headers={['Webhook', 'Description']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`payment_pending`
+
+</TableCell>
+<TableCell>
+
+Sent when a payment request is successfully initiated.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`payment_capture_pending`
+
+</TableCell>
+<TableCell>
+
+Sent when the acquirer is in the process of accepting the payment.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`payment_captured`
+
+</TableCell>
+<TableCell>
+
+Sent when the payment has been successfully approved.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`payment_declined`
+
+</TableCell>
+<TableCell>
+
+Sent when the payment is declined.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+Learn more about [webhooks and how to subscribe to them](/reporting-and-insights/webhooks).
+
+---
+
+## Testing BenefitPay
+
+<TipBox variant="note">
+
+To start testing, you'll need to:
+
+*   <ExternalLink href="https://www.checkout.com/get-test-account" >create a test account</ExternalLink>, and
+*   contact your Customer Success Manager or Integrations engineer to activate BenefitPay payments in the sandbox environment.
+
+</TipBox>
+
+1.  Create a BenefitPay payment request and get the QR code data, as described above.
+2.  Convert the QR code data into a QR code.
+3.  Download BenefitPay's simulator app.
+4.  Scan the QR code with the app to capture and complete the test payment.
+
+
+<TipBox variant="info" title="Downloading BenefitPay's mobile app">
+
+To download BenefitPay's simulator app, simply provide BenefitPay with an account ID (either a Google Play Store ID or an Apple ID) and then, once you've installed it, supply a mobile number to complete your registration.
+
+</TipBox>
+
+### BenefitPay test cards
+
+You can use one of the following test cards in your sandbox environment. See our [testing guide](/testing) for more information.
+
+<Table>
+<TableHead headers={['Card', 'Number', 'Response']}/>
+<TableBody>
+<TableRow>
+<TableCell>
+        
+Visa
+
+</TableCell>
+<TableCell>
+
+`4600 41## #### ####`
+
+</TableCell>
+<TableCell>
+
+Successful
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Visa
+
+</TableCell>
+<TableCell>
+
+`4550 12## #### ####`
+
+</TableCell>
+<TableCell>
+
+Declined (Expired card)
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Visa
+
+</TableCell>
+<TableCell>
+
+`4415 55## #### ####`
+
+</TableCell>
+<TableCell>
+
+Declined (Insufficient funds)
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+<TipBox variant="info">
+
+Use any future expiry date and PIN code to add the cards into your test wallet. Replace `#` with random numbers and ensure that your card number length is 16 digits.
+
+</TipBox>

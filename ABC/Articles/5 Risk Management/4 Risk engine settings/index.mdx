@@ -1,0 +1,130 @@
+---
+title: Risk engine settings
+account: ABC
+description: Learn about the rules that power our risk engine, and how they help prevent fraud.
+---
+
+Our in-house risk engine seamlessly integrates into our payment flow, helping to protect your business from fraud and keep your transactions secure.
+
+Below, you can learn about the risk management rules that make up our risk engine and how they help to detect and prevent fraud.
+
+<TipBox variant="info" title="Configuring your risk settings">
+
+If you want to change your risk settings, please get in touch with our Risk team at risk@checkout.com.
+
+</TipBox>
+
+---
+
+## Risk rules
+
+<Table>
+<TableHead headers={['Rule', 'Summary']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+Address verification service (AVS)
+
+</TableCell>
+<TableCell>
+
+AVS is widely used in the US, Canada, and UK to verify the billing address provided by the cardholder with the address on file at the issuing bank.
+
+<InfoBox>
+
+Only applicable to US and EU credit cards. AVS rules are only applied to charges that include the cardholder's billing address.
+
+</InfoBox>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Velocity
+
+</TableCell>
+<TableCell>
+
+Velocity rules allow you to automatically trigger actions based on the frequency of transactions with matching attributes over a specific period. These can be set up for a range of frequencies, including daily, weekly and monthly.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Mismatch
+
+</TableCell>
+<TableCell>
+
+Mismatch rules can be configured to trigger when the details of a transaction do not correspond with one another (e.g., the difference in geo-location between the BIN country and the IP address of the cardholder).
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+Threshold
+
+</TableCell>
+<TableCell>
+
+Threshold amounts can be set to trigger a defined action based on the value and currency of a transaction, typically to manage exposure to fraudulent high-value orders.
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+Verified information
+
+</TableCell>
+<TableCell>
+
+Information such as email, billing address, shipping address, etc. can be checked against the Hub’s built-in tools to verify whether the information provided is valid or is potentially fraudulent, depending on the rules and actions set.
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+High-risk countries
+
+</TableCell>
+<TableCell>
+
+A custom list of high-risk countries that helps to prevent transactions to and from more fraud-prone locations.
+
+<InfoBox>
+
+If you have several businesses associated with your account, you can have a different set of high-risk countries for each of them.
+
+</InfoBox>
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+Blacklist management
+
+</TableCell>
+<TableCell>
+
+A blacklist that rejects transactions based on four attributes: card, IP address, email, and phone number. We manage a global blacklist of cards that have been blacklisted by other Checkout.com merchants, and we block any card that has been blacklisted by at least three other merchants.
+
+</TableCell>
+</TableRow>
+
+</TableBody>
+</Table>
+
+
+
+

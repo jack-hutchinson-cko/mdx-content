@@ -1,0 +1,51 @@
+--- 
+title: Shopware
+account: ABC
+---
+
+Get started with our plugin for your Shopware webshop.
+
+<TipBox variant="info">
+
+This guide assumes that you have already installed Shopware.
+
+</TipBox>
+
+---
+
+## Before you start
+
+### Create a test account
+
+If you haven't already, <ExternalLink href="https://www.checkout.com/get-test-account" >create a test Checkout.com account</ExternalLink>.
+
+### Get your API keys 
+
+To set up our Shopware plugin, you'll need your public and secret API keys, which are generated automatically upon account creation.
+
+1.  Log in to your test account on the <ExternalLink href="https://sandbox.checkout.com/" >Hub sandbox</ExternalLink>.
+2.  In the left menu, go to _Settings > Channels_, and make a note of your secret and public API keys.
+
+<img maxWidth={800} src="/docs/Integrate/channel_settings.png" title="Channel settings"  />
+
+3.  Scroll down to the _Webhooks_ section of the page and select _New webhook_.
+4.  Enter the following URL, replacing `example.com` with the URL of your shop: `example.com/CkoCheckoutWebhook`.
+
+<TipBox variant="note">
+
+Correctly configuring your webhooks is important; if they're incorrectly formatted, the plugin will not work.
+
+</TipBox>
+
+5.  Select _API - v2.0_.
+6.  Tick _Select all_, then select _Create webhook_.
+
+<img maxWidth={700} src="/docs/Integrate/Shopware/Screenshot+2021-04-27+at+16.24.29.png"  />
+
+7.  Select the webhook you just created, and make a note of the private shared API key.
+
+<img maxWidth={600} src="/docs/Integrate/Shopware/Screenshot+2021-04-27+at+16.25.14.png"  />
+
+---
+
+## Install your Shopware plugin

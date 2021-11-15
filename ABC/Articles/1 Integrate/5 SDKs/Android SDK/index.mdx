@@ -1,0 +1,220 @@
+--- 
+title: Android SDK
+account: ABC
+---
+
+Start accepting online payments in just a few minutes with our Android SDK. It's quick and easy to integrate, accepts online payments from all major credit cards, and is customizable to your brand.
+
+<TipBox variant="note" title="Minimum requirements">
+
+In order to use our Android SDK, you must be on at least version 5.0 (API 21).
+
+</TipBox>
+
+<TipBox variant="info" >
+
+Our Android SDK is released under the MIT license.
+
+</TipBox>
+
+---
+
+## How it works
+
+1. You either embed our own customizable UI in your mobile app or, if you want full flexibility, you can build your own payment form and use our Android SDK in a headless mode.
+2. Our Android SDK is then used to take your customer's sensitive information and exchange them for a secure token. This process is called tokenization. Once you have the card token, you're ready to make the payment request.
+
+<img src="/docs/Integrate/SDKs/Android SDK/Android.png" />
+
+---
+
+## Demo (our pre-built UI)
+
+<img maxWidth={170} src="/docs/Integrate/SDKs/Android SDK/android-demo.gif" />
+
+---
+
+## Integrate with our Android SDK
+
+### Before you start
+
+Make sure you have your public key. You can find it in the <ExternalLink href="https://hub.checkout.com" >Hub</ExternalLink>, under _Settings > Channels_. If you don't have an account with us yet, you can <ExternalLink href="https://www.checkout.com/get-test-account" >request a free test one</ExternalLink>.
+
+### Step 1: Add the dependence repository
+
+```groovy
+// project gradle file
+allprojects {
+ repositories {
+  ...
+  maven { url 'https://jitpack.io' }
+ }
+}
+```
+
+### Step 2: Add the SDK and its dependencies in gradle
+
+```groovy
+// module gradle file
+dependencies {
+    implementation 'com.checkout:frames-android:3.0.1'
+}
+```
+
+<TipBox variant="info" >
+
+If you're using the Android SDK with the deprecated Android Support Library, follow <ExternalLink href="https://github.com/checkout/frames-android/blob/master/readme-docs/archive/readme-v2-releases.md#releases-up-to-220" >these steps</ExternalLink>.
+
+</TipBox>
+
+<TipBox variant="success" >
+
+Learn more about <ExternalLink href="https://developer.android.com/studio/build" >gradle files</ExternalLink>.
+
+</TipBox>
+
+### Step 3: Decide whether or not to use our pre-built UI
+
+The usage guidelines vary slightly depending on your choice:
+
+- [with the module's UI](/integrate/sdks/android-sdk#Usage_(with_the_module's_UI))
+- [without the module's UI](/integrate/sdks/android-sdk#Usage_(without_the_module's_UI))
+
+---
+
+## Usage (with the module's UI)
+
+### Step 1: Add the module to your XML layout
+
+```xml
+<com.checkout.android_sdk.PaymentForm
+   android:id="@+id/checkout_card_form"
+   android:layout_width="match_parent"
+   android:layout_height="match_parent"
+ />
+```
+
+### Step 2: Include the module in your class
+
+```java
+private PaymentForm mPaymentForm; // include the payment form
+```
+
+### Step 3: Create a callback for the payment form
+
+```java
+PaymentFormCallback mFormListener = new PaymentFormCallback() {
+  @Override
+  public void onFormSubmit() {
+    // form submit initiated; you can potentially display a loader
+  }
+  @Override
+  public void onTokenGenerated(CardTokenisationResponse response) {
+    // your token is here
+    mPaymentForm.clearForm(); // this clears the Payment Form
+  }
+  @Override
+  public void onError(CardTokenisationFail response) {
+    // token request error
+  }
+  @Override
+  public void onNetworkError(NetworkError error) {
+    // network error
+  }
+  @Override
+  public void onBackPressed() {
+    // the user decided to leave the payment page
+    mPaymentForm.clearForm(); // this clears the Payment Form
+  }
+};
+```
+
+### Step 4: Initialize the module
+
+```java
+// initialise the payment from
+  mPaymentForm = findViewById(R.id.checkout_card_form);
+  mPaymentForm
+    .setSubmitListener(mSubmitListener)    // set the callback
+    .setEnvironment(Environment.SANDBOX)   // set the environemnt
+    .setKey("pk_xxx");                     // set your public key
+```
+
+---
+
+## Usage (without the module's UI)
+
+### Step 1: Include the module in your class
+
+```java
+private CheckoutAPIClient mCheckoutAPIClient; // include the module
+```
+
+### Step 2: Create a callback
+
+```java
+CheckoutAPIClient.OnTokenGenerated mTokenListener = new CheckoutAPIClient.OnTokenGenerated() {
+  @Override
+  public void onTokenGenerated(CardTokenisationResponse token) {
+    // your token
+  }
+  @Override
+  public void onError(CardTokenisationFail error) {
+    // your error
+  }
+  @Override
+  public void onNetworkError(NetworkError error) {
+    // your network error
+  }
+};
+```
+
+### Step 3: Initialize the module and pass the card details
+
+```java
+mCheckoutAPIClient = new CheckoutAPIClient(
+  this,                // context
+  "pk_XXXXX",          // your public key
+  Environment.SANDBOX  // the environment
+);
+mCheckoutAPIClient.setTokenListener(mTokenListener); // pass the callback
+   // Pass the payload and generate the token
+   mCheckoutAPIClient.generateToken(
+     new CardTokenisationRequest(
+       "4242424242424242",
+       "name",
+       "06",
+       "25",
+       "100",
+       new BillingModel(
+         "address line 1",
+         "address line 2",
+         "postcode",
+         "UK",
+         "city",
+         "state",
+         new PhoneModel(
+           "+44",
+           "07123456789"
+         )
+       )
+     )
+   );
+```
+---
+
+## Makes our Android SDK your own
+
+### Customization
+
+Although we kept our demo simple, you have a lot of control over the appearance of your form—from the colors and styling, to whether you want to display one input field or several. Check out our [Customization guide](/integrate/sdks/android-sdk/customization-guide) for more details and examples.
+
+### Configuration options
+
+You'll find a list of all the possible configuration options in our [Android SDK reference](/integrate/sdks/android-sdk/reference).
+
+---
+
+## Next steps
+
+Now that you've got your card token, you're ready to [request a card payment](/payments/accept-payments/request-a-card-payment).

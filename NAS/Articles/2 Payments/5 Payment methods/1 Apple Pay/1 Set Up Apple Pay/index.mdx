@@ -1,0 +1,223 @@
+---
+title: Set up Apple Pay
+account: NAS
+---
+
+Follow the steps on this page to set up and configure Apple Pay.
+
+---
+
+## Before you start
+
+Before you get started with Apple Pay, you need the following:
+
+*   An Apple Developer account. <ExternalLink href="https://developer.apple.com/programs/enroll/" >Sign up for one here</ExternalLink>.
+*   A domain with a valid SSL certificate (meaning your domain should start with `https`).
+*   Access to a Secure Shell (SSH) terminal.
+*   Access to your server's files, so you can upload files to your server.
+
+---
+
+## Configure Apple Pay
+
+### Step 1: Create your merchant IDs in your Apple Pay Developer account
+
+<Video src="https://assets.checkout.com/docs/videos/create_merchant_id.mp4" />
+
+<TipBox variant="info">
+
+We recommend that you create separate merchant IDs for your test environment and for your live/production environment.
+
+</TipBox>
+
+1.  In your Apple Developer account, go to the <ExternalLink href="https://developer.apple.com/account/resources/identifiers/add/merchant" >Add Merchant IDs section</ExternalLink>, select _Merchant IDs_ and select _Continue_.
+2.  Add a useful description, like `merchant id for test environment`.
+3.  Type your desired merchant ID name in the Identifier section. We recommend that you use a descriptive name to indicate both the domain and the environment you will use it in, like `merchant.com.mywebsite.sandbox`.
+
+### Step 2: Generate a certificate signing request
+
+Next, you need to generate a certificate signing request using the following endpoint. You'll receive a `.csr` file in the response that you'll need to upload to your Apple Developer account in the next step.
+
+To get a detailed view of all required and optional fields, see our <ExternalLink href="https://api-reference.checkout.com/preview/crusoe" >API reference</ExternalLink>.
+
+### Endpoints
+
+<tabs>
+<tab title="Live">
+<LineCodeWrapper type="post">
+
+`https://api.checkout.com/applepay/signing-requests`
+
+</LineCodeWrapper>
+</tab>
+<tab title="Sandbox">
+<LineCodeWrapper type="post">
+
+`https://api.sandbox.checkout.com/applepay/signing-requests`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+### Request example
+
+```bash
+curl --location --request POST 'https://api.sandbox.checkout.com/applepay/signing-requests' \
+--header 'Authorization: Bearer pk_xxxxxxxxxxxxxxxxxxxxxxxxxx' \
+```
+
+### Response example
+
+```json
+{
+   "content": "--- --BEGIN CERTIFICATE REQUEST--- --MIIBSTCB8AIBADCBjzELMAkGA1UEBhMCR0IxDzANBgNVBAgMBkxvbmRvbjEPMA0GA1UEBwwGTG9uZG9uMRUwEwYDVQQKDAxDaGVja291dC5jb20xCzAJBgNVBA8MAklUMRUwEwYDVQQDDAxjaGVja291dC5jb20xIzAhBgkqhkiG9w0BCQEWFHN1cHBvcnRAY2hlY2tvdXQuY29tMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEwjiZ410yhHCkwa04OfrPb0e5bqt4FncefJwAbFpcqARTWefYZNvLyYkV68PmAKoO7cthfAFVfoVNqXBEGzjg1TAKBggqhkjOPQQDAgNIADBFAiAcgJLboQK3GBQX/K5ghNzbcw4mnVcVk/rUmkIxu0M28gIhALO01kH13CZzMkAhRhnkeCUPaP+IqUqQaDdZL8d5xgFc--- --END CERTIFICATE REQUEST--- --"
+}
+```
+
+### Step 3: Create a payment processing certificate
+
+1.  Log in to your Apple Developer account, go to the Merchant IDs list section, and select the merchant ID you created in step 1.
+2.  In the _Apple Pay Payment Processing Certificate_ section (make sure you’re not in the _Apple Pay Merchant Identity Certificate_ section), select _Create Certificate_.
+3.  Respond _No_ to the question about processing in China and select _Continue_.
+4.  Upload the `.csr` file from the previous step and select _Continue_.
+5.  Select _Download_ to get your payment processing certificate – a `.cer` file.
+
+### Step 4: Upload the signed payment processing certificate
+
+Once you've generated the payment processing certificate, you need to upload it using the following endpoint. We use this certificate to decrypt Apple Pay tokens and turn them into Checkout.com card tokens you can use to request a payment.
+
+To get a detailed view of all required and optional fields, see our <ExternalLink href="https://api-reference.checkout.com/preview/crusoe" >API reference</ExternalLink>.
+
+<TipBox variant="info">
+
+The `.cer` file you downloaded in step 3 needs to be base64 encoded so you can pass the content into the `/applepay/certificates` endpoint.
+
+To convert the `.cer` file to a base64 string, use the following command:
+
+```bash
+openssl x509 -inform der -in apple_pay.cer -out base64_converted.cer
+```
+
+</TipBox>
+
+
+### Endpoints
+
+<tabs>
+<tab title="Live">
+<LineCodeWrapper type="post">
+
+`https://api.checkout.com/applepay/certificates`
+
+</LineCodeWrapper>
+</tab>
+<tab title="Sandbox">
+<LineCodeWrapper type="post">
+
+`https://api.sandbox.checkout.com/applepay/certificates`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+### Request example
+
+```bash
+curl --location --request POST 'https://api.sandbox.checkout.com/applepay/certificates' \
+--header 'Authorization: Bearer pk_xxxxxxxxxxxxxxxxxxxxxxxxxx' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "content": "MIIEfTCCBCOgAwIBAgIID/asezaWNycwCgYIKoZIzj0EAwIwgYAxNDAyBgNVBAMMK0FwcGxlIFdvcmxkd2lkZSBEZXZlbG9wZXIgUmVsYXRpb25zIENBIC0gRzIxJjAkBgNVBAsMHUFwcGxlIENlcnRpZmljYXRpb24gQXV0aG9yaXR5MRMwEQYDVQQKDApBcHBsZSBJbmMuMQswCQYDVQQGEwJVUzAeFw0yMTA2MTExMzQ0MjVaFw0yMzA3MTExMzQ0MjRaMIGuMS0wKwYKCZImiZPyLGQBAQwdbWVyY2hhbnQuY29tLmNoZWNrb3V0LnNhbmRib3gxQzBBBgNVBAMMOkFwcGxlIFBheSBQYXltZW50IFByb2Nlc3Npbmc6bWVyY2hhbnQuY29tLmNoZWNrb3V0LnNhbmRib3gxEzARBgNVBAsMCkUzMlhCUUs0UTUxFjAUBgNVBAoMDUNoZWNrb3V0IEx0ZC4xCzAJBgNVBAYTAkdCMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEsvyUM9D1cssldH+VPptEn4VAw/Q6ovJuHVlyBSRaPGLHFce04lCiT/xnXOWRkUxyCzQWKhfG2zo19u4s+evx7aOCAlUwggJRMAwGA1UdEwEB/wQCMAAwHwYDVR0jBBgwFoAUhLaEzDqGYnIWWZToGqO9SN863wswRwYIKwYBBQUHAQEEOzA5MDcGCCsGAQUFBzABhitodHRwOi8vb2NzcC5hcHBsZS5jb20vb2NzcDA0LWFwcGxld3dkcmNhMjAxMIIBHQYDVR0gBIIBFDCCARAwggEMBgkqhkiG92NkBQEwgf4wgcMGCCsGAQUFBwICMIG2DIGzUmVsaWFuY2Ugb24gdGhpcyBjZXJ0aWZpY2F0ZSBieSBhbnkgcGFydHkgYXNzdW1lcyBhY2NlcHRhbmNlIG9mIHRoZSB0aGVuIGFwcGxpY2FibGUgc3RhbmRhcmQgdGVybXMgYW5kIGNvbmRpdGlvbnMgb2YgdXNlLCBjZXJ0aWZpY2F0ZSBwb2xpY3kgYW5kIGNlcnRpZmljYXRpb24gcHJhY3RpY2Ugc3RhdGVtZW50cy4wNgYIKwYBBQUHAgEWKmh0dHA6Ly93d3cuYXBwbGUuY29tL2NlcnRpZmljYXRlYXV0aG9yaXR5LzA2BgNVHR8ELzAtMCugKaAnhiVodHRwOi8vY3JsLmFwcGxlLmNvbS9hcHBsZXd3ZHJjYTIuY3JsMB0GA1UdDgQWBBRNhvr33NDuM4QxBZd16a+ACbHoEzAOBgNVHQ8BAf8EBAMCAygwTwYJKoZIhvdjZAYgBEIMQDdGRjg0REI5MDE5NkVGN0I5RTc4NDZEMjg4NzZCNkJGRDU2RjM4MDlCNzUyNjAzRDM4QzcxNUJFMTY2M0JENEMwCgYIKoZIzj0EAwIDSAAwRQIgTjywMwOrLX3TwDUrPn7yDGL/dhc+VNudv0uGBOWRyXACIQClFQFvgx+hfTwVdHt8klrswpgtZtbYjs74p9GYuc8Puw=="
+}'
+```
+
+### Response example
+
+```json
+{
+  "id": "aplc_hefptsiydvkexnzzb35zrlqgfq",
+  "public_key_hash": "tqYV+tmG9aMh+l/K6cicUnPqkb1gUiLjSTM9gEz6Nl0=",
+  "valid_from": "2021-01-01T17:32:28.000Z",
+  "valid_until": "2025-01-01T17:32:28.000Z"
+}
+```
+
+### Step 5: Validate your domain
+
+<TipBox variant="info">
+
+You must have a valid SSL certificate on your domain (meaning it begins with `https`).
+
+</TipBox>
+
+1.  Log in to your Apple Developer account, go to the <ExternalLink href="https://developer.apple.com/account/resources/identifiers/list/merchant" >Merchant IDs list section</ExternalLink> and select the merchant ID you created in step 1.
+2.  Under the Merchant Domains section, select _Add Domain_.
+3.  Enter your domain and select _Save_.
+4.  Select _Download_ and you'll get a `.txt` file.
+5.  Upload this file to your server so it's accessible at the following location (replacing <ExternalLink href="https://yourdomain.com/" >yourdomain.com</ExternalLink> with the URL of your domain): <ExternalLink href="https://yourdomain.com/.well-known/apple-developer-merchantid-domain-association.txt" >https://yourdomain.com/.well-known/apple-developer-merchantid-domain-association.txt</ExternalLink>. To do this, create a folder called `.well-known` in the root directory of your website and put the `.txt` file in that folder.
+6.  Once you've uploaded the file, select _Verify_.
+
+### Step 6: Create your Apple Pay certificates
+
+<Video src="https://assets.checkout.com/docs/videos/certificates.mp4" />
+
+1.  Open a terminal and create a `.csr` and `.key` file using this command:
+
+```bash
+openssl req -out uploadMe.csr -new -newkey rsa:2048 -nodes -keyout certificate_sandbox.key
+```
+
+2.  In the prompt, enter your details, and when asked for a password, leave it blank and select _Enter_. You will get a `.csr` and `.key` file. Keep the `.key` file at hand.
+3.  Log in to your Apple Developer account, go to the <ExternalLink href="https://developer.apple.com/account/resources/identifiers/list/merchant" >Merchant IDs list section</ExternalLink> and select the merchant ID you created in step 1.
+4.  Under the _Apple Pay Merchant Identity Certificate_ section (make sure you're not in the _Apple Pay Payment Processing Certificate_ section), select _Create Certificate_.
+5.  Upload the `.csr `file you just created from your terminal. It should be called `uploadMe.csr` if you copy-pasted the command.
+6.  Select _Continue_ and then select _Download_ to get your `.cer` file. It will probably be named `merchant_id.cer`.
+7.  Convert this `.cer` file into a `.pem` file so you can use it in your code. Enter the following command in your terminal:
+
+```bash
+openssl x509 -inform der -in merchant_id.cer -out certificate_sandbox.pem
+```
+
+### Step 7: Configuration outcome
+
+If you followed the above steps correctly, you should now have the following:
+
+*  A merchant ID (for example, `merchant.com.mywebsite.sandbox`).
+*  <ExternalLink href="http://checkout.com/">Checkout.com</ExternalLink> linked to your merchant ID.
+*  A domain verified by Apple.
+*  A `.key` and a `.pem` certificate file.
+
+
+<TipBox variant="info">
+
+We recommend that you repeat the above steps so you have a merchant ID, domain (it can be the same domain) and certificates for your test environment and your production environment. You should use descriptive names for each environment to avoid mismatches.
+
+</TipBox>
+
+### Integrate with Apple Pay
+
+<TipBox variant="info">
+
+  If you use an e-commerce platform where we support Apple Pay, like Magento or WooCommerce, the files and certificates you got in the configuration process above are enough to complete your integration. Just follow the instructions provided by your particular platform.
+
+</TipBox>
+
+Follow Apple Pay's integration documentation to integrate Apple Pay:
+
+*  <ExternalLink href="https://developer.apple.com/documentation/apple_pay_on_the_web" >Apple Pay Web</ExternalLink>. See a <ExternalLink href="https://applepaydemo.apple.com/" >demo</ExternalLink>
+*  <ExternalLink href="https://developer.apple.com/documentation/apple_pay_on_the_web" >Apple Pay Mobile</ExternalLink>.
+
+Once you've completed the integration steps, you will be able to display the Apple Pay button and validate an Apple Pay Session (required for the web version).
+
+If you're struggling, watch this payment flow walkthrough:
+
+<Video src="https://assets.checkout.com/docs/videos/apple_pay_full_payment_flow.mp4" />
+
+Here's a diagram of the full payment flow:
+
+<img src="/NAS/Payments/PaymentMethods/apple_pay_flow.png"  />
+
+## Next steps
+
+Now you've configured and integrated with Apple Pay, you're ready to accept Apple Pay payments through our payment gateway.
+

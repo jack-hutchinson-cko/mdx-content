@@ -1,0 +1,990 @@
+---
+title: Cash and ATM payment
+account: ABC
+description: Learn more about accepting cash and ATM payments.
+---
+
+Accept cash and ATM payments using the same integration process you use for card payments.
+
+---
+## Supported schemes
+
+<tabs>
+<tab title="Boleto" active>
+<Table>
+<TableHead headers={['User countries', '']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+  Europe:
+
+</TableCell>
+<TableCell>
+
+  \-
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  North America:
+
+</TableCell>
+<TableCell>
+
+  \-
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  Asia Pacific:
+
+</TableCell>
+<TableCell>
+
+  *   China
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  Middle East/North Africa:
+
+</TableCell>
+<TableCell>
+
+  \-
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  South America:
+
+</TableCell>
+<TableCell>
+
+  *   Brazil
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  Type:
+
+</TableCell>
+<TableCell>
+
+  Voucher
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  Clearing and settlement:
+
+</TableCell>
+<TableCell>
+
+  Deferred
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  Processing currencies:
+
+</TableCell>
+<TableCell>
+
+  USD, BRL
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  Default settlement currency:
+
+</TableCell>
+<TableCell>
+
+  USD
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  Refunds:
+
+</TableCell>
+<TableCell>
+
+  ✅
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  Partial refunds:
+
+</TableCell>
+<TableCell>
+
+  ✅
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+</tab>
+<tab title="Fawry">
+<Table>
+<TableHead headers={['User countries', '']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+  Europe:
+
+</TableCell>
+<TableCell>
+
+  \-
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  North America:
+
+</TableCell>
+<TableCell>
+
+  \-
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  Asia Pacific:
+
+</TableCell>
+<TableCell>
+
+  \-
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  Middle East/North Africa:
+
+</TableCell>
+<TableCell>
+
+  *   Egypt
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  South America:
+
+</TableCell>
+<TableCell>
+
+  \-
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  Type:
+
+</TableCell>
+<TableCell>
+
+  Voucher
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  Clearing and settlement:
+
+</TableCell>
+<TableCell>
+
+  Instant
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  Processing currencies:
+
+</TableCell>
+<TableCell>
+
+  EGP
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  Default settlement currency:
+
+</TableCell>
+<TableCell>
+
+  USD
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  Refunds:
+
+</TableCell>
+<TableCell>
+
+  ✅
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  Partial refunds:
+
+</TableCell>
+<TableCell>
+
+  ✅
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+</tab>
+<tab title="Multibanco">
+<Table>
+<TableHead headers={['User countries', '']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+  Europe:
+
+</TableCell>
+<TableCell>
+
+  *   Portugal
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  North America:
+
+</TableCell>
+<TableCell>
+
+  \-
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  Asia Pacific:
+
+</TableCell>
+<TableCell>
+
+  \-
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  Middle East/North Africa:
+
+</TableCell>
+<TableCell>
+
+  \-
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  South America:
+
+</TableCell>
+<TableCell>
+
+  \-
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  Type:
+
+</TableCell>
+<TableCell>
+
+  ATM network
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  Clearing and settlement:
+
+</TableCell>
+<TableCell>
+
+  Instant
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  Processing currencies:
+
+</TableCell>
+<TableCell>
+
+  EUR
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  Default settlement currency:
+
+</TableCell>
+<TableCell>
+
+  EUR
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  Refunds:
+
+</TableCell>
+<TableCell>
+
+  ❌
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  Partial refunds:
+
+</TableCell>
+<TableCell>
+
+  ❌
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+</tab>
+<tab title="OXXO">
+<Table>
+<TableHead headers={['User countries', '']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+  Europe:
+
+</TableCell>
+<TableCell>
+
+  \-
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  North America:
+
+</TableCell>
+<TableCell>
+
+  *   Mexico
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  Asia Pacific:
+
+</TableCell>
+<TableCell>
+
+  \-
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  Middle East/North Africa:
+
+</TableCell>
+<TableCell>
+
+  \-
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  South America:
+
+</TableCell>
+<TableCell>
+
+  \-
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  Type:
+
+</TableCell>
+<TableCell>
+
+  Voucher
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  Clearing and settlement:
+
+</TableCell>
+<TableCell>
+
+  Instant
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  Processing currencies:
+
+</TableCell>
+<TableCell>
+
+  MXN
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  Default settlement currency:
+
+</TableCell>
+<TableCell>
+
+  MXN
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  Refunds:
+
+</TableCell>
+<TableCell>
+
+  ✅
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  Partial refunds:
+
+</TableCell>
+<TableCell>
+
+  ✅
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+</tab>
+<tab title="Pago Fácil">
+<Table>
+<TableHead headers={['User countries', '']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+  Europe:
+
+</TableCell>
+<TableCell>
+
+  \-
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  North America:
+
+</TableCell>
+<TableCell>
+
+  \-
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  Asia Pacific:
+
+</TableCell>
+<TableCell>
+
+  \-
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  Middle East/North Africa:
+
+</TableCell>
+<TableCell>
+
+  \-
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  South America:
+
+</TableCell>
+<TableCell>
+
+  *   Mexico
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  Type:
+
+</TableCell>
+<TableCell>
+
+  Voucher
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  Clearing and settlement:
+
+</TableCell>
+<TableCell>
+
+  Deferred
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  Processing currencies:
+
+</TableCell>
+<TableCell>
+
+  ARS
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  Default settlement currency:
+
+</TableCell>
+<TableCell>
+
+  ARS
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  Refunds:
+
+</TableCell>
+<TableCell>
+
+  ✅
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  Partial refunds:
+
+</TableCell>
+<TableCell>
+
+  ✅
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+</tab>
+<tab title="Rapipago">
+<Table>
+<TableHead headers={['User countries', '']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+  Europe:
+
+</TableCell>
+<TableCell>
+
+  \-
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  North America:
+
+</TableCell>
+<TableCell>
+
+  \-
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  Asia Pacific:
+
+</TableCell>
+<TableCell>
+
+  \-
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  Middle East/North Africa:
+
+</TableCell>
+<TableCell>
+
+  \-
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  South America:
+
+</TableCell>
+<TableCell>
+
+  *   Mexico
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  Type:
+
+</TableCell>
+<TableCell>
+
+  Voucher
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  Clearing and settlement:
+
+</TableCell>
+<TableCell>
+
+  Deferred
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  Processing currencies:
+
+</TableCell>
+<TableCell>
+
+  ARS
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  Default settlement currency:
+
+</TableCell>
+<TableCell>
+
+  ARS
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  Refunds:
+
+</TableCell>
+<TableCell>
+
+  ✅
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  Partial refunds:
+
+</TableCell>
+<TableCell>
+
+  ✅
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+</tab>
+<tab title="Via Baloto">
+<Table>
+<TableHead headers={['User countries', '']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+  Europe:
+
+</TableCell>
+<TableCell>
+
+  \-
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  North America:
+
+</TableCell>
+<TableCell>
+
+  \-
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  Asia Pacific:
+
+</TableCell>
+<TableCell>
+
+  \-
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  Middle East/North Africa:
+
+</TableCell>
+<TableCell>
+
+  \-
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  South America:
+
+</TableCell>
+<TableCell>
+
+  *   Colombia
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  Type:
+
+</TableCell>
+<TableCell>
+
+  Voucher
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  Clearing and settlement:
+
+</TableCell>
+<TableCell>
+
+  Deferred
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  Processing currencies:
+
+</TableCell>
+<TableCell>
+
+  COP
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  Default settlement currency:
+
+</TableCell>
+<TableCell>
+
+  COP
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  Refunds:
+
+</TableCell>
+<TableCell>
+
+  ✅
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+  Partial refunds:
+
+</TableCell>
+<TableCell>
+
+  ✅
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+</tab>
+</tabs>
+
+
+
+

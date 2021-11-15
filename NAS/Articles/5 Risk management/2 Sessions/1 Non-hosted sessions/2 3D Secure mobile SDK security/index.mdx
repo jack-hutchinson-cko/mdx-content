@@ -1,0 +1,81 @@
+---
+title: 3D Secure mobile SDK security
+account: NAS
+---
+
+The 3D Secure mobile SDK implements security approaches in compliance with PCI and EMVCo standards to ensure your customers' data is secure.
+
+Below you can find guidelines on how to configure your app to maximize the security of the 3D Secure process.
+
+### Protecting the integrity of the 3D Secure SDK
+
+The 3D Secure SDK uses the following security approaches:
+
+- The SDK checks if the app was installed from a trusted app store and sends this information to the card issuer.
+
+- The SDK is an encrypted binary which provides increased protection from a number of threats including tampering and reverse engineering.
+
+- The SDK checks the environment on which it's running. If it detects threat indicators, it sends warnings to your app and the card issuer. Possible indicators are:
+
+   - the device has been jailbroken, which means it has been modified to enable unrestricted access to critical files;
+
+   - the SDK is running on an emulator;
+
+   - the SDK source code has been tampered with or its functionality has been modified;
+
+   - a debugging application is attached.
+
+<TipBox variant="info" title="Security warnings">
+
+We recommend that your app uses the SDK warnings to check for security issues before continuing with a transaction. This should be done after initializing the SDK and before proceeding with an authentication request. To get a list of the warnings, see the [Check for security warnings](/risk-management/sessions/non-hosted-sessions/3d-secure-mobile-sdks#id-3DSecuremobileSDKs-Step2:InitializetheSDKinitialize) section.
+
+</TipBox>
+
+###  Protecting sensitive data
+
+The 3D Secure SDK uses the following approaches to keep your customers' data secure and protect the 3D Secure process:
+
+- The SDK only collects sensitive data where it is essential for the authentication process and uses it for this purpose only. Sensitive data are not disclosed to channels outside of the 3D Secure process, and are not hardcoded into the SDK except where necessary and permitted. All sensitive data elements are deleted once the 3D Secure transaction is complete.
+
+- The user interface is secured, to prevent access from outside the SDK.
+
+- The SDK employs run-time data protection techniques to prevent access by unauthorized services.
+
+- The SDK intercepts and handles any external URL requests contained within 3D Secure 2 HTML. During 3DS2 processing, the SDK prevents the injection and execution of any JavaScript code by 3D Secure HTML or any other process outside the 3D Secure SDK.
+
+- Reference data required by the SDK to operate is securely stored to prevent unauthorized modification.
+
+- All cryptography handled by the 3D Secure SDK uses EMVCo-approved cryptographic algorithms and methods, as well as cryptographically strong random number generation.
+
+- We use third-party services to help maintain security. See the reference documents for more details.
+
+### Secure communication
+
+The 3DS SDK communicates with different systems managed by the parties involved in the 3D Secure process. Each of these communication channels is secure and all data exchanged is encrypted.
+
+Communication with the Checkout.com 3DS Server is secured using the latest versions of Transport Layer Security (TLS). The device data passed to the Checkout.com 3DS Server and forwarded to the card scheme’s Directory Server (DS) is transferred in an encrypted format.
+
+Communication with the card issuer’s Access Control Server (ACS) is done over a secure channel that is encrypted end-to-end.
+
+The 3DS SDK uses Certificate Transparency to ensure end-to-end security and to prevent a man-in-the-middle attack. For this purpose, it checks that all certificates were issued by a trusted Certificate Authority. 
+
+<TipBox variant="warning" title="Disabling certificate transparency checks">
+
+Do not disable certificate transparency checks by using a wildcard domain in your iOS app’s plist file. This interferes with the SDK operations and may result in a failure. For more information, see the Apple documentation on <ExternalLink href="https://developer.apple.com/documentation/bundleresources/information_property_list/nsapptransportsecurity" >NSAppTransportSecurity</ExternalLink> and <ExternalLink href="https://developer.apple.com/documentation/bundleresources/information_property_list/nsapptransportsecurity/nsexceptiondomains" >NSExceptionDomains</ExternalLink>.
+
+</TipBox>
+
+<TipBox variant="note" title="Certificate transparency and SSL proxy servers">
+
+As a system that uses Certificate Transparency, the 3DS SDK may not be able to establish a secure connection on devices that are connected to some SSL Proxy Servers.
+
+In these scenarios, the 3DS SDK returns a connectivity error. You may want to consider communicating this to your customer. We recommend that they switch to a mobile data connection where available.
+
+</TipBox>
+
+### Keeping you informed
+
+We regularly provide updates to the 3D Secure SDK and review our security guidance. For full details of the changes in each SDK update, see the release notes. To be notified of changes across Checkout.com’s products, [subscribe to our change log](/whats-new).
+
+
+

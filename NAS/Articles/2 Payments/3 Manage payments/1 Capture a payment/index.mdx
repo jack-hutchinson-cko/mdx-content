@@ -1,0 +1,56 @@
+---
+title: Capture a payment
+account: NAS
+description: Manually capture an authorized payment.
+---
+
+<TipBox variant="note">
+
+This document contains a draft guide outlining how you can process various authorization types through the Unified Payments API. The information provided below is subject to change.
+
+</TipBox>
+
+The Unified Payments API supports multiple partial captures—enabling you to process your capture requests at the same time as your split shipments.
+
+---
+
+## Manually capture a payment
+
+If a payment is requested with `capture` as `false`, you can use this endpoint to capture the payment. These captures can either be the full or partial authorization amount, but cannot be submitted for a combined amount that exceeds the total authorized balance.
+
+Use the details below to set up your request.
+
+### Endpoints
+
+For the full API specification, see the <ExternalLink href="https://api-reference.checkout.com/preview/crusoe/" >API reference</ExternalLink>.
+
+<tabs>
+<tab title="Live">
+<LineCodeWrapper type="post">
+
+`https://api.checkout.com/payments/{id}/captures`
+
+</LineCodeWrapper>
+</tab>
+<tab title="Sandbox">
+<LineCodeWrapper type="post">
+
+`https://api.sandbox.checkout.com/payments/{id}/captures`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+### Request example
+
+```json
+{
+  "amount": 100,
+  "reference": "ORD-752-814",
+  "capture_type": "final"
+}
+```
+
+### Response
+
+If you receive a `202` HTTP status code, your capture request has been submitted successfully for clearing.

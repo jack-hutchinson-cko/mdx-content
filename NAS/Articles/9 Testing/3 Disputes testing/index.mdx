@@ -1,0 +1,154 @@
+---
+title: Disputes testing
+account: NAS
+---
+
+You can simulate a dispute (also called chargeback) by using the following payment methods and corresponding amounts in a payment request. This will work with any of our [test card numbers](/testing/test-cards).
+
+
+<TipBox variant="note">
+
+For a dispute to be generated, the payment must have been authorized and captured. Payments are auto-captured by default, but if you decide to initiate both the authorization and capture from your server, make sure the actions occur within five minutes of each other.
+
+</TipBox>
+
+The value you supply in the `amount` field of your request depends on the chosen currency and whether it is divided by 1000 or by 100. Note that this means that you cannot test disputes with currencies where the value is provided in full, such as Japanese Yen.
+
+<TipBox variant="success">
+
+For more information about this, see our page about [calculating the value](/resources/calculating-the-amount).
+
+</TipBox>
+
+<Table>
+<TableHead headers={['Payment method', 'Amount in local currency', 'Value to supply for USD (will be divided by 100)', 'Value to supply for BHD (will be divided by 1000)', 'Dispute reason code triggered']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+Visa
+
+</TableCell>
+<TableCell>
+
+`10.4`
+
+</TableCell>
+<TableCell>
+
+`1040`
+
+</TableCell>
+<TableCell>
+
+`10400`
+
+</TableCell>
+<TableCell>
+
+`10.4`
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Mastercard
+
+</TableCell>
+<TableCell>
+
+`48.55`
+
+</TableCell>
+<TableCell>
+
+`4855`
+
+</TableCell>
+<TableCell>
+
+`48550`
+
+</TableCell>
+<TableCell>
+
+`4855`
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Amex
+
+</TableCell>
+<TableCell>
+
+`45.16`
+
+</TableCell>
+<TableCell>
+
+`4516`
+
+</TableCell>
+<TableCell>
+
+`45160`
+
+</TableCell>
+<TableCell>
+
+`4516`
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+### Example requests
+
+<tabs>
+<tab title="GBP" active>
+
+```json
+{
+  "source": {
+   "type": "card",
+   "number": "4242424242424242",
+   "expiry_month": 8,
+   "expiry_year": 2025,
+   "name": "Sarah Mitchell",
+   "cvv": "100"
+  },
+  "amount": 1040,
+  "currency": "GBP",
+  "reference": "Testing disputes for Visa"
+}
+```
+
+</tab>
+<tab title="BHD">
+
+```json
+{
+  "source": {
+   "type": "card",
+   "number": "4242424242424242",
+   "expiry_month": 8,
+   "expiry_year": 2025,
+   "name": "Sarah Mitchell",
+   "cvv": "100"
+  },
+  "amount": 10400,
+  "currency": "BHD",
+  "reference": "Testing disputes for Visa"
+}
+```
+
+</tab>
+</tabs>
+
+
+

@@ -1,0 +1,210 @@
+---
+title: Get bank account field formatting
+account: NAS
+---
+
+Returns the bank account field formatting required to create bank account instruments or perform payouts for the specified country and currency.
+
+---
+
+## Get bank account fields
+
+Use the details below to set up your request. To get a detailed view of all required and optional fields, see our <ExternalLink href="https://api-reference.checkout.com/preview/crusoe" >API reference</ExternalLink>.
+
+### Endpoints
+
+<tabs>
+<tab title="Live">
+<LineCodeWrapper type="get">
+
+`https://api.checkout.com/validation/bank-accounts/{country}/{currency}`
+
+</LineCodeWrapper>
+</tab>
+<tab title="Sandbox">
+<LineCodeWrapper type="get">
+
+`https://api.sandbox.checkout.com/validation/bank-accounts/{country}/{currency}`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+### Header parameters
+
+<Table>
+<TableHead headers={["Header", "Value"]} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`Authorization`
+
+<StatusTag type="required"/>
+
+</TableCell>
+<TableCell>
+
+`OAuth Bearer access token`
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`Content-Type`
+
+<StatusTag type="required"/>
+
+</TableCell>
+<TableCell>
+
+`application/json`
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+### Path parameters
+
+<Table>
+<TableHead headers={["Path", "Description"]} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`country`
+
+<StatusTag type="required"/>
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+The two-letter ISO country code.
+
+<InfoBox>
+
+See [Country codes](/resources/codes/country-codes)
+
+</InfoBox>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`currency`
+
+<StatusTag type="required"/>
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+The three-letter ISO currency code.
+
+<InfoBox>
+
+See [Currency codes](/resources/codes/currency-codes)
+
+</InfoBox>
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+### Query parameters
+
+<Table>
+<TableHead headers={["Field name", "Description"]} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`account-holder-type`
+
+<StatusTag type="optional"/>
+<TypeTag type="string (enum)" />
+
+</TableCell>
+<TableCell>
+
+The type of account holder that will be used to filter the fields returned.
+
+Can be one of:
+* `individual`
+* `corporate`
+* `government`
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`payment-network`
+
+<StatusTag type="optional"/>
+<TypeTag type="string (enum)" />
+
+</TableCell>
+<TableCell>
+
+The banking network that will be used to filter the fields returned.
+
+Can be one of:
+* `local`
+* `sepa`
+* `fps`
+* `ach`
+* `fedwire`
+* `swift`
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+### Response example
+
+```json
+{
+  "sections": [
+    {
+      "name": "Account Details",
+      "fields": [
+        {
+          "id": "iban",
+          "type": "string",
+          "display": "IBAN",
+          "description": "Number (which can contain letters) that identifies the account",
+          "section": "account",
+          "required": true,
+          "validation_regex": "^[A-Z]{2,2}[0-9]{2,2}[a-zA-Z0-9]{1,18}$",
+          "min_length": 22,
+          "max_length": 22
+        },
+        {
+          "id": "account_holder.first_name",
+          "type": "string",
+          "display": "First name",
+          "description": "The account holder's first name",
+          "section": "account",
+          "required": true
+        },
+        {
+          "id": "account_holder.last_name",
+          "type": "string",
+          "display": "First name",
+          "description": "The account holder's last name",
+          "section": "account",
+          "required": true
+        }
+      ]
+    }
+  ]
+}
+```
+

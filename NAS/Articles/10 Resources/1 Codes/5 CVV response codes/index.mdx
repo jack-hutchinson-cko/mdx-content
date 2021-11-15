@@ -1,0 +1,88 @@
+---
+title: CVV response codes
+account: NAS
+---
+
+The table below explains the card verification value (CVV) response codes that you might receive when you are carrying out a CVV check or [verifying a card](/risk-management/card-verification).
+
+<Table>
+<TableHead headers={['CVV code', 'Description']} />
+
+<TableBody>
+<TableRow>
+<TableCell>
+
+X
+
+</TableCell>
+<TableCell>
+
+No CVV2 information is available
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+U
+
+</TableCell>
+<TableCell>
+
+The issuer has not certified or has not provided the encryption keys to
+the interchange
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+P
+
+</TableCell>
+<TableCell>
+
+Card verification not performed, CVD was not on the card. Not all cards
+have a CVD value encoded
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Y
+
+</TableCell>
+<TableCell>
+
+Card verification performed, and CVD was valid
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+D
+
+</TableCell>
+<TableCell>
+
+Card verification performed, and CVD was invalid
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+N
+
+</TableCell>
+<TableCell>
+
+Authorizing entity has not attempted card verification or could not
+verify the CVD due to a security device error
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>

@@ -1,0 +1,154 @@
+---
+title: API keys
+account: NAS
+---
+
+When you're onboarded with us, you can choose to receive a set of API keys. These come in two forms: **public** and **secret**.
+
+<TipBox variant="note">
+
+Currently, you cannot view or manage your API keys through the Dashboard. If you want to generate new keys, or have another question about your keys, contact our Solutions Engineering team.
+
+</TipBox>
+
+---
+
+## Public keys
+
+Public keys are used for client-side authentication and only have access to a limited set of our APIs – mostly those called as part of your payment environment. You'll use them when tokenizing card information through [Frames](/integrate/frames) or for [Google Pay](/payments/payment-methods/google-pay).
+
+<TipBox variant="info">
+
+Your public API key is **not** the same as your public RSA key. You use your public API key, for instance, when tokenizing card information through Frames. Your public RSA key is used to access your secret API key, which will be sent to you in an encrypted form. [Learn more about RSA keys](/resources/api-authentication/api-keys#APIkeys-rsakeys).
+
+</TipBox>
+
+---
+
+## Secret keys
+
+Secret keys are used for server-to-server authentication and are supported across most of our APIs. They can currently be used across the following endpoints:
+
+- /payments
+- /instruments
+- /customers
+- /disputes
+- /files
+- /workflows
+
+<TipBox variant="info">
+
+If you want to use API key authentication on another endpoint, contact our Customer Success team.
+
+</TipBox>
+
+### Secret keys configuration
+
+You can choose how you want your secret keys configured:
+
+- A **single secret key** which has access to all of the APIs you want to use.
+
+- **Multiple secret keys**, each one having access to a specific set of APIs you will use.
+
+<TipBox variant="info" title="Multiple secret key use case">
+
+For example, let's say you have you have separate systems for processing payments and managing disputes. Each one has different security requirements, and you don't want the disputes management system to have access to any sensitive information about payment processing. To keep them separate, you could have one secret key to access our Unified Payment API for payment processing, and a second secret key that only has access to our Disputes API for disputes management.
+
+</TipBox>
+
+---
+
+## Multiple processing channels
+
+A processing channel contains a set of configurations used when processing a payment. If you have complex processing requirements, we may have set up multiple processing channels for you during onboarding.
+
+For example, if you accept payments across multiple merchant category codes, you might use a different processing channel for each one.
+
+When requesting payments through our Unified Payments API, you have two options for routing payments through your processing channels:
+
+- A **single API key** for all processing channels, which requires you to specify the processing channel in your payment request.
+
+- **Multiple API keys** – one for each processing channel – so you don't need to specify the processing channel in your payment request.
+
+<TipBox variant="info">
+
+If you need help setting up multiple processing channels and API key configuration, contact your Customer Success Manager.
+
+</TipBox>
+
+---
+
+## Setting up your API keys
+
+When we send you your API keys, they will be in an encrypted form. To access them you need to provide us with a public RSA key. And to use it in authenticating your calls to our API, you need to decrypt it using a secret RSA key.
+
+Create a public and private RSA key pair by following the steps below.
+
+### Step 1: Create an RSA key pair
+
+Enter the following command into your command line. This will create a 2048-bit RSA key pair – a public RSA key and a secret RSA key.
+
+```json
+openssl genrsa -des3 -passout pass:password123 -out private-key.pem 2048
+```
+
+To export the public RSA key file you've just generated, enter the following command.
+
+```json
+openssl rsa -in private-key.pem -outform PEM -passin pass:password123 -pubout -out public-key.pem
+```
+
+Keep your private RSA key file and the password private at all times. You'll use these to unencrypt the secret API key you received from us. You only ever need to share your public RSA key file with us.
+
+### Step 2: Decrypt the secret
+
+You can now use your RSA key pair to decrypt your secret API key, ready for use in authenticating your calls to our APIs.
+
+You will have received your secret API key from us in an encrypted file called `ack_clckqmmnyfiupexjew7shh5ahe.enc`. To decrypt it, enter the following command in your command line:
+
+```json
+cat ack_clckqmmnyfiupexjew7shh5ahe.enc | openssl base64 -d -A | openssl rsautl -decrypt -inkey private-key.pem -passin pass:password123
+```
+
+In the response, you'll receive your secret API key. You can now use this to authenticate your API calls.
+
+<TipBox variant="info">
+
+For additional security, you can store the encrypted secret in your integration's configuration store (for example, AWS Secrets Manager or Azure Key Vault), and decrypt when you authenticate a call to our APIs.
+
+</TipBox>
+
+---
+
+## Using API key authentication
+
+To use an API key in your request, you should provide it in the Authorization header.
+
+<TipBox variant="info">
+
+The Bearer prefix should be included in the header alongside the key itself.
+
+</TipBox>
+
+### Request example
+
+```json
+curl --location --request POST 'https://api.sandbox.checkout.com/payments/' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer sk_sbox_wjvrysklsqjmrhn3yoexnshsl72' \
+--data-raw '{
+  "source": {
+    "type": "card",
+    "number": "4242424242424242",
+    "expiry_month": 12,
+    "expiry_year": 2025
+  },
+  "amount": 100,
+  "currency": "EUR",
+  "reference": "ORD-175-759"
+}'
+```
+
+
+
+

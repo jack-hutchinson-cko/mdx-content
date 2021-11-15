@@ -1,0 +1,354 @@
+---
+title: Response code testing
+account: ABC
+---
+
+Create a payment with the amounts in the table below to simulate and trigger the listed response codes. To use them, just change the amount of your test payment. If you use any other amount, your payment will return as approved (response code `10000`).
+
+<TipBox variant="info">
+
+If an amount contains an `x`, you can replace it with any number of your choosing. For example, `xxx05` could be used as `12305`.
+
+</TipBox>
+
+<Table>
+<TableHead headers={['Amount', 'Response code', 'Description']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`xxx05`
+
+</TableCell>
+<TableCell>
+
+`20005`
+
+</TableCell>
+<TableCell>
+
+Declined - Do not honour
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`xxx12`
+
+</TableCell>
+<TableCell>
+
+`20012`
+
+</TableCell>
+<TableCell>
+
+Invalid payment
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`xxx14`
+
+</TableCell>
+<TableCell>
+
+`20014`
+
+</TableCell>
+<TableCell>
+
+Invalid card number
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`xxx51`
+
+</TableCell>
+<TableCell>
+
+`20051`
+
+</TableCell>
+<TableCell>
+
+Insufficient funds
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`xxx54`
+
+</TableCell>
+<TableCell>
+
+`20087`
+
+</TableCell>
+<TableCell>
+
+Bad track data
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`xxx62`
+
+</TableCell>
+<TableCell>
+
+`20062`
+
+</TableCell>
+<TableCell>
+
+Restricted card
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`xxx63`
+
+</TableCell>
+<TableCell>
+
+`20063`
+
+</TableCell>
+<TableCell>
+
+Security violation
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`9998`
+
+</TableCell>
+<TableCell>
+
+`20068`
+
+</TableCell>
+<TableCell>
+
+Response received too late / timeout
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`xxx150`
+
+<InfoBox>
+
+Only for 3D Secure payments
+
+</InfoBox>
+
+</TableCell>
+<TableCell rowSpan={2}>
+
+`20150`
+
+</TableCell>
+<TableCell>
+
+Card not 3D Secure enabled
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`6900`
+
+<InfoBox>
+
+Only for 3D Secure payments
+
+</InfoBox>
+
+</TableCell>
+<TableCell>
+
+Unable to specify if card is 3D Secure enabled
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`5000` - `5029`
+
+</TableCell>
+<TableCell>
+
+`20153`
+
+</TableCell>
+<TableCell>
+
+3D Secure system malfunction (3DS1-enabled cards only)
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`6510`
+
+</TableCell>
+<TableCell rowSpan={4}>
+
+`20154`
+
+</TableCell>
+<TableCell rowSpan={4}>
+
+3D Secure authentication required
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`6520`
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`6530`
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`6540`
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`xxx33`
+
+</TableCell>
+<TableCell>
+
+`30033`
+
+</TableCell>
+<TableCell>
+
+Expired card - Pick up
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`4001`
+
+</TableCell>
+<TableCell>
+
+`40101`
+
+</TableCell>
+<TableCell>
+
+Payment blocked due to risk
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`4008`
+
+</TableCell>
+<TableCell>
+
+`40108`
+
+</TableCell>
+<TableCell>
+
+Gateway reject - Post code failed
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`2011`
+
+</TableCell>
+<TableCell>
+
+`200R1`
+
+</TableCell>
+<TableCell>
+
+Issuer initiated a stop payment (revocation order) for this authorization
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`2013`
+
+</TableCell>
+<TableCell>
+
+`200R3`
+
+</TableCell>
+<TableCell>
+
+Issuer initiated a stop payment (revocation order) for all payments
+
+</TableCell>
+</TableRow>
+
+</TableBody>
+</Table>
+
+<TipBox variant="note" title="Testing the amounts 2011 and 2013">
+
+When testing the amounts `2011` and `2013`, the response codes `200R1` and `200R3` will only be returned on the first attempt. Additionally, if multiple attempts are made using a non-Visa credit card, this will lead to the card being locally blacklisted. You will need to whitelist it via the [risk engine settings](/risk-management/risk-engine-settings).
+
+</TipBox>
+
+---
+
+## Bypassing the response codes
+
+You can turn off this feature so that the payment will be approved no matter which amount is provided. To do so, simply set the card's expiry date to `01/2099`.
+
+<TipBox variant="info">
+
+Response codes related to 3D Secure (`xxx150`, `6900`, and `5000` - `5029`) will not be bypassed.
+
+</TipBox>

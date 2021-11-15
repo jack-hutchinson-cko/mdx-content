@@ -1,0 +1,200 @@
+--- 
+title: Dashboard
+account: NAS
+---
+
+The Dashboard is your single source for monitoring and analyzing all your payments. Get your key performance indicators, payment history, details and analytics – all in one place.
+
+## Log in
+
+There are two possible ways to log in to the Dashboard:
+
+<CardWrapper cardsInRow={{ desktop: 2, mobile: 1 }}>
+<Card maxWidth={75} maxHeight={65} variant="media" title="Single Sign-On (SSO)" imgSrc="/NAS/Dashboard/Get_started/icon-sso.svg" href='' isWithHover={false}>
+
+If you have an <ExternalLink href="https://www.okta.com/products/single-sign-on/" >Okta</ExternalLink> account, and you have the Dashboard assigned to it, you can log in using SSO. Follow our [initial](/dashboard/set-up#Initial_Okta_setup) and [final](/dashboard/set-up#Final_client_Okta_setup_and_testing) setup guides to set up SSO.
+
+</Card>
+<Card maxWidth={75} maxHeight={65} variant="media" title="Credentials" imgSrc="/NAS/Dashboard/Get_started/icon-credentials.svg" href='' isWithHover={false}>
+
+If you don't have an SSO account, you can log in with your email address and a password.
+
+</Card>
+</CardWrapper>
+
+
+## Navigate the Dashboard
+
+Getting around your Dashboard is easy—just click an icon in the sidebar to access the corresponding screen.
+
+<img src="/NAS/Dashboard/Get_started/icon-navigate-the-dashboard.png"  alt="Navigate the dashboard"/>
+
+
+## Business entity selector
+
+If you have multiple business entities, your Dashboard will combine and display the data for all of them by default. To view data related to a specific entity, click the drop-down menu in the top left and choose one.If you have multiple business entities, your Dashboard will combine and display the data for all of them by default. To view data related to a specific entity, click the drop-down menu in the top left and choose one.
+
+<Box horizontal="sm" align="center">
+  <Iframe
+    src="/docs/four/NAS/Dashboard/Get_started/icon-business-entity-selector.png"
+    height='402'
+    width='208'
+  />
+</Box>
+
+
+## The Home page
+
+Home is the first thing you see when you log in to the Dashboard. It gives you a concise view of all your payments activity, allowing you to check how your business is doing at a glance.
+
+Track and analyze your volume, refund and disputes metrics in real-time, and see a detailed breakdown of volume for each card type, payment method and currency you support.
+
+<img src="/NAS/Dashboard/Get_started/homepage.png"  />
+
+<TipBox variant='info' title='Display currency and timezone'>
+
+You cannot change the display currency from the default currency you chose when setting up your Checkout.com account. The timezone is determined by your internet browser settings, which will filter through to the reports in the *Datetime Local* column.
+
+</TipBox>
+
+
+## Date selector
+
+By default, the Home page displays data from the last two weeks.
+
+If you want to view older data, click _Date filter_ in the top right and then select a date or date range. To select a date range, click on the start date then click on the end date. Your selected date range will be highlighted in green.
+
+<img src="/NAS/Dashboard/Get_started/date_selector.png"  />
+
+
+## Key performance indicators
+
+The key performance indicators (KPIs) provide you with an at-a-glance overview of how your business is performing.
+
+The following table describes each KPI in the Dashboard:
+
+<Table>
+<TableHead headers={['Key performance indicator','Description']}/>
+<TableBody>
+<TableRow>
+<TableCell>
+
+Total revenue
+
+</TableCell>
+<TableCell>
+
+Sum of all captured payments.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Refunds & disputes
+
+</TableCell>
+<TableCell>
+
+Sum of refunds and net disputes.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Net revenue
+
+</TableCell>
+<TableCell>
+
+Sum of all captured payments minus the sum of refunded payments and the sum of net disputed payments.
+
+*Net revenue = total revenue - refunds value - net disputes*
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Average transaction value
+
+</TableCell>
+<TableCell>
+
+Sum of all captured payments divided by the total count of captures.
+
+*Average transaction value = total revenue / number of captured payments*
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+No. of transactions
+
+</TableCell>
+<TableCell>
+
+Number of captured payments.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Refunds total value
+
+</TableCell>
+<TableCell>
+
+Sum of all refunded payments.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+No. of refunds
+
+</TableCell>
+<TableCell>
+
+Number of refunds.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Net disputes value
+
+</TableCell>
+<TableCell>
+
+Sum of net disputes payments (disputes debited minus disputes credited).
+
+*Net disputes = ADJM (evidence required) + CBRV (dispute canceled) + RPDW (dispute won) + ARBW (arbitration won)*
+
+<InfoBox>
+
+Learn more about [dispute codes](/resources/codes/chargeback-codes).
+
+</InfoBox>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+No. of disputes
+
+</TableCell>
+<TableCell>
+
+Number of disputes.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>

@@ -1,0 +1,156 @@
+---
+title: PCI compliance
+account: ABC
+description: Learn more about Payment Card Industry Data Security Standards.
+---
+
+## What is PCI and why it is important?
+
+Any organization involved with the processing, transmission, or storage of card data must comply with the <ExternalLink href="https://www.pcisecuritystandards.org/security_standards" >Payment Card Industry Data Security Standards</ExternalLink> (PCI DSS).
+
+Checkout Technology Ltd, a company within the Checkout.com group, is certified for PCI DSS as a **Level 1 Service Provider**, which is the highest standard set by the payment card industry to ensure that credit card data is processed, stored or transmitted in a secure environment.
+
+---
+
+## Who is responsible for PCI DSS compliance?
+
+PCI compliance is a shared responsibility between your business and Checkout.com. So, when accepting payments, it is essential that you do so in a PCI-compliant manner. The complexity of this depends on your integration methods, but the simplest way is never to see or access your customers' card data. Here are our tips:
+
+*   Use one of our integration methods that allows you to accept payments without ever handling card data: [Frames](/integrate/frames) and [Hosted Payments Page](/integrate/hosted-payments-page).
+
+*   Use Transport Layer Security (TLS) for all payment pages, so that they use HTTPS.
+
+*   Review and validate your PCI compliance once a year. Most can do this with a <ExternalLink href="https://www.pcisecuritystandards.org/document_library?category=saqs#results" >Self-Assessment Questionnaire</ExternalLink> (SAQ), which is provided by the <ExternalLink href="https://www.pcisecuritystandards.org/" >PCI Security Standards Council</ExternalLink>.
+
+---
+
+## What are the requirements?
+
+There are four levels of PCI compliance that merchants are organized under, based upon their card transaction count over a 12-month period. The PCI level in combination with the integration method will determine the compliance requirements for each merchant. If you have any question concerning your PCI obligations please feel free to send an email to <ExternalLink href="mailto:pci.operations@checkout.com">pci.operations@checkout.com</ExternalLink>..
+
+<Table>
+<TableHead headers={['PCI level', 'Transactions processed / year', 'Key requirements']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+1
+
+</TableCell>
+<TableCell>
+
+*   More than 6 million Visa, MasterCard (combined with Maestro) or Discover transactions.
+*   More than 2.5 million American Express transactions.
+*   More than 1 million JCB transactions.
+*   Any merchant who has had a data incident.
+*   Any merchant identified as Level one by one of the schemes.
+
+</TableCell>
+<TableCell>
+
+*   On-site assessment using the PCI DSS requirements and Security Assessment Procedures conducted by an approved <ExternalLink href="https://www.pcisecuritystandards.org/assessors_and_solutions/qualified_security_assessors" >Security Assessor</ExternalLink> (QSA) or a qualified <ExternalLink href="https://www.pcisecuritystandards.org/program_training_and_qualification/internal_security_assessor_certification) (ISA" >QualityInternal Security Assessor</ExternalLink>.
+*   Quarterly network scan by an <ExternalLink href="https://www.pcisecuritystandards.org/assessors_and_solutions/approved_scanning_vendors" >Approved Scan Vendor</ExternalLink> (ASV).
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+2
+
+</TableCell>
+<TableCell>
+
+*   1 to 6 million Visa, MasterCard (combined with Maestro) or Discover transactions.
+*   50,000 to 2.5 million American Express transactions.
+
+</TableCell>
+<TableCell rowSpan={3}>
+
+*   Annual self-assessment using the applicable PCI DSS Self-Assessment Questionnaire (SAQ).
+*   Quarterly network scan by an <ExternalLink href="https://www.pcisecuritystandards.org/assessors_and_solutions/approved_scanning_vendors" >Approved Scan Vendor</ExternalLink> (ASV) where applicable.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+3
+
+</TableCell>
+<TableCell>
+
+*   20,000 to 1 million Visa, MasterCard (combined with Maestro) or Discover transactions.
+*   Less than 50,000 American Express transactions.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+4
+
+</TableCell>
+<TableCell>
+
+*   Less than 20,000 Visa e-commerce transactions and/or process up to 1 million transactions.
+*   Every other merchant for MasterCard/Maestro, Diners and Discover, JCB.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+---
+
+## What happens if my level changes?
+
+If you reach Level 1 (more than 6 million transactions), we will identify this and contact you to make sure you can provide the relevant documentation and stay compliant.
+
+---
+
+## What documentation do I need to provide to attest of my compliance level with PCI DSS requirements?
+
+The PCI requirements for the different type of integration methods are as follows:
+
+<Table>
+<TableHead headers={['Integration method', 'Documents required']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+<ExternalLink href="https://docs.checkout.com/archive/checkout-js" >Checkout.js</ExternalLink> or [Frames](/integrate/frames)
+
+</TableCell>
+<TableCell>
+
+Your SAQ A (which we will prepare for you).
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+[Full card details API](/integrate/full-card-details-api) - using your own integration platform
+
+</TableCell>
+<TableCell>
+
+Your SAQ D.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Full card details API with a third-party service provider
+
+</TableCell>
+<TableCell>
+
+Please contact your Customer Success manager.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>

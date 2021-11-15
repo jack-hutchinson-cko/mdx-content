@@ -1,0 +1,157 @@
+---
+title: OAuth 2.0 client credentials
+account: NAS
+---
+
+An Access Key consists of two parts:
+
+* The Access Key Identifier (this corresponds to the OAuth 2.0 Client ID)
+* The Access Key Secret (this corresponds to the OAuth 2.0 Client Secret)
+
+The Client Credentials flow is designed for server-to-server authentication and consists of the following steps:
+
+1. The Merchant requests an access token from the Authorization Server. The Application must provide an access key ID and Secret in order to authenticate. You can optionally provide one or more scopes to indicate the resources it requires access to as a part of this request. If you don't provide it, the default scopes assigned when the credentials were created will apply.
+1. The Authorization Server validates the Client Credentials and whether it has access to the requested scopes. If the request is valid, an access token is returned.
+1. The Application makes a request to the API authenticating using the previously obtained access token.
+1. The Resource Server returns a response.
+
+The access token is a JSON Web Token (JWT), a special format that allows the secure exchange of information between two parties.
+
+The issued access tokens are designed to be short-lived, increasing their security. As such, the token also includes an expiry after which time the token will no longer work and the Application must request another token to continue access to the Resource Server. The expiry time of the JWT token will be included in the create token response.
+
+## Set up an OAuth 2.0 authentication
+
+The OAuth authentication should be set up by our Solutions Engineering team. Your access keys will be provided to you in an encrypted format so during this process, we will request that you provide us with a public RSA key.
+
+The RSA key needs to have a length of at least 2048 bits. We recommend creating a dedicated key only for this purpose as described below.
+
+### Creating a public and private RSA key pair
+
+You need to create a public and private RSA key pair with a bit length of at least 2048.
+
+```bash
+openssl genrsa -des3 -passout pass:password123 -out private-key.pem 2048<
+```
+
+The public key file can be exported with the following command:
+
+```bash
+openssl rsa -in private-key.pem -outform PEM -passin pass:password123 -pubout -out public-key.pem
+```
+
+You need to keep the private key file and the password private at all times. These can be later used to unencrypt the secret you received from us. You only ever need to communicate the public key file to us.
+
+### Secret decryption
+
+You will receive the encrypted secret associated with your access key in a file (e.g. ack_clckqmmnyfiupexjew7shh5ahe.enc). You can decrypt it in the command line using the following command:
+
+```bash
+cat ack_clckqmmnyfiupexjew7shh5ahe.enc | openssl base64 -d -A | openssl rsautl -decrypt -inkey private-key.pem -passin pass:password123
+```
+
+The output of this command will give you the client_secret needed for token creation in cleartext.
+
+For additional security, you can also store the encrypted secret in your integration’ configuration store (e.g., AWS Secrets Manager or Azure Key Vault), and decrypt it during token creation.
+
+## Using OAuth 2.0 authentication
+
+To use an access token in your request, you should provide it within the Authorization header. As per the OAuth 2.0 standards outlined in RFC6750, for subsequent API requests sent after obtaining the token, the ‘Bearer’ prefix should be included in the header alongside the access token.
+
+The OAuth 2.0 Framework recommends to authorize via the Basic “Authorization” Header.
+
+### Request example (Basic “Authorization” Header)
+
+```bash
+curl --location --request POST 'https://access.sandbox.checkout.com/connect/token' \
+--header 'Content-Type: application/x-www-form-urlencoded' \
+--header 'Authorization: Basic <ACCESS_TOKEN>' \
+--data-urlencode 'grant_type=client_credentials' \
+--data-urlencode 'scope=gateway vault fx'
+```
+
+The following pseudocode shows how to get the value for the Basic “Authorization” Header from the known client_id and client_secret:
+
+```bash
+"Authorization": "Basic " + Base64EncodingFunction(`${client_id}:${client_secret}`)
+```
+
+<TipBox variant="warning">
+Don't forget the colon character (:) separating the two string values.
+</TipBox>
+
+### Request example (“client_id” and “client_secret” x-www-form-urlencoded body parameters)
+
+```bash
+curl --location --request POST 'https://access.sandbox.checkout.com/connect/token' \
+--header 'Content-Type: application/x-www-form-urlencoded' \
+--data-urlencode 'client_id=<CLIENT_ID>' \
+--data-urlencode 'client_secret=<CLIENT_SECRET>' \
+--data-urlencode 'grant_type=client_credentials' \
+--data-urlencode 'scope=gateway vault fx'
+```
+
+## Successful response
+
+The token server will return a Bearer access_token in JSON Web Token (JWT) format.
+
+Your access token is valid for the length of time (in seconds) indicated by the expires_in field. When it expires, you'll need to either request a new one.
+
+```json
+{
+    "access_token":"<YOUR ACCESS TOKEN>",
+    "expires_in":3600,
+    "token_type":"Bearer",
+    "scope":"fx gateway vault"
+}
+```
+
+You can then provide your access token in the Authorization header of your API requests. For example:
+
+```bash
+curl --location --request POST 'https://api.checkout.com/payments' \
+--header 'Content-Type: application/json' \
+--header 'Accept: application/json' \
+--header 'Authorization: Bearer {<YOUR_ACCESS_TOKEN>}' \
+--data-raw '{ "amount": 10000, "currency": "USD", "reference": "Visa-USD-Test", ... }'
+```
+
+## Manage OAuth 2.0 authentication in the Dashboard
+
+In the Dashboard, you can:
+
+* list and view your access keys
+* generate new access key secrets
+
+### View and list access keys
+
+<img src="/NAS/Resources/access_keys.png"  />
+
+<TipBox variant="note">
+
+You must be an Owner, Admin, or Developer of your Dashboard account to view your access keys.
+
+</TipBox>
+
+Access your Dashboard > Select _Menu_ > _Settings_ then choose the option _Access Keys_.
+
+<img src="/NAS/Resources/access_keys.png"  />
+
+You'll see all access keys configured (client-level) and the scope for each of them.
+
+### Generate new access key secrets
+
+<TipBox variant="note">
+
+You must be an Owner of your Dashboard account, and have keys:manage permission to manage your access keys.
+
+</TipBox>
+
+To manage your access keys, log in to the Dashboard, go to _Settings > Access Keys_, then select one of the keys to view its details.
+
+<img src="/NAS/Resources/access+key+modal.png"  />
+
+If you want to generate a new secret for the access key, select _Generate secret_, then _Generate_.
+
+<img src="/NAS/Resources/generate+secret.png"  />
+
+If you generate a new access key secret, the old secret will be disabled and you should only use the new one in all requests.

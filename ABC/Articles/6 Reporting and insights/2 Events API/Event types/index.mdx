@@ -1,0 +1,663 @@
+---
+title: Event types
+account: ABC
+---
+
+Checkout.com sends webhooks for a number of event types.
+
+To subscribe to certain event types, follow the instructions in [webhook management](/reporting-and-insights/webhooks/webhook-management).
+
+---
+
+## List of event types
+
+<Table>
+<TableHead headers={['Webhook event type', 'Description']} />
+<TableBody>
+
+<TableRow>
+<TableCell>
+
+`card_verified`
+
+<InfoBox>
+
+View a [card verified webhook example](/reporting-and-insights/webhooks/webhook-examples/card_verified).
+
+</InfoBox>
+
+</TableCell>
+<TableCell>
+
+**Card verified**
+
+Occurs when a [card verification](/risk-management/card-verification) is successful.
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+`card_verification_declined`
+
+<InfoBox>
+
+View a [card verification declined webhook example](/reporting-and-insights/webhooks/webhook-examples/card_verification_declined).
+
+</InfoBox>
+
+</TableCell>
+<TableCell>
+
+**Card verification declined**
+
+Occurs when a [card verification](/risk-management/card-verification) is not approved.
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+`dispute_canceled`
+
+<InfoBox>
+
+View a [dispute canceled webhook example](/reporting-and-insights/webhooks/webhook-examples/dispute_canceled).
+
+</InfoBox>
+
+</TableCell>
+<TableCell>
+
+**Dispute canceled**
+
+Occurs when a dispute is canceled by the issuing bank and your account is credited back the disputed amount.
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+`dispute_evidence_required`
+
+<InfoBox>
+
+View a [dispute evidence required webhook example](/reporting-and-insights/webhooks/webhook-examples/dispute_evidence_required).
+
+</InfoBox>
+
+</TableCell>
+<TableCell>
+
+**Dispute evidence required**
+
+Notifies you that you need to respond to a dispute, and that your account has been debited the disputed amount.
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+`dispute_expired`
+
+<InfoBox>
+
+View a [dispute expired webhook example](/reporting-and-insights/webhooks/webhook-examples/dispute_expired).
+
+</InfoBox>
+
+</TableCell>
+<TableCell>
+
+**Dispute expired**
+
+Notifies you that you can no longer respond to a dispute, because the time limit to take action has been exceeded.
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+`dispute_lost`
+
+<InfoBox>
+
+View a [dispute lost webhook example](/reporting-and-insights/webhooks/webhook-examples/dispute_lost).
+
+</InfoBox>
+
+</TableCell>
+<TableCell>
+
+**Dispute lost**
+
+Notifies you that the issuing bank has rejected your evidence and you have lost the dispute.
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+`dispute_resolved`
+
+<InfoBox>
+
+View a [dispute resolved webhook example](/reporting-and-insights/webhooks/webhook-examples/dispute_resolved).
+
+</InfoBox>
+
+</TableCell>
+<TableCell>
+
+**Dispute resolved**
+
+Occurs when we automatically resolve the dispute because it had already been refunded.
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+`dispute_won`
+
+<InfoBox>
+
+View a [dispute won webhook example](/reporting-and-insights/webhooks/webhook-examples/dispute_won).
+
+</InfoBox>
+
+</TableCell>
+<TableCell>
+
+**Dispute won**
+
+Notifies you that the issuing bank has accepted your evidence and you have won the dispute. Your account has been credited back the disputed amount.
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+`payment_approved`
+
+<InfoBox>
+
+View a [payment approved webhook example](/reporting-and-insights/webhooks/webhook-examples/payment_approved).
+
+</InfoBox>
+
+</TableCell>
+<TableCell>
+
+**Payment approved**
+
+Occurs when an acquirer or provider approves a payment.
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+`payment_pending`
+
+<InfoBox>
+
+View a [payment pending webhook example](/reporting-and-insights/webhooks/webhook-examples/payment_pending).
+
+</InfoBox>
+
+</TableCell>
+<TableCell>
+
+**Payment pending**
+
+Occurs on asynchronous payments when further action is required.
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+`payment_declined`
+
+<InfoBox>
+
+View a [payment declined webhook example](/reporting-and-insights/webhooks/webhook-examples/payment_declined) (for payments) or a [payment declined webhook example](/reporting-and-insights/webhooks/webhook-examples/payment_declined-card-payouts) (for Card Payouts).
+
+</InfoBox>
+
+</TableCell>
+<TableCell>
+
+**Payment declined**
+
+Occurs when a payment times out, or is declined by the acquirer or provider.
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+`payment_expired`
+
+<InfoBox>
+
+View a [payment expired webhook example](/reporting-and-insights/webhooks/webhook-examples/payment_expired).
+
+</InfoBox>
+
+</TableCell>
+<TableCell>
+
+**Payment expired**
+
+Occurs when the merchant generates an alternative payment link but the customer fails to access it to complete the payment.
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+`payment_voided`
+
+<InfoBox>
+
+View a [payment voided webhook example](/reporting-and-insights/webhooks/webhook-examples/payment_voided).
+
+</InfoBox>
+
+</TableCell>
+<TableCell>
+
+**Payment expired**
+
+Occurs when the merchant generates an alternative payment link but the customer fails to access it to complete the payment.
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+`payment_voided`
+
+<InfoBox>
+
+View a [payment voided webhook example](/reporting-and-insights/webhooks/webhook-examples/payment_voided).
+
+</InfoBox>
+
+</TableCell>
+<TableCell>
+
+**Payment voided**
+
+Occurs when an acquirer voids an authorized payment.
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+`payment_canceled`
+
+<InfoBox>
+
+View a [payment canceled webhook example](/reporting-and-insights/webhooks/webhook-examples/payment_canceled).
+
+</InfoBox>
+
+</TableCell>
+<TableCell>
+
+**Payment canceled**
+
+Occurs when an end user cancels the payment through the provider’s interface.
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+`payment_void_declined`
+
+<InfoBox>
+
+View a [payment void declined webhook example](/reporting-and-insights/webhooks/webhook-examples/payment_void_declined).
+
+</InfoBox>
+
+</TableCell>
+<TableCell>
+
+**Payment void declined**
+
+Occurs when a void attempt times out, or is declined by the acquirer or provider.
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+`payment_captured`
+
+<InfoBox>
+
+View a [payment captured webhook example](/reporting-and-insights/webhooks/webhook-examples/payment_captured).
+
+</InfoBox>
+
+</TableCell>
+<TableCell>
+
+**Payment captured**
+
+Occurs when an acquirer captures an authorized card payment, or when the provider completes an alternative payment capture.
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+`payment_capture_declined`
+
+<InfoBox>
+
+View a [payment capture declined webhook example](/reporting-and-insights/webhooks/webhook-examples/payment_capture_declined).
+
+</InfoBox>
+
+</TableCell>
+<TableCell>
+
+**Payment capture declined**
+
+Occurs when a capture times out, or is declined by the acquirer.
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+`payment_capture_pending`
+
+<InfoBox>
+
+View a [payment capture pending webhook example](/reporting-and-insights/webhooks/webhook-examples/payment_capture_pending).
+
+</InfoBox>
+
+</TableCell>
+<TableCell>
+
+**Payment capture pending**
+
+Occurs when an acquirer is in the process of capturing a payment.
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+`payment_refunded`
+
+<InfoBox>
+
+View a [payment refunded webhook example](/reporting-and-insights/webhooks/webhook-examples/payment_refunded).
+
+</InfoBox>
+
+</TableCell>
+<TableCell>
+
+**Payment refunded**
+
+Occurs when an acquirer refunds a captured payment.
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+`payment_refund_declined`
+
+<InfoBox>
+
+View a [payment refund declined webhook example](/reporting-and-insights/webhooks/webhook-examples/payment_refund_declined).
+
+</InfoBox>
+
+</TableCell>
+<TableCell>
+
+**Payment refund declined**
+
+Occurs when a payment refund times out, or is declined by an acquirer.
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+`payment_refund_pending`
+
+<InfoBox>
+
+View a [payment refund pending webhook example](/reporting-and-insights/webhooks/webhook-examples/payment_refund_pending).
+
+</InfoBox>
+
+</TableCell>
+<TableCell>
+
+**Payment refund pending**
+
+Occurs when an acquirer is in the process of refunding a payment.
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+`payment_chargeback`
+
+<InfoBox>
+
+View a [payment chargeback webhook example](/reporting-and-insights/webhooks/webhook-examples/payment_chargeback).
+
+</InfoBox>
+
+</TableCell>
+<TableCell>
+
+**Payment chargeback**
+
+Occurs when a chargeback is requested for a payment.
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+`payment_retrieval`
+
+<InfoBox>
+
+View a [payment retrieval webhook example](/reporting-and-insights/webhooks/webhook-examples/payment_retrieval).
+
+</InfoBox>
+
+</TableCell>
+<TableCell>
+
+**Payment retrieval**
+
+Occurs when a retrieval is requested for a payment.
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+`source_updated`
+
+<InfoBox>
+
+View a [source updated webhook example](/reporting-and-insights/webhooks/webhook-examples/source_updated).
+
+</InfoBox>
+
+</TableCell>
+<TableCell>
+
+**Source updated**
+
+Occurs when a payment source has been updated.
+
+</TableCell>
+</TableRow>
+
+<TableRow>
+<TableCell>
+
+`payment_paid`
+
+<InfoBox>
+
+Only applies to payouts. View a [payment paid webhook example](/reporting-and-insights/webhooks/webhook-examples/payment_paid).
+
+</InfoBox>
+
+</TableCell>
+<TableCell>
+
+**Payment paid**
+
+Occurs when a payout is made to a card.
+
+</TableCell>
+</TableRow>
+
+</TableBody>
+</Table>
+
+<TipBox variant="info">
+
+Receiving a `payment_captured` notification via webhooks is the only way to confirm a payment completes successfully.
+
+</TipBox>
+
+---
+
+## Get event types (API)
+
+Use this API request to view all available event types.
+
+### The GET request
+
+### Endpoints
+
+<tabs>
+<tab title="Live">
+<LineCodeWrapper type="get">
+
+`https://api.checkout.com/event-types`
+
+</LineCodeWrapper>
+</tab>
+<tab title="Sandbox">
+<LineCodeWrapper type="get">
+
+`https://api.sandbox.checkout.com/event-types`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+### Header parameters
+
+<Table>
+<TableHead headers={['Header', 'Value']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`Authorization`
+
+<StatusTag type="required" />
+
+</TableCell>
+<TableCell>
+
+`secret key`
+
+<InfoBox>
+
+Use the valid secret key of your Checkout.com account. You can find this in the <ExternalLink href="https://hub.checkout.com" >Hub</ExternalLink>.
+
+</InfoBox>
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`Content-Type`
+
+<StatusTag type="required" />
+
+</TableCell>
+<TableCell>
+
+`application/json`
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+### Query parameters
+
+<Table>
+<TableHead headers={['Query parameters', 'Description']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`version`
+
+<StatusTag type="optional" />
+
+</TableCell>
+<TableCell>
+
+The version of the API that you wish to retrieve event types for. Use `version=1.0` for the Classic API and `?version=2.0` for the Unified Payments API. If you do not use this parameter, event types for both versions will be returned.
+
+</TableCell>
+</TableRow>
+
+</TableBody>
+</Table>

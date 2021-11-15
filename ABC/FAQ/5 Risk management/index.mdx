@@ -1,0 +1,167 @@
+---
+title: Risk management
+account: ABC
+previewIcon: /faq/category-risk.svg
+previewIconDark: /faq/category-risk-light.svg
+description: Fraud detection, PSD2, 3DS 2.0, and chargebacks.
+---
+
+<FAQItem title="What are my options for fraud management?" popularity={21}>
+
+We offer a suite of tools to help you strike the right balance between effective risk management and high approval rates.
+
+- Our payment gateway digitally replaces your customers' card details with a secure token which holds no exploitable value. Actual bank account information is secured in a token vault.
+- Our risk engine learns from processing millions of global payments, using this data to assign risk scores, automatically block high-risk payments, and generate actionable risk reports.
+- You can use the risk scoring to set rules for how payments are processed and route them according to pre-defined criteria.
+- Our simple disputes workflow allows you to identify and act on disputes, provide evidence with ease, and track their progress in real time.
+- We've integrated the next generation of authentication, 3D Secure 2.0, into our Unified Payments API, ensuring compliance while improving your customers' experience with a friction-free authentication flow.
+
+Learn more about [how we help you manage fraud risk](/risk-management).
+
+</FAQItem>
+
+<FAQItem title="How do I change the risk settings on my account?" popularity={21}>
+
+If you want to configure your risk settings, please get in touch with our Risk team at <ExternalLink href="mailto:risk@checkout.com">risk@checkout.com</ExternalLink>.
+
+</FAQItem>
+
+<FAQItem title="Can I blacklist different attributes?" popularity={21}>
+
+Yes. You can blacklist the following attributes:
+
+- card
+- IP address
+- email address
+- phone number
+We manage a global blacklist of cards that have been blacklisted by other <ExternalLink href="https://www.checkout.com/" >Checkout.com</ExternalLink> merchants, and we block any card that has been blacklisted by at least three other merchants.
+
+If you want to change your risk settings, please get in touch with our Risk team at <ExternalLink href="mailto:risk@checkout.com">risk@checkout.com</ExternalLink>.
+
+</FAQItem>
+
+<FAQItem title="What is a dispute/chargeback?" popularity={21}>
+
+Disputes (also known as chargebacks) arise when a customer queries a transaction with their card issuer – usually because the customer suspects fraud. The issuer then creates a formal dispute which immediately reverses the payment, and debits your account for both the payment amount and a dispute fee (e.g., £15 for merchants in the United Kingdom).
+
+You will then have the opportunity to challenge the dispute and to provide the issuer with evidence of the legitimacy of the transaction.
+
+See our [disputes guide](/risk-management/disputes) for more information.
+
+</FAQItem>
+
+<FAQItem title="How does the dispute/chargeback process work?" popularity={21}>
+
+Learn how the dispute process works on our [docs site](/risk-management/disputes/how-disputes-work).
+
+</FAQItem>
+
+<FAQItem title="How much time do I have to challenge a dispute/chargeback?" popularity={21}>
+
+The expiry date for each dispute/chargeback is specified in your Hub account.
+
+We recommend you pay particular attention to Amex disputes, because they have a tighter time frame for re-presentment than other card schemes.
+
+Learn more about [how the disputes process works](/risk-management/disputes/how-disputes-work).
+
+</FAQItem>
+
+<FAQItem title="How do I upload and submit evidence to challenge a dispute?" popularity={21}>
+
+You can do this in two ways: through [the Hub](/the-hub/manage-disputes), or using our [API](risk-management/disputes/disputes-api).
+
+</FAQItem>
+
+<FAQItem title="Can I upload an audio file in response to a dispute?" popularity={21}>
+
+No. Card schemes require you to submit evidence as either a JPEG or PDF file. If you have an audio recording that supports your claim, we recommend transcribing its contents in order to submit that as evidence.
+
+In addition, you cannot submit video files, links to third-party websites (a screenshot may be submitted if relevant) or file downloads, or ask that the card issuer contacts you for more information. The issuer will not accept these as evidence.
+
+</FAQItem>
+
+<FAQItem title="Do I need to submit evidence if I've already refunded the customer?" popularity={21}>
+
+No. If you’ve already fully refunded the customer, we will automatically defend against the dispute by sending the issuer the refund information. You will not be debited the disputed amount, but you will be charged a dispute fee.
+
+If you've partially refunded the customer, you still need to respond to the part of the dispute that covers the unrefunded amount. Once you've accepted or challenged that part of the dispute, we will send the evidence of your partial refund to the issuer.
+
+</FAQItem>
+
+<FAQItem title="Do I need to provide supporting documents for disputed 3D Secure payments?" popularity={21}>
+
+You're not required to provide us with any supporting documents to re-present/deal with pre-arbitration for a fraud dispute, **unless** the payment was 3D Secure-authenticated by a third party.
+
+If the payment was 3DS-authenticated by us, our Disputes team will proceed with re-presentment/dealing with pre-arbitration, using our internal authentication log as reference.
+
+If the payment was 3DS-authenticated by a third party, which we do not recommend, you will need to provide us with the authentication log.
+
+</FAQItem>
+
+<FAQItem title="What is SCA and 3DS2?" popularity={21}>
+
+Strong Customer Authentication (SCA), introduced by the revised Payment Services Directive (PSD2), is an upgraded security measure that is used to authenticate online card payments. It came into effect on 31 December 2020 in the European Economic Area (EEA), and will come into effect on 14 September 2021 in the UK.
+
+3D Secure 2 (3DS2) is the new version of the 3D Secure authentication protocol. It is the best way to implement SCA, adding multi-factor authentication and data-rich risk analysis to online card payments.
+
+Learn more with the following resources:
+
+- [SCA compliance guide](/risk-management/sca-compliance-guide)
+- <ExternalLink href="https://www.checkout.com/blog/post/how-to-make-the-new-sca-regulations-work-for-your-business" >Make SCA work for your business</ExternalLink>
+- <ExternalLink href="https://www.checkout.com/blog/post/the-early-impact-of-sca-on-payements-in-europe" >The early impact of SCA across Europe</ExternalLink>
+- <ExternalLink href="https://www.checkout.com/blog/post/when-should-merchants-prepare-for-soft-declines" >Preparing for soft declines</ExternalLink>
+
+</FAQItem>
+
+<FAQItem title="Does SCA apply to me?" popularity={21}>
+
+In short, Strong Customer Authentication only applies to you if **both** of the following statements are true:
+
+- You are located in the EEA or in the UK, and
+- The card issuing bank is also located in the EEA or in the UK.
+
+</FAQItem>
+
+<FAQItem title="When will SCA be enforced?" popularity={21}>
+
+Strong Customer Authentication (SCA) requirements officially came into effect on 31 December 2020 in the European Economic Area (EEA) and will come into effect on 14 September 2021 in the UK.
+
+However, certain EEA countries have allowed additional market flexibility and soft decline ramp-up strategies. For more information, read how you can <ExternalLink href="https://www.checkout.com/blog/post/when-should-merchants-prepare-for-soft-declines" >prepare for soft declines</ExternalLink>.
+
+</FAQItem>
+
+<FAQItem title="What do I need to do to be SCA-compliant?" popularity={21}>
+
+
+In short, you need to make sure that card payments you accept are either submitted with a 3D Secure (3DS) enabled flag, an exemption tag, or correctly flagged as a merchant-initiated or recurring transaction.
+
+Learn more in our [Strong Customer Authentication compliance guide](/risk-management/sca-compliance-guide).
+
+</FAQItem>
+
+
+<FAQItem title="Is 3D Secure 1 SCA-compliant?" popularity={21}>
+
+Yes, in some cases, the first version of 3DS may comply with Strong Customer Authentication and the issuer may still be using that version.
+
+</FAQItem>
+
+<FAQItem title="What is the 3D Secure liability shift, and when does it apply?" popularity={21}>
+
+This is when the liability for fraud-related chargebacks (e.g., your customer denies they made a purchase, suspecting someone has stolen their card details) shifts from you to the card issuer – generally the customer’s bank.
+
+The shift occurs when an online card payment is authenticated with 3D Secure (3DS). See our [Strong Customer Authentication compliance guide](/risk-management/sca-compliance-guide) for more information.
+
+</FAQItem>
+
+<FAQItem title="What is a retrieval request?" popularity={21}>
+
+A retrieval request (also known as a request for information or soft chargeback) is a request from the customer's bank (the issuer) asking for more information about a transaction.
+
+The issuer may do this before raising a formal dispute, or use it instead of a dispute if they can no longer raise one because too much time has passed since the transaction. No money is taken from your account at this stage.
+
+You should provide the requested information to the issuer as quickly as possible. And, if you think the transaction being questioned is not valid, it's best to refund the customer to avoid the potential of a formal dispute being raised.
+
+If you act promptly, you may prevent a chargeback.
+
+</FAQItem>

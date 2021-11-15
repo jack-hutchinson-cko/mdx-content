@@ -1,0 +1,34 @@
+<IBuilderDescriptionCard title="Create a component for the payment form" tab="react/src/Form.jsx" lines={[4, 116]}>
+
+Create a component that will handle the payment form functionality and render the components – in our example, we have `Form`. In the return method, the outer component should be Frames, with `CardNumber`, `ExpiryDate` and `Cvv` as children. 
+
+</IBuilderDescriptionCard>
+
+<IBuilderDescriptionCard title="Handle Form states" tab="react/src/App.js" lines={[11, 26]}>
+
+Depending on how you normally work with React, you may handle creating states and passing props differently. 
+
+In our example, App.js is the parent component that renders `Form`. It creates the states that will allow us to modify success and error messages, and whether the payment button should be disabled. 
+
+Pass these states as props into the `Form` component, so we can use them in Form.jsx.
+
+</IBuilderDescriptionCard>
+
+<IBuilderDescriptionCard title="Pass props into the Frames component" tab="react/src/Form.jsx" lines={[66, 87]}>
+
+Because the `frames-react` components are iframes, there are specific ways to interact with them. That’s why we use the `Frames` component’s several built-in props to handle Frames custom events. <ExternalLink href="https://github.com/checkout/frames-react#the-props" >Read more about available props</ExternalLink>.
+
+Let’s walk through the props in our example: 
+
+- The `config` prop takes a `publicKey`, which you will get from your Hub account. 
+- `frameValidationChanged`, `cardSubmitted` and `cardTokenized` are the props that handle Frames events. These expect functions that tell Frames what to do when that event occurs. [Read more about events in Frames](/integrate/frames/frames-reference#Events).
+
+</IBuilderDescriptionCard>
+
+<IBuilderDescriptionCard title="Handle card submit" tab="react/src/Form.jsx" lines={[108, 110]}>
+
+We have added an HTML button element to handle submitting the form; you may have a `Button` component instead. One of the built-in actions in Frames is `isCardValid`, which checks to see if the card information that was added is valid, and returns either true or false. 
+
+Use this action when a user selects the submit button to prevent invalid data from being sent. [Read more about actions in Frames](/integrate/frames/frames-reference#Actions).
+
+</IBuilderDescriptionCard>

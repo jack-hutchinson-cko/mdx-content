@@ -1,0 +1,566 @@
+---
+title: Fawry
+account: NAS
+description: Start accepting payments using Fawry, the dominant payment method in Egypt.
+---
+
+Start accepting payments using Fawry, the dominant payment method in Egypt.
+
+<TipBox>
+
+Shoppers can now make Fawry payments via the myFawry app (<ExternalLink href="https://apps.apple.com/de/app/myfawry/id1462911630?l=en">App Store</ExternalLink> and <ExternalLink href="https://play.google.com/store/apps/details?id=com.fawry.myfawry&hl=en&gl=US">Google Play</ExternalLink>), rather than having to take their payment reference to a shop or ATM, meaning a better payment experience for both you and your customers.
+
+</TipBox>
+
+<TipBox variant="info">
+
+To start accepting Fawry payments, please contact your Customer Success Manager.
+
+</TipBox>
+
+<Table>
+<TableBody>
+<TableRow>
+<TableCell withBackground>
+
+**Model**
+
+</TableCell>
+<TableCell>
+
+Collecting
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell withBackground>
+
+**Payment flow**
+
+</TableCell>
+<TableCell>
+
+Redirect
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell withBackground>
+
+**Payment method type**
+
+</TableCell>
+<TableCell>
+
+Voucher
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell withBackground>
+
+**One-step payment**
+
+</TableCell>
+<TableTicCell type="check"/>
+</TableRow>
+<TableRow>
+<TableCell withBackground>
+
+**Authorization**
+
+</TableCell>
+<TableTicCell type="error"/>
+</TableRow>
+<TableRow>
+<TableCell withBackground>
+
+**Capture**
+
+</TableCell>
+<TableTicCell type="error" />
+</TableRow>
+<TableRow>
+<TableCell withBackground>
+
+**Refund**
+
+</TableCell>
+<TableTicCell type="check" />
+</TableRow>
+<TableRow>
+<TableCell withBackground>
+
+**Partial refund**
+
+</TableCell>
+<TableTicCell type="check" />
+</TableRow>
+<TableRow>
+<TableCell withBackground>
+
+**Return**
+
+</TableCell>
+<TableTicCell tick="error" />
+</TableRow>
+<TableRow>
+<TableCell withBackground>
+
+**Recurring payment**
+
+</TableCell>
+<TableTicCell type="error" />
+</TableRow>
+</TableBody>
+</Table>
+
+## Request a payment
+
+Use the details below to set up your request.
+
+---
+
+### Endpoints
+
+You can find the full list, as well as complete request and response examples, in our <ExternalLink href="https://api-reference.checkout.com/preview/crusoe">API reference</ExternalLink>.
+
+<tabs>
+<tab title="Live">
+
+<LineCodeWrapper type="post">
+
+`https://api.checkout.com/payments`
+
+</LineCodeWrapper>
+
+</tab>
+<tab title="Sandbox">
+
+<LineCodeWrapper type="post">
+
+`https://api.sandbox.checkout.com/payments`
+
+</LineCodeWrapper>
+
+</tab>
+</tabs>
+
+### Request example
+
+```json
+{
+  "amount": 1000,
+  "currency": "EGP",
+  "source": {
+    "type": "fawry",
+    "description": "Fawry Demo Payment",
+    "customer_mobile": "01058375055",
+    "customer_email": "bruce@wayne-enterprises.com",
+    "products": [
+      {
+        "product_id": "0123456789",
+        "quantity": 1,
+        "price": 1000,
+        "description": "Fawry Demo Product"
+      }
+    ]
+  }
+}
+```
+
+### Response example
+
+If you receive a `202 Success` response containing a `status` field set to `Pending`, your request was successful.
+
+In addition, you will receive `payment_pending` and `payment_capture_pending` webhook notifications. And, when the customer completes the Fawry payment in a timely manner at a point of sale, you will get a `payment_captured` webhook notification to confirm that the payment has completed.
+
+```json
+{
+  "id": "pay_xksrrfuzksge5gyyqubpgbn7gy",
+  "status": "Pending",
+  "customer": {
+    "id": "cus_v65kd7q5tojehd23eftbaiktru"
+  },
+  "_links": {
+    "self": {
+      "href": "https://api.sandbox.checkout.com/payments/pay_xksrrfuzksge5gyyqubpgbn7gy"
+    }
+  }
+}
+```
+
+<TipBox variant="info" title="Payment capture, expiration and cancellation">
+
+The payment will remain pending for the duration that you agreed when you onboarded your business with Fawry, or until the date and time you set for `expires_on`. If the customer fails to complete the transaction at a point of sale by then, the payment will expire and you will receive a `payment_expired` webhook notification. If, for any reason, the payment gets canceled before being captured or expiring, you will receive the `payment_canceled` webhook notification instead. Make sure that your products and/or services are not shipped and/or provided before receiving confirmation of the capture.
+
+</TipBox>
+
+## Get details about a payment
+
+You can retrieve details about an existing Fawry payment with the following endpoint.
+
+---
+
+### Endpoints
+
+<tabs>
+<tab title="Live">
+
+<LineCodeWrapper type="get">
+
+`https://api.checkout.com/payments/{payment_id}`
+
+</LineCodeWrapper>
+
+</tab>
+<tab title="Sandbox">
+
+<LineCodeWrapper type="get">
+
+`https://api.sandbox.checkout.com/payments/{payment_id}`
+
+</LineCodeWrapper>
+
+</tab>
+</tabs>
+
+### Response example
+
+```json
+{
+  "id": "pay_xksrrfuzksge5gyyqubpgbn7gy",
+  "requested_on": "2019-05-27T14:10:32Z",
+  "source": {
+    "type": "fawry",
+    "description": "Fawry Demo Payment",
+    "reference_number": "1019734277"
+  },
+  "amount": 1000,
+  "currency": "EGP",
+  "payment_type": "Regular",
+  "status": "Pending",
+  "risk": {
+    "flagged": false
+  },
+  "customer": {
+    "id": "cus_v65kd7q5tojehd23eftbaiktru"
+  },
+  "_links": {
+    "self": {
+      "href": "https://api.sandbox.checkout.com/payments/pay_xksrrfuzksge5gyyqubpgbn7gy"
+    }
+  }
+}
+```
+
+## Refund a payment
+
+Fawry supports both partial (see note below for details) and full refunds. You can refund a payment through the <ExternalLink href="https://dashboard.checkout.com/login">Dashboard</ExternalLink> or by using the [refund API](/payments/manage-payments/refund-a-payment).
+
+<TipBox variant="note">
+
+Multiple partial refund actions may be taken on a Fawry payment if there is some amount left. In addition, Fawry refunds are **always rounded down to the nearest whole number**. For example, attempting to refund a payment amount of 10999 (EGP 109.99) will only refund 10900 (EGP 109.00).
+
+</TipBox>
+
+## Webhooks
+
+When using Fawry, you may receive the following webhooks.
+
+<Table>
+<TableHead headers={["Webhook", "Description"]} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`payment_pending`
+
+</TableCell>
+<TableCell>
+
+Sent when a payment request has successfully initiated.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`payment_expired`
+
+</TableCell>
+<TableCell>
+
+Sent when the payment has expired. (Fawry payments expire after two hours.)
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`payment_declined`
+
+</TableCell>
+<TableCell>
+
+Sent when a payment request has been rejected.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`payment_capture_pending`
+
+</TableCell>
+<TableCell>
+
+Sent when the customer has approved the payment by paying it with a voucher or by cash.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`payment_captured`
+
+</TableCell>
+<TableCell>
+
+Sent when the payment has been successfully captured.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`payment_canceled`
+
+</TableCell>
+<TableCell>
+
+Sent when the customer has aborted the payment or the payment has failed.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`payment_refund_accepted`
+
+</TableCell>
+<TableCell>
+
+Sent when the refund of the payment has been (fully or partially) accepted for refund.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`payment_refunded`
+
+</TableCell>
+<TableCell>
+
+Sent when the payment has been (fully or partially) refunded.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`payment_refund_declined`
+
+</TableCell>
+<TableCell>
+
+Sent when a refund has been declined.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+## Testing Fawry
+
+<TipBox variant="info">
+
+To start testing, you'll need to contact your Customer Success Manager or Integrations engineer to activate Fawry payments.
+
+</TipBox>
+
+<TipBox variant="note">
+
+The following endpoints are for testing purposes only. They will not work in the live environment.
+
+</TipBox>
+
+You can use the two following endpoints to test capturing and canceling a payment in our sandbox environment.
+
+---
+
+### Get payment details
+
+First, you will need to get the details of payment (as above) and make a note of the `reference_number` in the response.
+
+### Capture a payment
+
+Use the `reference_number` from the above response to test capturing a payment.
+
+### Endpoint
+
+<tabs>
+<tab title="Sandbox">
+
+<LineCodeWrapper type="put">
+
+`https://api.sandbox.checkout.com/fawry/payments/{reference_number}/approval`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+### Header and path parameters
+
+<Table>
+<TableHead headers={["Header", "Value"]} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`Authorization`
+
+<StatusTag type="required" />
+
+</TableCell>
+<TableCell>
+
+`secret key`
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`Content-Type`
+
+<StatusTag type="required" />
+
+</TableCell>
+<TableCell>
+
+`application/json`
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+<Table>
+<TableHead headers={["Path", "Value"]} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`reference_number`
+
+<StatusTag type="required" />
+
+</TableCell>
+<TableCell>
+
+The reference number you received in the response to the 'get payment details' request.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+If successful, you will receive a `payment_captured` webhook notification.
+
+### Cancel a payment
+
+Use the `reference_number` from the response to your get payment details request to test canceling a payment.
+
+### Endpoint 
+
+<tabs>
+<tab title="Sandbox">
+
+<LineCodeWrapper type="put">
+
+`https://api.sandbox.checkout.com/fawry/payments/{reference_number}/cancellation`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+### Header and path parameters
+
+<Table>
+<TableHead headers={["Header", "Value"]} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`Authorization`
+
+<StatusTag type="required" />
+
+</TableCell>
+<TableCell>
+
+`secret key`
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`Content-Type`
+
+<StatusTag type="required" />
+
+</TableCell>
+<TableCell>
+
+`application/json`
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+<Table>
+<TableHead headers={["Path", "Value"]} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`reference_number`
+
+<StatusTag type="required" />
+
+</TableCell>
+<TableCell>
+
+The reference number you received in the response to the 'get payment details' request.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+If successful, you will receive a `payment_canceled` webhook notification.
+
+## Fawry on mobile
+
+You can offer the myFawry app for making payments. The app applies the same rules for both cash and credit card orders as kiosk and myFawry do not differ.
+
+Refunds are made following the same steps as for cash orders:
+
+1. When Fawry receives a refund request it sends a notification informing you that the proper action has been taken.
+2. The customer receives an SMS with the reference code containing the OTP. The SMS is sent to the mobile number used in placing the order.
+3. If the customer has payed with a credit card, the refund amount is sent to their credit card.
+4. If the customer has payed with cash and request refund using the myFawry app, they receive a reference number they should use at a kiosk to obtain the refund.

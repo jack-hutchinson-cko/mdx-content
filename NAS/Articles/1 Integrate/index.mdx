@@ -1,0 +1,65 @@
+--- 
+title: Integrate
+account: NAS
+---
+
+Read about our integration methods below, then choose the one that best suits your needs.
+
+<TipBox variant="success" title="Update your integration to support SCA">
+
+As of 14 September 2019, the EU’s revised Payment Services Directive (PSD2) requires merchants to apply Strong Customer Authentication (SCA) to most online payments within Europe. To comply with these new requirements, merchants should adopt the next generation of authentication – [3D Secure 2 (3DS2)](/risk-management/sessions) – which creates a smoother and more secure checkout flow. Our integrations fully support 3DS2 and SCA, and ensure that you only ask your customers for additional authentication when needed.
+
+</TipBox>
+
+## Collect payment details securely
+
+Collect payment details securely using Frames or our full card details API.
+
+---
+
+<ContentPanel title="Frames" imgSrc="/docs/Collect payment/Frames.svg">
+
+Frames is a highly customizable payment form, which allows customers to enter their payment
+details directly on your checkout page or in your app. We process these and exchange them for a
+secure, single-use token. You can then use this token to request a payment, without having to
+process or store any sensitive information yourself.
+
+[Learn more](/integrate/frames)
+
+</ContentPanel>
+
+<ContentPanel title="Full card details API" imgSrc="/docs/Collect payment/FullСard.svg"  withBorder={false} >
+
+Unlike our other integration methods, the full card details API does not use card tokens. Instead, you process your customers' card details directly. If you are looking to have total control over the checkout experience, then the full card details API may be the option for you.
+
+[Learn more](/payments/accept-payments/request-a-payment)
+
+</ContentPanel>
+
+## End-to-end payment solutions
+
+Collect customer’s payment information, process the payment request and handle authentication with our Hosted Payments Page or Payment Links.
+
+---
+
+<ContentPanel title="Hosted Payments Page" imgSrc="/docs/Collect payment/Hosted.svg">
+
+Accept payments through our Hosted Payments Page. We render a payment page where your customer enters their payment details, and in the background we generate a token and complete the payment request.
+
+[Learn more](/integrate/hosted-payments-page)
+
+</ContentPanel>
+
+<ContentPanel title="Payment Links" imgSrc="/docs/Collect payment/Payment.svg" withBorder={false}>
+
+The fastest way to accept payments, through any device and channel. Send a payment link to your customer and they'll be taken to a Checkout.com-hosted payment page to complete their purchase.
+
+[Learn more](/integrate/payment-links)
+
+</ContentPanel>
+
+<TipBox variant="info" >
+
+If you're still unsure about which method is best for you, get in touch with our Support team at <ExternalLink href="mailto:support@checkout.com">support@checkout.com</ExternalLink>.
+
+</TipBox>

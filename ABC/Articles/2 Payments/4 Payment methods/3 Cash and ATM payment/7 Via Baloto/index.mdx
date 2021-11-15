@@ -1,0 +1,479 @@
+---
+title: Via Baloto
+account: ABC
+---
+
+Start accepting payment using Via Baloto, a favorite payment method in Colombia.
+
+<TipBox variant="info">
+
+If you want to use a gateway model for accepting Via Baloto payments, you will need to arrange an agreement with our provider, dLocal, and create merchant details (specifically, `x_login` and `x_trans_key`) and a secret key with them. Share these details with our Customer Support team and we'll get you up and running. If you have already been onboarded for one of our other dLocal payment methods, you can use the same credentials.
+
+</TipBox>
+
+
+<Table>
+<TableBody>
+<TableRow>
+<TableCell withBackground>
+
+**Model**
+
+</TableCell>
+<TableCell>
+
+Collecting
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell withBackground>
+
+**Payment flow**
+
+</TableCell>
+<TableCell>
+
+Cash
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell withBackground>
+
+**Payment method type**
+
+</TableCell>
+<TableCell>
+
+Voucher
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell withBackground>
+
+**One-step payment**
+
+</TableCell>
+<TableTicCell type="check"/>
+</TableRow>
+<TableRow>
+<TableCell withBackground>
+
+**Authorization**
+
+</TableCell>
+<TableTicCell type="error"/>
+</TableRow>
+<TableRow>
+<TableCell withBackground>
+
+**Capture**
+
+</TableCell>
+<TableTicCell type="error" />
+</TableRow>
+<TableRow>
+<TableCell withBackground>
+
+**Refund**
+
+</TableCell>
+<TableTicCell type="check" />
+</TableRow>
+<TableRow>
+<TableCell withBackground>
+
+**Partial refund**
+
+</TableCell>
+<TableTicCell type="check" />
+</TableRow>
+<TableRow>
+<TableCell withBackground>
+
+**Chargeback**
+
+</TableCell>
+<TableTicCell type="error" />
+</TableRow>
+<TableRow>
+<TableCell withBackground>
+
+**Recurring payment**
+
+</TableCell>
+<TableTicCell type="error" />
+</TableRow>
+</TableBody>
+</Table>
+
+
+---
+
+## Overview
+
+Via Baloto payments follow a two-step process:
+
+1.  [Request payment](/payments/payment-methods/cash-and-atm-payment/via-baloto#Step_1:_Request_payment)
+2.  [Redirect the customer](/payments/payment-methods/cash-and-atm-payment/via-baloto#Step_2:_Redirect_the_customer)
+
+---
+
+## Step 1: Request payment
+
+### Endpoints
+
+You can find the full list, as well as complete request and response examples, in our <ExternalLink href="https://api-reference.checkout.com" >API reference</ExternalLink>.
+
+<tabs>
+<tab title="Live" active>
+<LineCodeWrapper type="post">
+
+`https://api.checkout.com/payments`
+
+</LineCodeWrapper>
+</tab>
+<tab title="Sandbox">
+<LineCodeWrapper type="post">
+
+`https://api.sandbox.checkout.com/payments`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+### Request example
+
+```json
+    {
+      "source": {
+        "type": "baloto",
+        "integration_type": "redirect",
+        "country": "CO",
+        "payer": {
+          "name": "Bruce Wayne",
+          "email": "bruce@wayne-enterprises.com"
+        },
+        "description": "simulate Via Baloto Demo Payment"
+      },
+      "amount": 100000,
+      "currency": "COP"
+    }
+```
+
+### Response example
+
+You should get a `202` response with the `status` field set to `Pending`. This means your request has been accepted.
+
+```json
+    {
+      "id": "pay_fkn75nbpzfxeze6dkdv2pguv5i",
+      "status": "Pending",
+      "customer": {
+        "id": "cus_q2f7byt3n3eufaboujehp4uhle"
+      },
+      "_links": {
+        "self": {
+          "href": "https://api.sandbox.checkout.com/payments/pay_fkn75nbpzfxeze6dkdv2pguv5i"
+        },
+        "redirect": {
+          "href": "https://sandbox.dlocal.com/collect/pay/pay/M-016d2f17-9571-484c-ae35-200cb367f2ad?xtid=CATH-ST-1588001729-589728091"
+        },
+        "simulator:payment-succeed": {
+          "href": "http://sb-gateway-internal.cko.lon/dlocal-internal/baloto/payments/pay_fkn75nbpzfxeze6dkdv2pguv5i/succeed"
+        },
+        "simulator:payment-expire": {
+          "href": "http://sb-gateway-internal.cko.lon/dlocal-internal/baloto/payments/pay_fkn75nbpzfxeze6dkdv2pguv5i/expire"
+        }
+      }
+    }
+```
+
+## Step 2: Redirect the customer
+
+To capture and complete the payment, you need to provide the customer with the Via Baloto ticket.
+
+Using the redirection URL returned in the response above via `_links.redirect`, redirect your customer to the static, hosted Via Baloto ticket page. Once redirected, your customer should save or print the ticket.
+
+<TipBox variant='info'>
+
+Make sure your customer is aware that they will be redirected to the ticket page when they select your _Pay now_ button, and that they should print or save the ticket.
+
+</TipBox>
+
+A button on the page will allow them to return to your shop:
+
+*   If the ticket is still valid, they will be redirected to your success URL.
+*   If the ticket has expired, they will be redirected to your failure URL.
+
+<TipBox variant='note'>
+
+Your payment confirmation page should make it clear to the customer that their purchase has not yet been completed. Explain that it has been reserved and is pending payment before the order can be completed and the goods/services can be delivered.
+
+</TipBox>
+
+
+## Get details about a payment
+
+Using the following endpoint, pass the payment `id` (for example, `pay_hcklpcd45ymepcr7thciirbdaa`) from the payment response to get details about the payment.
+
+Use the details below to set up your request.
+
+### Endpoints
+
+You can find the full list, as well as complete request and response examples, in our <ExternalLink href="https://api-reference.checkout.com" >API reference</ExternalLink>.
+
+<tabs>
+<tab title="Live" active>
+<LineCodeWrapper type="get">
+
+`https://api.checkout.com/payments/{payment_id}`
+
+</LineCodeWrapper>
+</tab>
+<tab title="Sandbox">
+<LineCodeWrapper type="get">
+
+`https://api.sandbox.checkout.com/payments/{payment_id}`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+### Response examples
+
+<tabs>
+<tab title="Payment pending" active>
+
+```json
+    {
+      "id": "pay_fkn75nbpzfxeze6dkdv2pguv5i",
+      "requested_on": "2020-04-27T15:35:29Z",
+      "source": {
+        "type": "baloto",
+        "dlocal_order_id": "c7dfd1b06e5c4095864b1805f04c62f1",
+        "dlocal_payment_id": "D-30150-d999f7b8-c80e-4537-b380-c2167823d51f",
+        "integration_type": "redirect",
+        "description": "simulate Via Baloto Demo Payment"
+      },
+      "amount": 100000,
+      "currency": "COP",
+      "payment_type": "Regular",
+      "status": "Pending",
+      "risk": {
+        "flagged": false
+      },
+      "customer": {
+        "id": "cus_q2f7byt3n3eufaboujehp4uhle"
+      },
+      "_links": {
+        "redirect": {
+          "href": "https://sandbox.dlocal.com/collect/pay/pay/M-016d2f17-9571-484c-ae35-200cb367f2ad?xtid=CATH-ST-1588001729-589728091"
+        },
+        "simulator:payment-succeed": {
+          "href": "http://sb-gateway-internal.cko.lon/dlocal-internal/baloto/payments/pay_fkn75nbpzfxeze6dkdv2pguv5i/succeed"
+        },
+        "simulator:payment-expire": {
+          "href": "http://sb-gateway-internal.cko.lon/dlocal-internal/baloto/payments/pay_fkn75nbpzfxeze6dkdv2pguv5i/expire"
+        },
+        "self": {
+          "href": "https://api.sandbox.checkout.com/payments/pay_fkn75nbpzfxeze6dkdv2pguv5i"
+        }
+      }
+    }
+```
+
+</tab>
+<tab title="Payment captured">
+
+```json
+    {
+      "id": "pay_fkn75nbpzfxeze6dkdv2pguv5i",
+      "requested_on": "2020-04-27T15:35:29Z",
+      "source": {
+        "type": "baloto",
+        "dlocal_order_id": "c7dfd1b06e5c4095864b1805f04c62f1",
+        "dlocal_payment_id": "D-30150-d999f7b8-c80e-4537-b380-c2167823d51f",
+        "integration_type": "redirect",
+        "description": "simulate Via Baloto Demo Payment"
+      },
+      "amount": 100000,
+      "currency": "COP",
+      "payment_type": "Regular",
+      "status": "Captured",
+      "approved": true,
+      "risk": {
+      "flagged": false
+    },
+      "customer": {
+      "id": "cus_q2f7byt3n3eufaboujehp4uhle"
+    },
+      "_links": {
+        "self": {
+          "href": "https://api.sandbox.checkout.com/payments/pay_fkn75nbpzfxeze6dkdv2pguv5i"
+        },
+        "actions": {
+          "href": "https://api.sandbox.checkout.com/payments/pay_fkn75nbpzfxeze6dkdv2pguv5i/actions"
+        },
+        "refund": {
+          "href": "https://api.sandbox.checkout.com/payments/pay_fkn75nbpzfxeze6dkdv2pguv5i/refunds"
+        }
+      }
+    }
+```
+
+</tab>
+</tabs>
+
+---
+
+## Refunds and chargebacks
+
+### Refund a payment
+
+You can refund a Via Baloto payment using our [refund API](/payments/manage-payments/refund-a-payment). Partial and multiple – as well as full – refunds are allowed.
+
+The customer will get an email (the email address is taken from the `source.payer.email` property in the initial payment request) from dLocal asking for their banking details. Once the customer has provided their details, dLocal will transfer the money to the customer's bank account.
+
+The payment status will update to `refunded` and you will receive a `payment_refunded` (or `payment_refund_declined`, if unsuccessful) webhook notification.
+
+A refund processing fee may apply.
+
+### Chargebacks
+
+There is no chargeback mechanism for Via Baloto.
+
+---
+
+## Webhooks
+
+<Table>
+<TableHead headers={['Webhooks', 'Description']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`payment_pending`
+
+</TableCell>
+<TableCell>
+
+Sent when a payment request is successfully initiated.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`payment_capture_pending`
+
+</TableCell>
+<TableCell>
+
+Sent when the acquirer is in the process of accepting the payment.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`payment_captured`
+
+</TableCell>
+<TableCell>
+
+Sent when the customer has completed the payment with the ticket.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`payment_expired`
+
+</TableCell>
+<TableCell>
+
+Sent when the ticket has expired.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`payment_declined`
+
+</TableCell>
+<TableCell>
+
+Sent when there was a failure in creating the payment.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`payment_refund_pending`
+
+</TableCell>
+<TableCell>
+
+Sent when a refund is successfully initiated.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`payment_refunded`
+
+</TableCell>
+<TableCell>
+
+Sent when a refund is successfully processed.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`payment_refund_declined`
+
+</TableCell>
+<TableCell>
+
+Sent when a refund is declined.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+<TipBox variant="info">
+
+Learn more about [webhooks and how to subscribe to them](/reporting-and-insights/webhooks).
+
+</TipBox>
+
+---
+
+## Testing
+
+<TipBox variant="info">
+
+To start testing, you'll need to:
+
+*   <ExternalLink href="https://www.checkout.com/get-test-account" >create a test account</ExternalLink>, and
+*   contact your Customer Success Manager or Integrations engineer to activate Via Baloto payments in the sandbox environment.
+
+</TipBox>
+
+In your sandbox environment, you can test payment capture and expiration, as well as refund success and failure.
+
+In order to test these actions, pass the string `"simulate"` as part of the `source.description` field in the initial payment request.
+
+When you do, you will receive additional hypermedia links in the `_links` object in the payment response and in the 'get payment details' response.
+
+Use the URLs contained in the `simulator:payment-succeed`, `simulator:payment-expire`, `simulator:refund-succeed` and `simulator:refund-fail` hypermedia objects to simulate the respective action/state change on the test payment.

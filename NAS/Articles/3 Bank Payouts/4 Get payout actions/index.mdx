@@ -1,0 +1,304 @@
+---
+title: Get payout actions
+account: NAS
+description: View the actions associated with a specific payout.
+---
+
+Find out all you need to know about history of a payout. This API provides details about each step of the payout lifecycle. To get a detailed view of all required and optional fields, see our <ExternalLink href="https://api-reference.checkout.com/preview/crusoe" >API reference</ExternalLink>.
+
+---
+
+Use the details below to set up your request.
+
+### Endpoints
+
+<tabs>
+<tab title="Live">
+<LineCodeWrapper type="get">
+
+`https://api.checkout.com/payments/{id}/actions`
+
+</LineCodeWrapper>
+</tab>
+<tab title="Sandbox">
+<LineCodeWrapper type="get">
+
+`https://api.sandbox.checkout.com/payments/{id}/actions`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+### Header parameters
+
+<Table>
+<TableHead headers={["Header", "Value"]} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`Authorization`
+
+<StatusTag type="required"/>
+
+</TableCell>
+<TableCell>
+
+`Bearer {OAuth access token}`
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`Content-Type`
+
+<StatusTag type="required"/>
+
+</TableCell>
+<TableCell>
+
+`application/json`
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+### Path parameters
+
+<Table>
+<TableHead headers={["Path", "Value"]} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`id`
+
+<StatusTag type="required"/>
+
+</TableCell>
+<TableCell>
+
+The payment identifier (prefixed with `pay_`) or the session identifier (prefixed with `sid_`).
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+### Response example
+
+If successful, you should get a `200 Success` response returning a list of data relating to the payout.
+
+```json
+[
+  {
+    "id": "act_cvrbczl5llgehjzjqdupeezwt4",
+    "type": "Return",
+    "processed_on": "2020-06-12T13:49:19.145592Z",
+    "amount": 1000,
+    "approved": true,
+    "response_code": "30046",
+    "response_summary": "Bank Account Closed"
+  },
+  {
+    "id": "act_rhpascoezcwuxbez3qhsbtgpd4",
+    "type": "Payout",
+    "processed_on": "2020-06-12T13:49:19.1050138Z",
+    "amount": 1000,
+    "approved": true,
+    "response_code": "10000",
+    "response_summary": "Approved"
+  }
+]
+```
+
+<TipBox variant="info">
+
+If unsuccessful, you may get a `404 – Payment not found` error.
+
+</TipBox>
+
+### Response parameters
+
+Find out what the different fields in your successful response mean.
+
+<Table>
+<TableHead headers={["Field name", "Description"]} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`id`
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+The unique identifier of the payment action.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`type`
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+The type of payment action (e.g., `Authorization`).
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`processed_on`
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+The date and time the action took place.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`amount`
+
+<TypeTag type="integer" />
+
+</TableCell>
+<TableCell>
+
+The action amount.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`auth_code`
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+The acquirer's authorization code for cards.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`response_code`
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+The gateway response code.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`response_summary`
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+The gateway response summary.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`reference`
+
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+Your defined reference for the action.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`processing`
+
+<TypeTag type="object" />
+
+</TableCell>
+<TableCell>
+
+Returns information related to the processing of the payment.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`metadata`
+
+<TypeTag type="object" />
+
+</TableCell>
+<TableCell>
+
+A set of key/value pairs that you can attach to an action.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+### Payout actions
+
+The table below outlines the different payout actions and their meanings.
+
+<Table>
+<TableBody>
+<TableRow>
+<TableCell>
+
+`Payout`
+
+</TableCell>
+<TableCell>
+
+The payout request was processed successfully. To check whether the payout itself was successful, check the `approved` field in the response.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`Return`
+
+</TableCell>
+<TableCell>
+
+The payout was returned. For example, because the destination account has been closed.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>

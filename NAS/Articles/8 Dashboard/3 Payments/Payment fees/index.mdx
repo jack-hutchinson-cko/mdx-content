@@ -1,0 +1,257 @@
+--- 
+title: View your payment fees
+account: NAS
+---
+
+When you process a payment with us, there are certain fees you will be charged along the payment lifecycle. You can see the breakdown of these charges in your Dashboard by navigating to the Payment details page.
+
+From your Dashboard home page: 
+
+1. Select _Payments_ in the left-hand menu.
+2. Select the payment you would like to see the fee breakdown for. This takes you to the Payments details page. 
+3. Scroll to the Payment fees section.
+
+<img src="/NAS/Dashboard/View_your_payment_fees/payment_fees.png"  alt="Payment fees" />
+
+
+## Payment fee breakdown
+
+In the Payment fees section, you will see _Scheme and other network fees_ and _Checkout fees_. Checkout fees are a total sum of fees incurred along the payment lifecycle. When you expand this, you'll see a breakdown of the types of fees grouped by categories.
+
+<TipBox variant='info'>
+
+We display your fees per category at payment level in the currency of your bank account. If you are seeking to reconcile your fees by financial actions, rather than payments, we advise you to refer to the settlement CSV report.
+
+As the fees are aggregated at the payment level, they can change over time as your payment passes through the different stages of the payment lifecycle. For example, if your payment is refunded then any associated fees will be reflected in the Payment fees section.
+
+</TipBox>
+
+<img src="/NAS/Dashboard/View_your_payment_fees/payment_fee_breakdown.png"  alt="Payment fee breakdown"/>
+
+## Fee categories
+
+The categories we display are the same as you'll see on the _Invoice breakdown_ fields in your settlement reports and invoices.
+
+<Table>
+<TableHead headers={['Category','Breakdown type','Fee description']}/>
+<TableBody>
+<TableRow>
+<TableCell>
+
+Interchange fees
+
+</TableCell>
+<TableCell>
+
+Interchange fixed fee
+
+</TableCell>
+<TableCell>
+
+A fee set by the card scheme (for example, Visa) and paid out to the cardholder's issuing bank.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell rowSpan='2'>
+
+Scheme and other network fees
+
+</TableCell>
+<TableCell>
+
+Scheme fixed fees
+
+</TableCell>
+<TableCell rowSpan='2'>
+
+Fees applied by the card scheme (for example, Visa) for the processing of card payments.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Scheme variable fees
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell rowSpan='2'>
+
+Acquiring premiums
+
+</TableCell>
+<TableCell>
+
+Premium fixed fee
+
+</TableCell>
+<TableCell rowSpan='2'>
+
+Total premium fees charged across card payments and refunds during the reporting period.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Premium variable fees
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell rowSpan='6'>
+
+Gateway fees
+
+</TableCell>
+<TableCell>
+
+Authentication fixed fee
+
+</TableCell>
+<TableCell rowSpan='6'>
+
+Gateway fees are fixed fees incurred on actions (i.e. authentication, authorization, void, refund) across the payment lifecycle.
+
+More specifically:
+
+- Authentication fees are charged for determining whether a payment is being carried out by the legitimate cardholder. This includes authentication via the Checkout.com Sessions service.
+- Authorization fee is applied for authorized card payments.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Authentication variable fee
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Authorization fixed fee
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Void fixed fee
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Gateway fixed fee
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Card verification fixed fee
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell rowSpan='2'>
+
+Blended fees
+
+</TableCell>
+<TableCell>
+
+Blended fixed fee
+
+</TableCell>
+<TableCell rowSpan='2'>
+
+A fixed, variable, or fixed and variable flat fee applied to successful captures.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Blended variable fee
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell rowSpan='4'>
+
+Chargeback fees
+
+</TableCell>
+<TableCell rowSpan='2'>
+
+Chargeback fees
+
+</TableCell>
+<TableCell rowSpan='2'>
+
+A fee incurred for payments that are triggered on certain chargeback events.
+
+</TableCell>
+</TableRow>
+<TableRow>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Scheme fixed fees
+
+</TableCell>
+<TableCell rowSpan='2'>
+
+Fees applied by card schemes (for example, Visa or Mastercard) for processing a chargeback.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Scheme variable fees
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Representment fees
+
+</TableCell>
+<TableCell>
+
+Representment fees
+
+</TableCell>
+<TableCell>
+
+A fee incurred during the disputes process. Representment occurs when an issuer will review the evidence provided by you.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+Retrieval fees
+
+</TableCell>
+<TableCell>
+
+Retrieval fees
+
+</TableCell>
+<TableCell>
+
+A fee incurred before the disputes process. Retrieval occurs when the cardholder's issuer requests information from you before raising a dispute.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>

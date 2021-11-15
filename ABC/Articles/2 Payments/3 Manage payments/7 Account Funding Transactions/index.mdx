@@ -1,0 +1,379 @@
+---
+title: Account Funding Transactions
+account: ABC
+description: Learn how to perform Account Funding Transactions (AFTs).
+---
+
+The Unified Payments API can be used to perform Account Funding Transactions (AFTs). AFTs are a type of pull payment used primarily to fund a wallet.
+
+<TipBox variant="tip">
+
+We support AFTs for pull payments using both Mastercard and Visa cards.
+
+</TipBox>
+<TipBox variant="info">
+
+To start using this feature, please contact your Customer Success manager.
+
+</TipBox>
+
+Use the details below to set up your request.
+
+### Endpoints
+
+For the full API specification, see the <ExternalLink href="https://api-reference.checkout.com/#tag/Payments/paths/~1payments/post" >API reference</ExternalLink>.
+
+<tabs>
+<tab title="Live">
+<LineCodeWrapper type="post">
+
+`https://api.checkout.com/payments`
+
+</LineCodeWrapper>
+</tab>
+<tab title="Sandbox">
+<LineCodeWrapper type="post">
+
+`https://api.sandbox.checkout.com/payments`
+
+</LineCodeWrapper>
+</tab>
+</tabs>
+
+### Header parameters
+
+<Table>
+<TableHead headers={['Header', 'Value']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`Authorization`
+
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+`secret key`
+
+<InfoBox>
+
+Use the valid secret key of your Checkout.com account. You can find this in the <ExternalLink href="https://hub.checkout.com/v2" >Hub</ExternalLink>.
+
+</InfoBox>
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`Content-Type`
+
+<StatusTag type="required" />
+</TableCell>
+<TableCell>
+
+`application/json`
+
+</TableCell>
+</TableRow>
+
+</TableBody>
+</Table>
+
+### Body parameters
+
+The table below describes the minimum recommended fields.
+
+<Table>
+<TableHead headers={['Field name', 'Description']} />
+<TableBody>
+<TableRow>
+<TableCell>
+
+`source`
+<StatusTag type="required" />
+<TypeTag type="object" />
+</TableCell>
+<TableCell>
+
+Details about the payment source.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`source.type`
+
+<StatusTag type="required" />
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+The type of payment source. Set this to `token`.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`source.token`
+
+<StatusTag type="required" />
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+The Checkout.com token.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`amount`
+
+<StatusTag type="optional" />
+<TypeTag type="integer" />
+
+</TableCell>
+<TableCell>
+
+The payment amount in your chosen currency. Omit the amount or provide a value of `0` to perform a [card verification](/risk-management/card-verification).
+
+The format depends on the currency. For more information, see [calculating the value](/resources/calculating-the-value).
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`currency`
+
+<StatusTag type="required" />
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+A three-letter ISO currency code representing the currency of the payment.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`processing`
+
+<StatusTag type="optional" />
+<TypeTag type="object" />
+
+</TableCell>
+<TableCell>
+
+Details about the processing.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`processing.aft`
+
+<StatusTag type="optional" />
+<TypeTag type="boolean" />
+
+</TableCell>
+<TableCell>
+
+Indicates whether the payment is an Account Funding Transaction (AFT).
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`recipient`
+
+<StatusTag type="optional" />
+<TypeTag type="object" />
+
+</TableCell>
+<TableCell>
+
+Details about the recipient.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`recipient.first_name`
+
+<StatusTag type="required" /> for Mastercard
+<StatusTag type="optional" /> for Visa
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+The first name of the recipient of the funds.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`recipient.last_name`
+
+<StatusTag type="required" /> for Mastercard
+<StatusTag type="optional" /> for Visa
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+The last name of the recipient of the funds.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`recipient.account_number`
+
+<StatusTag type="required" /> for Mastercard
+<StatusTag type="optional" /> for Visa
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+The primary account number (PAN) of the recipient's account.
+
+</TableCell>
+</TableRow>
+<TableRow>
+<TableCell>
+
+`recipient.country`
+
+<StatusTag type="optional" />
+<TypeTag type="string" />
+
+</TableCell>
+<TableCell>
+
+The country ([two-letter ISO country code](/resources/codes/country-codes)) of the recipient's address.
+**Required for Mastercard** when the domestic funding transaction is used to fund a subsequent cross-border funds transfer.
+
+</TableCell>
+</TableRow>
+</TableBody>
+</Table>
+
+### Request example
+
+```json
+{
+  "source": {
+    "type": "token",
+    "token": "tok_4gzeau5o2uqubbk6fufs3m7p54",
+  },
+  "amount": 100,
+  "currency": "USD",
+  "processing": {
+    "aft": true,
+  },
+  "recipient": {
+    "first_name": "John",
+    "last_name": "Smith",
+    "account_number": "5555555555554444",
+    "country": "GB"
+  }
+}
+```
+
+### The response
+
+Use the `approved` field to check whether or not the authorization was successful (`"approved": true`). If your authorization was not successful, it's possible the payment used an invalid/expired card, or a valid card with an insufficient available balance.
+
+If you received a `202` response, the payment requires a redirect. For example, if the payment is 3D Secure.
+
+<TipBox variant="tip">
+
+The following pages can help you understand the response message:
+
+*   [CVV codes and descriptions](/resources/codes/cvv-response-codes)
+*   [AVS codes](/resources/codes/avs-codes)
+*   [Response codes](/resources/codes/response-codes) (if the authorization was unsuccessful)
+
+</TipBox>
+
+### Response example
+
+The possible values for the status field include `Authorized`, `Captured`, `Card Verified`, `Declined`, and `Pending`. Note that `Pending` only applies to 3D Secure payments.
+
+```json
+{
+  "id": "pay_mbabizu24mvu3mela5njyhpit4",
+  "action_id": "act_mbabizu24mvu3mela5njyhpit4",
+  "amount": 6500,
+  "currency": "USD",
+  "approved": true,
+  "status": "Authorized",
+  "auth_code": "770687",
+  "eci": "05",
+  "scheme_id": "638284745624527",
+  "response_code": "10000",
+  "response_summary": "Approved",
+  "risk": {
+    "flagged": false
+  },
+  "source": {
+    "id": "src_nwd3m4in3hkuddfpjsaevunhdy",
+    "type": "card",
+    "expiry_month": 9,
+    "expiry_year": 2022,
+    "scheme": "Visa",
+    "last4": "4242",
+    "fingerprint": "F31828E2BDABAE63EB694903825CDD36041CC6ED461440B81415895855502832",
+    "bin": "424242",
+    "card_type": "Credit",
+    "card_category": "Consumer",
+    "issuer": "JPMORGAN CHASE BANK NA",
+    "issuer_country": "US",
+    "product_id": "A",
+    "product_type": "Visa Traditional",
+    "avs_check": "S",
+    "cvv_check": ""
+  },
+  "customer": {
+    "id": "cus_udst2tfldj6upmye2reztkmm4i"
+  },
+  "processed_on": "2019-01-25T11:03:36Z",
+  "reference": "ORD-5023-4E89",
+  "_links": {
+    "self": {
+      "href": "https://api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4"
+    },
+    "actions": {
+      "href": "https://api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/actions"
+    },
+    "capture": {
+      "href": "https://api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/captures"
+    },
+    "void": {
+      "href": "https://api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/voids"
+    }
+  }
+}
+```
+
+<TipBox variant="info">
+
+Possibly fraudulent authorization requests return the message `risk.flagged: true` to show that the payment has been [flagged](/risk-management/flagged-payments).
+
+</TipBox>

@@ -1,0 +1,475 @@
+---
+title: iOS SDK
+account: ABC
+---
+
+Start accepting online payments in just a few minutes with our iOS SDK. It's quick and easy to integrate, accepts online payments from all major credit cards, and is customizable to your brand.
+
+<TipBox variant="note" title="Minimum requirements">
+
+To use the iOS SDK, make sure you are working with:
+
+* iOS 10.0+
+* Xcode 12.4+
+* Swift 5.3+
+
+</TipBox>
+
+<TipBox>
+
+Our iOS SDK is released under the MIT license.
+
+</TipBox>
+
+## How it works
+
+1. Choose whether to use the pre-built UI, or build your own payment form and use our iOS SDK in a headless mode.
+2. Our iOS SDK is then used to take your customer's sensitive information and exchange them for a secure token. This process is called tokenization. Once you have the card token, you're ready to make the payment request.
+
+<img src="/docs/Integrate/SDKs/iOS SDK/iOS.png"  />
+
+---
+
+## Demo (our pre-built UI)
+
+<img maxWidth={170} src="/docs/Integrate/SDKs/iOS SDK/demo-ios.gif" />
+
+---
+
+## Integrate with our iOS SDK
+
+### Before you start
+
+Make sure you have your `public_key`. You can find it in the <ExternalLink href="https://hub.checkout.com" >Hub</ExternalLink>, under _Settings > Channels_. If you don't have an account with us yet, you can <ExternalLink href="https://checkout.com/get-test-account" >request a free test one</ExternalLink>.
+
+### Step 1: Install project dependencies
+
+We've provided examples for the dependency managers `CocoaPods`, `Carthage` and `Swift Package Manager`.
+
+<tabs>
+<tab title="CocoaPods">
+
+If you are using `CocoaPods`, make sure you have version 1.1+.
+
+To integrate this SDK into your Xcode project using `CocoaPods`, specify it in your `Podfile`:
+
+```rb
+source 'https://github.com/CocoaPods/Specs.git'
+platform :ios, '10.0'
+use_frameworks!
+
+target '<Your Target Name>' do
+    pod 'Frames', '~> 3'
+end
+```
+
+Then run the following command in your terminal:
+
+```bash
+$ pod install
+```
+
+</tab>
+<tab title="Carthage">
+
+`Carthage` is a decentralized dependency manager that builds your dependencies and provides you with binary frameworks.
+
+You can install `Carthage` with Homebrew using the following command:
+
+```bash
+$ brew update
+$ brew install carthage
+```
+
+To integrate with our iOS SDK into your Xcode project using `Carthage`, specify it in your `Cartfile`:
+
+```swift
+github "checkout/frames-ios" ~> 3
+```
+
+Run `carthage update --use-xcframeworks` to build the framework and drag the built `Frames` into your Xcode project.
+
+<TipBox variant="note">
+
+If you are planning to run release builds for the simulator, make sure to exclude the i386 architecture from your builds.
+
+</TipBox>
+
+
+</tab>
+<tab title="Swift Package Manager">
+
+<ExternalLink href="https://swift.org/package-manager/" >Swift Package Manager</ExternalLink> is a tool for automating the distribution of Swift code and is integrated into the Swift compiler.
+
+Once you have your Swift package set up, adding the iOS SDK is as easy as adding it to the `dependencies` value of your `Package.swift` file.
+
+```swift
+dependencies: [
+	.package(url: "https://github.com/checkout/frames-ios.git", .upToNextMajor(from: "3.0.0"))
+]
+```
+
+If you are planning to run release builds for the simulator, make sure to exclude the i386 architecture from your builds.
+
+</tab>
+</tabs>
+
+We regularly release new versions of the iOS SDK with additional features and bug fixes, so please routinely update and test your app with the latest framework version.
+
+### Step 2: Import the iOS SDK and choose your approach
+
+Import the SDK into your class.
+
+```swift
+import Frames
+```
+
+Decide whether you would like to use the `CardViewController` provided as part of this SDK, which allows users to enter their card details, or whether you prefer full control in the headless version.
+
+<tabs>
+<tab title="CardViewController">
+
+You can [modify the card view](/integrate/sdks/android-sdk/customization-guide) after initialization.
+
+```swift
+class ViewController: UIViewController, CardViewControllerDelegate {
+
+    // Create a CheckoutAPIClient instance with your public key.
+    let checkoutAPIClient = CheckoutAPIClient(
+        publicKey: "<Your Public Key>",
+        environment: .sandbox)
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        // Create the CardViewController.
+        let cardViewController = CardViewController(
+            checkoutApiClient: checkoutAPIClient,
+            cardHolderNameState: .hidden,
+            billingDetailsState: .hidden)
+
+        // Set the CardViewController delegate.
+        cardViewController.delegate = self
+
+        // Replace the bar button with Pay.
+        cardViewController.rightBarButtonItem = UIBarButtonItem(
+            title: "Pay",
+            style: .done,
+            target: nil,
+            action: nil)
+
+        // (Optional) Specify which schemes are allowed.
+        cardViewController.availableSchemes = [.visa, .mastercard]
+
+        // Push the cardViewController onto the navigation stack.
+        navigationController?.pushViewController(cardViewController, animated: true)
+    }
+
+    func onTapDone(controller: CardViewController, cardToken: CkoCardTokenResponse?, status: CheckoutTokenStatus) {
+
+        // Called when the tokenization request has completed.
+        print(cardToken ?? "cardToken is nil")
+    }
+
+    func onSubmit(controller: CardViewController) {
+
+        // Called just before a create card token request is made.
+    }
+}
+```
+</tab>
+<tab title="Headless">
+
+```swift
+// Create a CheckoutAPIClient instance with your public key.
+let checkoutAPIClient = CheckoutAPIClient(
+    publicKey: "<Your Public Key>",
+    environment: .sandbox)
+
+let phoneNumber = CkoPhoneNumber(
+    countryCode: "44",
+    number: "7700900000")
+
+let address = CkoAddress(
+    addressLine1: "Wenlock Works",
+    addressLine2: "Shepherdess Walk",
+    city: "London",
+    state: "London",
+    zip: "N1 7BQ",
+    country: "GB")
+
+// Create a CardTokenRequest instance with the phoneNumber and address values.
+let cardTokenRequest = CkoCardTokenRequest(
+    number: "4242424242424242",
+    expiryMonth: "01",
+    expiryYear: "29",
+    cvv: "100",
+    name: "Test Customer",
+    billingAddress: address,
+    phone: phoneNumber)
+
+// Request the card token.
+checkoutAPIClient.createCardToken(card: cardTokenRequest) { result in
+    switch result {
+    case .success(let response):
+        print(response)
+    case .failure(let error):
+        print(error.localizedDescription)
+    }
+}
+```
+
+</tab>
+</tabs>
+
+---
+
+## Available methods
+
+Two classes are available globally: `CheckoutAPIClient` and `CardUtils`. `CheckoutAPIClient` is used to call the Checkout API with your public key. `CardUtils` contains methods to use for handling a payment form.
+
+### Create an API Client instance
+
+<TipBox>
+
+You can see the API Client instance in both the headless and pre-built UI examples above.
+
+</TipBox>
+
+```swift
+// Replace "pk_test_6ff46046-30af-41d9-bf58-929022d2cd14" with your own public key.
+let checkoutAPIClient = CheckoutAPIClient(
+    publicKey: "pk_test_6ff46046-30af-41d9-bf58-929022d2cd14",
+    environment: .sandbox)
+```
+
+### CardUtils
+
+When building your own custom UI using the headless mode, you can use the `CardUtils` class to verify card information.
+
+### Create a `CardUtils` instance
+
+```swift
+let cardUtils = CardUtils()
+```
+
+### Verify a card number with `CardUtils`
+
+<TipBox>
+
+Use our [test card numbers](/testing/test-card-numbers).
+
+</TipBox>
+
+```swift
+// Verify card number.
+let cardNumber = "4242424242424242"
+let isValidCardNumber = cardUtils.isValid(cardNumber: cardNumber)
+
+print(isValidCardNumber) // true
+
+```
+
+### Validate a CVV with `CardUtils`
+
+```swift
+// Verify CVV.
+let cardNumber = "4242424242424242"
+guard let cardType = cardUtils.getTypeOf(cardNumber: cardNumber) else { return }
+
+let cvv = "100"
+let isValidCVV = cardUtils.isValid(cvv: cvv, cardType: cardType)
+
+print(isValidCVV) // true
+```
+
+### Validate an expiration date with `CardUtils`
+
+```swift
+// Verify expiration date.
+let expirationMonth = "01"
+let expirationYear = "29"
+
+let isValidExpiration = cardUtils.isValid(
+    expirationMonth: expirationMonth,
+    expirationYear: expirationYear)
+
+print(isValidExpiration) // true
+```
+
+### Get information about a card number with `CardUtils`
+
+```swift
+let cardNumber = "4242424242424242"
+guard let cardType = cardUtils.getTypeOf(cardNumber: cardNumber) else { return }
+print(cardType.name) // Visa
+```
+
+### Format a card number with `CardUtils`
+
+```swift
+let cardNumber = "4242424242424242"
+guard let cardType = cardUtils.getTypeOf(cardNumber: cardNumber) else { return }
+
+let formattedCardNumber = cardUtils.format(cardNumber: cardNumber, cardType: cardType)
+
+print(formattedCardNumber) // 4242 4242 4242 4242
+```
+
+### Standardize a card number with `CardUtils`
+
+```swift
+let cardNumber = "4242 | 4242 | 4242 | 4242 "
+let standardizedCardNumber = cardUtils.standardize(cardNumber: cardNumber)
+
+print(standardizedCardNumber) // "4242424242424242"
+```
+
+## Create a prompt for CVV confirmation
+
+### Create and configure a `CvvConfirmationViewController`
+
+```swift
+let cvvConfirmationViewController = CvvConfirmationViewController()
+cvvConfirmationViewController.delegate = self
+```
+
+### Handle the result by adding conformance to `CvvConfirmationViewControllerDelegate`
+
+```swift
+CvvConfirmationViewControllerDelegate.
+extension ViewController: CvvConfirmationViewControllerDelegate {
+
+    func onConfirm(controller: CvvConfirmationViewController, cvv: String) {
+        // Handle cvv.
+    }
+
+    func onCancel(controller: CvvConfirmationViewController) {
+        // Handle cancellation.
+    }
+}
+```
+
+## Create a card token
+
+Here we use the method `createCardToken`.
+
+```swift
+// Create a CheckoutAPIClient instance with your public key.
+let checkoutAPIClient = CheckoutAPIClient(
+    publicKey: "<Your Public Key>",
+    environment: .sandbox)
+
+let phoneNumber = CkoPhoneNumber(
+    countryCode: "44",
+    number: "7700900000")
+
+let address = CkoAddress(
+    addressLine1: "Wenlock Works",
+    addressLine2: "Shepherdess Walk",
+    city: "London",
+    state: "London",
+    zip: "N1 7BQ",
+    country: "GB")
+
+// Create a CardTokenRequest instance with the phoneNumber and address values.
+let cardTokenRequest = CkoCardTokenRequest(
+    number: "4242424242424242",
+    expiryMonth: "01",
+    expiryYear: "29",
+    cvv: "100",
+    name: "Test Customer",
+    billingAddress: address,
+    phone: phoneNumber)
+
+// Request the card token.
+checkoutAPIClient.createCardToken(card: cardTokenRequest) { result in
+    switch result {
+    case .success(let response):
+        print(response)
+    case .failure(let error):
+        print(error.localizedDescription)
+    }
+}
+```
+
+The completion handler here provides a `Result<CkoCardTokenResponse, NetworkError>` value.
+
+---
+
+## Handle 3D Secure
+
+When you send a 3D secure charge request from your server, you will get back a 3D Secure URL. This is available from `_links.redirect.href` within the JSON response. You can then pass the 3D Secure URL to a `ThreedsWebViewController` in order to handle the verification.
+
+The redirection URLs (`success_url` and `failure_url`) are set in the Hub, but they can be overwritten in the charge request sent from your server. It is important to provide the correct URLs to ensure a successful payment flow.
+
+### Create and configure a `ThreedsWebViewController`
+
+```swift
+let threeDSWebViewController = ThreedsWebViewController(
+    successUrl: "http://example.com/success",
+    failUrl: "http://example.com/failure")
+threeDSWebViewController.url = "http://example.com/3ds"
+threeDSWebViewController.delegate = self
+```
+
+### Handle the result by adding conformance to `ThreedsWebViewControllerDelegate`
+
+```swift
+extension ViewController: ThreedsWebViewControllerDelegate {
+
+    func threeDSWebViewControllerAuthenticationDidSucceed(_ threeDSWebViewController: ThreedsWebViewController, token: String?) {
+        // Handle successful 3DS.
+    }
+
+    func threeDSWebViewControllerAuthenticationDidFail(_ threeDSWebViewController: ThreedsWebViewController) {
+        // Handle failed 3DS.
+    }
+
+}
+```
+
+---
+
+## Apple Pay example
+
+Our iOS SDK also supports handling `PKPayment` token data from Apple Pay.
+
+```swift
+func handle(payment: PKPayment) {
+    // Create a CheckoutAPIClient instance with your public key.
+
+    let checkoutAPIClient = CheckoutAPIClient(
+        publicKey: "<Your Public Key>",
+        environment: .sandbox)
+
+    // Get the data containing the encrypted payment information.
+    let paymentData = payment.token.paymentData
+
+    // Request an Apple Pay token.
+    checkoutAPIClient.createApplePayToken(paymentData: paymentData) { result in
+        switch result {
+        case .success(let response):
+            print(response)
+        case .failure(let error):
+            print(error.localizedDescription)
+        }
+    }
+}
+```
+
+<ExternalLink href="https://developer.apple.com/documentation/passkit/apple_pay/offering_apple_pay_in_your_app" >Read more about offering Apple Pay in your app</ExternalLink>.
+
+---
+
+## Learn more about the iOS SDK
+
+### Customization
+
+Although we kept our demo simple, you have a lot of control over the appearance of your form – from the colors and styling, to whether you want to display one input field or several. Check out our [customization guide](/integrate/sdks/ios-sdk/customization-guide) for more details and examples.
+
+---
+
+## Next steps
+
+Now that you've got your card token, you're ready to [request a card payment](/payments/accept-payments/request-a-card-payment).
